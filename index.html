@@ -271,22 +271,53 @@ kbd{display:inline-block;padding:1px 6px;font-family:ui-monospace,Menlo,Consolas
 .cal-ev.test{background:var(--red-50);color:var(--red-600)}
 .cal-more{font-size:10px;color:var(--text-3);font-weight:600;padding-left:3px;flex:none}
 
-.next-item{display:flex;gap:13px;padding:14px 18px;border-bottom:1px solid var(--border);align-items:flex-start}
+.next-item{display:flex;gap:13px;padding:14px 0;border-bottom:1px solid var(--border);align-items:flex-start}
 .next-item:last-child{border-bottom:none}
 .next-rank{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;flex:none;background:var(--primary);color:#fff;font-size:12.5px;font-weight:800}
 .next-item.urgent .next-rank{background:var(--red-500)}
 .next-item.high .next-rank{background:var(--amber-500)}
-.next-item.medium .next-rank{background:var(--sky-500)}
 .next-item.low .next-rank{background:var(--gray-400)}
+.effort-avg{display:inline-flex;align-items:baseline;gap:4px;padding:6px 14px;border-radius:99px;background:var(--surface);font-size:13px;font-weight:700;color:var(--text);border:1px solid var(--border)}
+.effort-avg b{font-size:20px;color:var(--violet-600);letter-spacing:-.02em}
 
-/* Weekly notes */
-.note-card{transition:.16s}
-.note-card.highlight{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft)}
-.note-mood{font-size:20px;line-height:1}
-.mood-picker{display:flex;gap:8px}
-.mood-btn{font-size:24px;width:48px;height:48px;border-radius:12px;border:1px solid var(--border-strong);background:var(--surface);transition:.14s;line-height:1;display:grid;place-items:center}
-.mood-btn:hover{border-color:var(--primary);background:var(--primary-soft)}
-.mood-btn.on{border-color:var(--primary);background:var(--primary-soft);box-shadow:0 0 0 2px var(--primary-soft)}
+/* effort bars (dashboard mini + notes page) */
+.effort-bars{display:flex;flex-direction:column;gap:9px}
+.effort-bar-row{display:flex;align-items:center;gap:12px}
+.effort-bar-subject{width:150px;flex:none;font-size:13px;font-weight:600}
+.effort-bar-track{flex:1;min-width:0;height:12px;background:var(--surface);border-radius:99px;overflow:hidden;border:1px solid var(--border);position:relative}
+.effort-bar-fill{height:100%;border-radius:99px;transition:width .4s ease}
+.effort-bar-fill.r1{background:linear-gradient(90deg,#ef4444,#f87171)}
+.effort-bar-fill.r2{background:linear-gradient(90deg,#f97316,#fb923c)}
+.effort-bar-fill.r3{background:linear-gradient(90deg,#eab308,#facc15)}
+.effort-bar-fill.r4{background:linear-gradient(90deg,#84cc16,#a3e635)}
+.effort-bar-fill.r5{background:linear-gradient(90deg,#10b981,#34d399)}
+.effort-bar-val{width:40px;flex:none;text-align:right;font-size:13px;font-weight:700;font-variant-numeric:tabular-nums}
+
+/* ── Line chart ──────────────────────────────────────────── */
+.effort-chart-wrap{width:100%;overflow-x:auto;overflow-y:hidden}
+.effort-chart-svg{display:block;width:100%;min-width:520px;height:auto}
+.effort-chart-svg text{font-family:var(--font);font-variant-numeric:tabular-nums}
+.effort-chart-svg .dot{transition:r .12s ease}
+.effort-chart-svg .dot:hover{r:6}
+.effort-legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:14px;font-size:11.5px;color:var(--text-2)}
+.effort-legend span{display:inline-flex;align-items:center;gap:6px}
+.effort-legend i{width:10px;height:10px;border-radius:99px;display:inline-block;flex:none}
+.effort-legend button{display:inline-flex;align-items:center;gap:6px;padding:3px 8px;border-radius:99px;font-size:11.5px;font-weight:600;color:var(--text-2);transition:.14s;border:1px solid transparent}
+.effort-legend button:hover{background:var(--surface-2)}
+.effort-legend button.off{opacity:.35;text-decoration:line-through}
+
+/* ── Rating buttons (modal) ───────────────────────────────── */
+.rating-row{display:flex;gap:8px;align-items:center}
+.rating-row .subject-input{flex:1;min-width:0}
+.rating-btns{display:flex;gap:3px;flex:none}
+.rating-btn{width:32px;height:32px;border-radius:8px;border:1px solid var(--border-strong);background:var(--surface);font-weight:700;font-size:13px;color:var(--text-2);transition:.14s}
+.rating-btn:hover{border-color:var(--primary);background:var(--primary-soft);color:var(--primary)}
+.rating-btn.on{color:#fff}
+.rating-btn.on[data-rate="1"]{background:#ef4444;border-color:#ef4444}
+.rating-btn.on[data-rate="2"]{background:#f97316;border-color:#f97316}
+.rating-btn.on[data-rate="3"]{background:#eab308;border-color:#eab308}
+.rating-btn.on[data-rate="4"]{background:#84cc16;border-color:#84cc16}
+.rating-btn.on[data-rate="5"]{background:#10b981;border-color:#10b981}
 
 .modal-back{position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(4px);z-index:1000;display:grid;place-items:center;padding:20px;animation:fadeIn .16s ease;overflow-y:auto}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
@@ -358,6 +389,7 @@ code{font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;font-size:12.5p
   .page-title{font-size:21px}
   .cal-day{min-height:62px;padding:4px}
   .cal-ev{font-size:9.5px;padding:1px 4px}
+  .effort-bar-subject{width:90px;font-size:12px}
   .toasts{left:14px;right:14px;bottom:14px}
   .toast{min-width:0;max-width:none}
 }
@@ -380,7 +412,7 @@ code{font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;font-size:12.5p
       <ul class="auth-features">
         <li><span class="tick">1</span> <strong>Google Classroom</strong> — every assignment, pulled in automatically</li>
         <li><span class="tick">2</span> <strong>School emails</strong> — deadlines, tests, and notices extracted</li>
-        <li><span class="tick">3</span> <strong>Weekly notes</strong> — reflect on your week and track progress</li>
+        <li><span class="tick">3</span> <strong>Weekly notes</strong> — rate your effort across subjects each week</li>
         <li><span class="tick">4</span> <strong>Study planner</strong> — schedules around your tutoring and sport</li>
       </ul>
       <div class="auth-badges">
@@ -484,7 +516,7 @@ code{font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;font-size:12.5p
       <div class="sidebar-group">
         <div class="sidebar-label">Organise</div>
         <a class="nav-item" href="#/planner"><span class="nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span><span>Study Planner</span></a>
-        <a class="nav-item" href="#/notes"><span class="nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span><span>Weekly Notes</span></a>
+        <a class="nav-item" href="#/notes"><span class="nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span><span>Weekly Notes</span></a>
       </div>
       <div class="sidebar-group">
         <div class="sidebar-label">Account</div>
@@ -503,10 +535,9 @@ code{font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;font-size:12.5p
 
 <script type="module">
 /* ================================================================
-   STUDENTOS v8.0
-   - weekly notes replace effort reports
-   - freeform reflection with optional mood
-   - auto-tracked week stats
+   STUDENTOS v8.1
+   - effort reports renamed to "weekly notes" (same functionality)
+   - weekly subject effort ratings, line chart, legend toggle
    ================================================================ */
 
 const LS_CONFIG = 'studentos.config.v1';
@@ -744,16 +775,21 @@ function estimateMinutes(item){
 /* ── Icons ───────────────────────────────────────────────── */
 const S = 'viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"';
 const ICON = {
+  chart: `<svg ${S}><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>`,
+  trend: `<svg ${S}><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg>`,
   bell: `<svg ${S}><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>`,
   search: `<svg ${S}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>`,
   mail: `<svg ${S}><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>`,
   alert: `<svg ${S}><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`,
+  edit: `<svg ${S}><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`,
+  trash: `<svg ${S}><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>`,
   check: `<svg ${S}><polyline points="20 6 9 17 4 12"/></svg>`,
   calendar: `<svg ${S}><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`,
   file: `<svg ${S}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/></svg>`,
   info: `<svg ${S}><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>`,
   user: `<svg ${S}><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`,
   palette: `<svg ${S}><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>`,
+  x: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`
 };
 
 /* ── Helpers ─────────────────────────────────────────────── */
@@ -796,43 +832,29 @@ function monthMatrix(year, month){
   for (let i = 0; i < 42; i++){ const d = new Date(start); d.setDate(start.getDate() + i); cells.push(d); }
   return cells;
 }
-
-/* ── Week helpers ────────────────────────────────────────── */
-function getWeekStart(d){
-  const x = new Date(d);
-  x.setHours(0,0,0,0);
-  const day = x.getDay();
-  x.setDate(x.getDate() + (day === 0 ? -6 : 1 - day));
-  return x.getTime();
+function ratingClass(r){
+  r = Math.round(r || 0);
+  if (r <= 1) return 'r1';
+  if (r === 2) return 'r2';
+  if (r === 3) return 'r3';
+  if (r === 4) return 'r4';
+  return 'r5';
 }
-function addDays(ts, n){
-  const d = new Date(ts);
-  d.setDate(d.getDate() + n);
+function ratingColor(v){
+  const n = Math.round(v || 0);
+  if (n <= 1) return '#ef4444';
+  if (n === 2) return '#f97316';
+  if (n === 3) return '#eab308';
+  if (n === 4) return '#84cc16';
+  return '#10b981';
+}
+function getLastFriday(){
+  const d = new Date();
+  d.setHours(0,0,0,0);
+  const day = d.getDay();
+  const offset = (day - 5 + 7) % 7;
+  d.setDate(d.getDate() - offset);
   return d.getTime();
-}
-function weekLabel(ts){
-  return `${fmtDate(ts)} – ${fmtDate(addDays(ts, 6))}`;
-}
-function moodEmoji(m){
-  return ['','😫','😕','😐','🙂','😄'][m] || '';
-}
-function moodLabel(m){
-  return ['','Rough week','Tough week','OK week','Good week','Great week'][m] || '';
-}
-function computeWeekStats(weekStart){
-  const end = addDays(weekStart, 7);
-  const completed = Store.all('assignments').filter(a => a.completed && a.completedAt && a.completedAt >= weekStart && a.completedAt < end).length;
-  const tests = Store.all('assignments').filter(a => (a.type === 'Test' || a.type === 'Exam') && a.dueDate && a.dueDate >= weekStart && a.dueDate < end).length;
-  return { completed, tests };
-}
-function priorityOrder(p){
-  return { urgent: 0, high: 1, medium: 2, low: 3 }[p] ?? 4;
-}
-function greeting(){
-  const h = new Date().getHours();
-  if (h < 12) return 'morning';
-  if (h < 18) return 'afternoon';
-  return 'evening';
 }
 
 const TITLE_PREFIX_RE = /^\s*(?:re|fw|fwd)\s*:\s*|^\s*\[[^\]]{1,60}\]\s*|^\s*(?:new|updated)\s+(?:assignment|material|announcement|question|quiz|test)\s*(?:posted|created|added)?\s*:?\s*/gi;
@@ -1002,7 +1024,7 @@ const Store = {
 
   ensureShape(){
     const d = this.cache;
-    for (const k of ['assignments','events','notifications','courses','studySessions','weeklyNotes']){
+    for (const k of ['assignments','events','notifications','courses','studySessions','effortReports']){
       if (!Array.isArray(d[k])) d[k] = [];
     }
     if (!d.integrations || typeof d.integrations !== 'object') d.integrations = {};
@@ -1078,7 +1100,7 @@ const Store = {
   },
 
   async removeAll(){
-    const cols = ['assignments','events','notifications','courses','studySessions','weeklyNotes'];
+    const cols = ['assignments','events','notifications','courses','studySessions','effortReports'];
     for (const k of cols){
       for (const item of this.all(k)) this._deletedIds.add(item.id);
       this.cache[k] = [];
@@ -1114,7 +1136,7 @@ const Store = {
       }
     } catch(e){ console.warn('Failed to read user doc', e); }
 
-    const cols = ['assignments','events','notifications','courses','studySessions','weeklyNotes'];
+    const cols = ['assignments','events','notifications','courses','studySessions','effortReports'];
     for (const c of cols){
       try {
         const snap = await getDocs(query(collection(FB.db,'users',this.uid,c), limit(500)));
@@ -1146,7 +1168,7 @@ const Store = {
 function emptyData(){
   return {
     assignments: [], events: [], notifications: [],
-    courses: [], studySessions: [], weeklyNotes: [],
+    courses: [], studySessions: [], effortReports: [],
     integrations: {}, settings: { ...DEFAULT_SETTINGS }, profile: {},
     deletedIds: []
   };
@@ -1155,35 +1177,8 @@ function emptyData(){
 function seedDemoData(){
   const d = emptyData();
   const today = new Date();
-  const thisMonday = getWeekStart(today);
-  const day = d => addDays(startOfDay(today), d);
-
-  d.weeklyNotes = [
-    {
-      id: 'wn-demo-1',
-      weekStart: addDays(thisMonday, -14),
-      title: 'Week 3 – getting into the swing of things',
-      body: 'First full week of term. Maths is picking up and I actually understood the algebra for once. English essay is coming up and I\'m a bit nervous about the deadline — need to break it into chunks.',
-      mood: 4,
-      createdAt: now() - 14*86400000, updatedAt: now() - 14*86400000
-    },
-    {
-      id: 'wn-demo-2',
-      weekStart: addDays(thisMonday, -7),
-      title: 'Week 4 – heavy week with tests',
-      body: 'Two tests this week (Science and Maths) and a History assignment due Friday. Felt pretty stretched. Realised I need to start revising about a week earlier next time — leaving it to the night before is not working.',
-      mood: 2,
-      createdAt: now() - 7*86400000, updatedAt: now() - 7*86400000
-    },
-    {
-      id: 'wn-demo-3',
-      weekStart: thisMonday,
-      title: 'Week 5 – recovering',
-      body: 'Taking it a bit easier this week. Finished off the History assignment and actually enjoyed the reading. Need to focus on the English essay — that\'s the big one before the break.',
-      mood: 3,
-      createdAt: now() - 2*86400000, updatedAt: now() - 2*86400000
-    }
-  ];
+  const day = n => { const x = new Date(today); x.setDate(x.getDate() + n); x.setHours(0,0,0,0); return x.getTime(); };
+  const lastFriday = getLastFriday();
 
   d.assignments = [
     { id:'a-1', title:'Algebra practice set', description:'Chapter 6, exercises 1–15.', subject:'Mathematics', type:'Homework',
@@ -1206,6 +1201,17 @@ function seedDemoData(){
   d.events = [
     { id:'e-1', title:'Science fair setup', description:'Gym, 3:30pm.', start: day(2)+15*3600000, source:'School', manual:false, createdAt: now() },
     { id:'e-2', title:'Parent-teacher interviews', description:'', start: day(8)+18*3600000, source:'School', manual:false, createdAt: now() }
+  ];
+
+  d.effortReports = [
+    { id:'er-1', date: lastFriday - 21*86400000, createdAt: lastFriday - 21*86400000,
+      ratings: { 'Mathematics':4, 'English':3, 'Science':4, 'History':3, 'PE & Health':4 } },
+    { id:'er-2', date: lastFriday - 14*86400000, createdAt: lastFriday - 14*86400000,
+      ratings: { 'Mathematics':5, 'English':4, 'Science':4, 'History':3, 'PE & Health':4 } },
+    { id:'er-3', date: lastFriday - 7*86400000, createdAt: lastFriday - 7*86400000,
+      ratings: { 'Mathematics':4, 'English':4, 'Science':3, 'History':2, 'PE & Health':4 } },
+    { id:'er-4', date: lastFriday, createdAt: lastFriday, notes:'Getting into a good rhythm with maths.',
+      ratings: { 'Mathematics':5, 'English':4, 'Science':4, 'History':3, 'PE & Health':5 } }
   ];
 
   return d;
@@ -1714,6 +1720,7 @@ const App = {
   user: null, route: '#/dashboard',
   filters: { assignments: 'all', search: '', subject: 'all', sort: 'due' },
   calMonth: new Date().getMonth(), calYear: new Date().getFullYear(),
+  hiddenSeries: new Set(),
   _searchTimer: null
 };
 
@@ -1768,6 +1775,119 @@ function renderNotifPanel(){
 }
 
 /* ================================================================
+   CHART ENGINE
+   ================================================================ */
+const SERIES_COLORS = [
+  '#4f46e5','#10b981','#f59e0b','#ef4444','#8b5cf6','#0ea5e9',
+  '#ec4899','#14b8a6','#f97316','#6366f1','#84cc16','#eab308',
+  '#06b6d4','#a855f7','#22c55e','#f43f5e'
+];
+function colorForIndex(i){ return SERIES_COLORS[i % SERIES_COLORS.length]; }
+
+function renderEffortChart(reports, hiddenSeries){
+  if (!reports.length) return `<div class="empty"><div class="empty-title">No weekly notes yet</div><div class="empty-sub">Add a note to start tracking your effort over time.</div></div>`;
+
+  const sorted = [...reports].sort((a, b) => a.date - b.date);
+  const dateKeys = [...new Set(sorted.map(r => startOfDay(new Date(r.date))))].sort((a,b) => a - b);
+
+  const subjects = new Set();
+  sorted.forEach(r => Object.keys(r.ratings || {}).forEach(s => subjects.add(s)));
+  const subjectList = [...subjects].sort();
+
+  const W = 720, H = 340;
+  const padL = 46, padR = 24, padT = 20, padB = 48;
+  const plotW = W - padL - padR;
+  const plotH = H - padT - padB;
+
+  const xFor = i => padL + (dateKeys.length === 1 ? plotW/2 : (i / (dateKeys.length - 1)) * plotW);
+  const yFor = rating => padT + plotH - ((rating - 1) / 4) * plotH;
+
+  let grid = '';
+  for (let r = 1; r <= 5; r++){
+    const y = yFor(r);
+    grid += `<line x1="${padL}" x2="${W-padR}" y1="${y}" y2="${y}" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 3"/>`;
+    grid += `<text x="${padL - 8}" y="${y + 4}" text-anchor="end" font-size="11" fill="var(--text-3)">${r}</text>`;
+  }
+
+  let xLabels = '';
+  dateKeys.forEach((dk, i) => {
+    const x = xFor(i);
+    const s = new Date(dk).toLocaleDateString(undefined, { day: 'numeric', month: 'short' });
+    xLabels += `<text x="${x}" y="${H - padB + 24}" text-anchor="middle" font-size="10.5" fill="var(--text-3)">${escapeHtml(s)}</text>`;
+  });
+
+  let lines = '';
+  subjectList.forEach((subject, idx) => {
+    const color = colorForIndex(idx);
+    const points = [];
+    dateKeys.forEach((dk, i) => {
+      const report = sorted.find(r => startOfDay(new Date(r.date)) === dk);
+      const rating = report?.ratings?.[subject];
+      if (rating != null) points.push({ x: xFor(i), y: yFor(rating), rating });
+    });
+    if (!points.length) return;
+    const hidden = hiddenSeries.has(subject);
+
+    if (points.length > 1){
+      const d = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' ');
+      lines += `<path d="${d}" fill="none" stroke="${color}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" opacity="${hidden ? '0' : '1'}"/>`;
+    }
+    points.forEach(p => {
+      lines += `<circle class="dot" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="4.5" fill="${color}" stroke="var(--surface)" stroke-width="2" opacity="${hidden ? '0' : '1'}"><title>${escapeHtml(subject)}: ${p.rating}</title></circle>`;
+    });
+  });
+
+  const legend = subjectList.length ? `
+    <div class="effort-legend">
+      ${subjectList.map((s, i) => {
+        const off = hiddenSeries.has(s);
+        return `<button class="${off ? 'off' : ''}" data-legend="${escapeHtml(s)}"><i style="background:${colorForIndex(i)}"></i>${escapeHtml(s)}</button>`;
+      }).join('')}
+    </div>` : '';
+
+  return `
+    <div class="effort-chart-wrap">
+      <svg class="effort-chart-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Effort over time">
+        ${grid}
+        ${xLabels}
+        ${lines}
+      </svg>
+    </div>
+    ${legend}
+  `;
+}
+
+function computeEffortStats(reports){
+  if (!reports.length) return { avg: 0, count: 0, bySubject: {}, best: '', bestAvg: 0, worst: '', worstAvg: 0, latestAvg: 0 };
+  const bySubject = {};
+  let total = 0, count = 0;
+  for (const r of reports){
+    for (const [subj, rating] of Object.entries(r.ratings || {})){
+      if (!bySubject[subj]) bySubject[subj] = { total: 0, count: 0 };
+      bySubject[subj].total += rating;
+      bySubject[subj].count++;
+      total += rating;
+      count++;
+    }
+  }
+  const subjectAvgs = {};
+  for (const [subj, v] of Object.entries(bySubject)) subjectAvgs[subj] = v.total / v.count;
+  const sorted = Object.entries(subjectAvgs).sort((a, b) => b[1] - a[1]);
+  const latest = [...reports].sort((a,b) => b.date - a.date)[0];
+  const latestVals = Object.values(latest?.ratings || {});
+  return {
+    avg: count ? total / count : 0,
+    count: reports.length,
+    bySubject: subjectAvgs,
+    best: sorted[0]?.[0] || '',
+    bestAvg: sorted[0]?.[1] || 0,
+    worst: sorted[sorted.length - 1]?.[0] || '',
+    worstAvg: sorted[sorted.length - 1]?.[1] || 0,
+    latestAvg: latestVals.length ? latestVals.reduce((a,b) => a+b, 0) / latestVals.length : 0
+  };
+}
+
+/* ================================================================
    VIEWS
    ================================================================ */
 function viewDashboard(){
@@ -1775,19 +1895,20 @@ function viewDashboard(){
   const dueThisWeek = open.filter(a => a.dueDate && daysUntil(a.dueDate) >= 0 && daysUntil(a.dueDate) <= 7);
   const overdue = open.filter(a => a.dueDate && daysUntil(a.dueDate) < 0);
   const upcomingTests = open.filter(a => (a.type === 'Test' || a.type === 'Exam') && a.dueDate && daysUntil(a.dueDate) >= 0 && daysUntil(a.dueDate) <= 14);
-  const thisWeek = getWeekStart(new Date());
-  const weekNote = Store.all('weeklyNotes').find(n => n.weekStart === thisWeek);
-  const recentNotes = Store.all('weeklyNotes').sort((a,b) => b.weekStart - a.weekStart).slice(0, 4);
+  const notes = Store.all('effortReports').sort((a,b) => b.date - a.date);
+  const stats = computeEffortStats(notes);
+  const recentNotes = notes.slice(0, 5);
 
   const top5 = [...open].filter(a => a.dueDate).sort((a,b) => {
-    const pa = priorityOrder(a.priority), pb = priorityOrder(b.priority);
+    const pa = { urgent:0, high:1, medium:2, low:3 }[a.priority] ?? 4;
+    const pb = { urgent:0, high:1, medium:2, low:3 }[b.priority] ?? 4;
     if (pa !== pb) return pa - pb;
     return a.dueDate - b.dueDate;
   }).slice(0, 5);
 
   return `
     <div class="page-head">
-      <h1 class="page-title">Good ${greeting()}, ${escapeHtml((App.user?.displayName || 'student').split(' ')[0])}</h1>
+      <h1 class="page-title">Dashboard</h1>
       <p class="page-sub">Here's what's on this week.</p>
     </div>
 
@@ -1808,9 +1929,9 @@ function viewDashboard(){
         <div class="stat-sub">Coming up</div>
       </div>
       <div class="stat">
-        <div class="stat-label">Weekly notes</div>
-        <div class="stat-value">${Store.all('weeklyNotes').length}</div>
-        <div class="stat-sub">${weekNote ? '✓ This week done' : 'This week pending'}</div>
+        <div class="stat-label">Effort this week</div>
+        <div class="stat-value">${stats.latestAvg ? stats.latestAvg.toFixed(1) : '—'}</div>
+        <div class="stat-sub">${stats.latestAvg ? 'Avg across subjects' : 'No note yet'}</div>
       </div>
     </div>
 
@@ -1826,43 +1947,64 @@ function viewDashboard(){
       <div class="stack">
         <div class="card">
           <div class="card-head">
-            <div class="card-title">This week's note</div>
-            <a href="#/notes" class="small strong">${weekNote ? 'All notes →' : 'View →'}</a>
+            <div class="card-title">${ICON.chart} Weekly notes</div>
+            <a href="#/notes" class="small strong">${notes.length ? 'See all →' : 'Add →'}</a>
           </div>
           <div class="card-body">
-            ${weekNote ? `
-              <div class="row-between" style="margin-bottom:6px">
-                <div class="strong">${escapeHtml(weekNote.title || 'Untitled')}</div>
-                ${weekNote.mood ? `<span class="note-mood" title="${escapeHtml(moodLabel(weekNote.mood))}">${moodEmoji(weekNote.mood)}</span>` : ''}
+            ${stats.latestAvg ? `
+              <div class="row-between" style="margin-bottom:12px">
+                <div>
+                  <div class="tiny muted" style="text-transform:uppercase;letter-spacing:.06em">Latest week</div>
+                  <div class="strong" style="font-size:15px">${fmtDate(notes[0].date)}</div>
+                </div>
+                <span class="effort-avg">Avg <b>${stats.latestAvg.toFixed(1)}</b></span>
               </div>
-              <p class="small muted" style="margin:0 0 12px;line-height:1.6">${escapeHtml((weekNote.body || '').slice(0, 180))}${(weekNote.body||'').length > 180 ? '…' : ''}</p>
-              <button class="btn btn-ghost btn-sm" data-action="edit-note" data-id="${weekNote.id}">Edit note</button>
+              <div class="effort-bars">
+                ${Object.entries(notes[0].ratings || {}).sort((a,b) => b[1] - a[1]).slice(0, 5).map(([subj, r]) => `
+                  <div class="effort-bar-row">
+                    <div class="effort-bar-subject truncate">${escapeHtml(subj)}</div>
+                    <div class="effort-bar-track"><div class="effort-bar-fill ${ratingClass(r)}" style="width:${(r/5)*100}%"></div></div>
+                    <div class="effort-bar-val">${r}/5</div>
+                  </div>
+                `).join('')}
+              </div>
             ` : `
-              <p class="small muted" style="margin:0 0 12px">You haven't written this week's note yet. A few minutes of reflection goes a long way.</p>
-              <button class="btn btn-primary btn-sm" data-action="new-note">Write this week's note</button>
+              <p class="small muted" style="margin:0 0 12px">Rate your effort in each subject — usually done on Fridays.</p>
+              <button class="btn btn-primary btn-sm" data-action="new-effort">Add weekly note</button>
             `}
           </div>
         </div>
 
-        ${recentNotes.filter(n => n.weekStart !== thisWeek).length > 0 ? `
+        ${recentNotes.length > 1 ? `
           <div class="card">
-            <div class="card-head"><div class="card-title">Recent notes</div></div>
-            <div class="card-body" style="padding:8px 10px">
-              ${recentNotes.filter(n => n.weekStart !== thisWeek).slice(0, 3).map(n => `
-                <a href="#/notes" class="menu-item" style="text-decoration:none">
-                  <div style="flex:1;min-width:0">
-                    <div class="small strong truncate">${escapeHtml(n.title || 'Untitled')}</div>
-                    <div class="tiny muted">${escapeHtml(weekLabel(n.weekStart))}</div>
-                  </div>
-                  ${n.mood ? `<span class="note-mood">${moodEmoji(n.mood)}</span>` : ''}
-                </a>
-              `).join('')}
-            </div>
+            <div class="card-head"><div class="card-title">${ICON.trend} Trend</div></div>
+            <div class="card-body" style="padding:12px 16px">${renderMiniSparkline(recentNotes)}</div>
           </div>
         ` : ''}
       </div>
     </div>
   `;
+}
+
+function renderMiniSparkline(reports){
+  const sorted = [...reports].sort((a, b) => a.date - b.date);
+  const avgs = sorted.map(r => {
+    const vals = Object.values(r.ratings || {});
+    return vals.length ? vals.reduce((a,b)=>a+b,0) / vals.length : 0;
+  });
+  if (!avgs.length) return '';
+  const W = 260, H = 64, pad = 8;
+  const points = avgs.map((v, i) => {
+    const x = pad + (i / Math.max(1, avgs.length - 1)) * (W - 2*pad);
+    const y = H - pad - ((v - 1) / 4) * (H - 2*pad);
+    return { x, y, v };
+  });
+  const lineD = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' ');
+  return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block">
+    <line x1="${pad}" x2="${W-pad}" y1="${H-pad}" y2="${H-pad}" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 3"/>
+    <path d="${lineD}" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    ${points.map(p => `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="2.5" fill="var(--primary)"/>`).join('')}
+  </svg>`;
 }
 
 function renderNextItem(a){
@@ -2072,77 +2214,112 @@ function viewPlanner(){
 }
 
 function viewNotes(){
-  const thisWeek = getWeekStart(new Date());
-  const allNotes = Store.all('weeklyNotes').sort((a,b) => b.weekStart - a.weekStart);
-  const current = allNotes.find(n => n.weekStart === thisWeek);
-  const past = allNotes.filter(n => n.weekStart !== thisWeek);
+  const reports = Store.all('effortReports').sort((a, b) => b.date - a.date);
+  const stats = computeEffortStats(reports);
+  const hidden = App.hiddenSeries;
 
-  const grouped = {};
-  for (const n of past){
-    const key = new Date(n.weekStart).toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
-    if (!grouped[key]) grouped[key] = [];
-    grouped[key].push(n);
+  if (!reports.length){
+    return `
+      <div class="page-head row-between wrap">
+        <div>
+          <h1 class="page-title">Weekly notes</h1>
+          <p class="page-sub">Rate your effort in each subject, week by week.</p>
+        </div>
+        <button class="btn btn-primary" data-action="new-effort">+ Add weekly note</button>
+      </div>
+      <div class="card">
+        <div class="empty" style="padding:64px 24px">
+          <div class="empty-ico">${ICON.chart}</div>
+          <div class="empty-title">No weekly notes yet</div>
+          <div class="empty-sub">On Friday, rate your effort in each subject from 1 (low) to 5 (high). Your ratings will show up here so you can spot trends over time.</div>
+          <button class="btn btn-primary" data-action="new-effort" style="margin-top:16px">Add your first note</button>
+        </div>
+      </div>
+    `;
   }
 
   return `
     <div class="page-head row-between wrap">
       <div>
         <h1 class="page-title">Weekly notes</h1>
-        <p class="page-sub">Reflect on your week. Track progress and patterns over time.</p>
+        <p class="page-sub">Rate your effort in each subject, week by week.</p>
       </div>
-      <button class="btn btn-primary" data-action="new-note">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        New note
-      </button>
+      <button class="btn btn-primary" data-action="new-effort">+ Add weekly note</button>
     </div>
 
-    <div class="stack">
-      ${current ? renderNoteCard(current, true) : `
-        <div class="card card-pad" style="text-align:center;padding:32px 20px">
-          <div class="empty-ico" style="margin:0 auto 12px">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-          </div>
-          <div class="empty-title">This week (${escapeHtml(weekLabel(thisWeek))})</div>
-          <p class="empty-sub">Take a few minutes to reflect on what went well, what was hard, and what's coming up.</p>
-          <button class="btn btn-primary" data-action="new-note" style="margin-top:14px">Write this week's note</button>
-        </div>
-      `}
-
-      ${past.length === 0
-        ? `<div class="empty"><div class="empty-title">No past notes yet</div><div class="empty-sub">Your notes will appear here week by week.</div></div>`
-        : Object.entries(grouped).map(([month, items]) => `
-            <div>
-              <div class="sidebar-label" style="padding:0 0 10px;font-size:11px">${escapeHtml(month)}</div>
-              <div class="stack">${items.map(n => renderNoteCard(n)).join('')}</div>
-            </div>
-          `).join('')}
+    <div class="stat-grid">
+      <div class="stat">
+        <div class="stat-label">Average effort</div>
+        <div class="stat-value">${stats.avg.toFixed(1)}</div>
+        <div class="stat-sub">${stats.count} ${stats.count === 1 ? 'week' : 'weeks'} logged</div>
+      </div>
+      <div class="stat good">
+        <div class="stat-label">Best subject</div>
+        <div class="stat-value" style="font-size:18px">${escapeHtml(stats.best)}</div>
+        <div class="stat-sub">${stats.bestAvg.toFixed(1)} average</div>
+      </div>
+      <div class="stat ${stats.worstAvg && stats.worstAvg < 3 ? 'warn' : ''}">
+        <div class="stat-label">Needs attention</div>
+        <div class="stat-value" style="font-size:18px">${escapeHtml(stats.worst)}</div>
+        <div class="stat-sub">${stats.worstAvg.toFixed(1)} average</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Latest week</div>
+        <div class="stat-value">${stats.latestAvg.toFixed(1)}</div>
+        <div class="stat-sub">${fmtDate(reports[0].date)}</div>
+      </div>
     </div>
-  `;
-}
 
-function renderNoteCard(note, highlight=false){
-  const stats = computeWeekStats(note.weekStart);
-  const preview = note.body ? note.body.slice(0, 220) : '';
-  return `
-    <div class="card note-card ${highlight ? 'highlight' : ''}" data-note-id="${note.id}">
+    <div class="card" style="margin-bottom:18px">
+      <div class="card-head">
+        <div class="card-title">${ICON.chart} Effort over time</div>
+        <div class="small muted">Click a subject to hide / show it</div>
+      </div>
       <div class="card-body">
-        <div class="row-between" style="margin-bottom:8px;align-items:flex-start">
-          <div>
-            <div class="tiny muted strong" style="text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px">${highlight ? 'This week · ' : ''}${escapeHtml(weekLabel(note.weekStart))}</div>
-            <div class="strong" style="font-size:15px">${escapeHtml(note.title || 'Untitled note')}</div>
-          </div>
-          <div class="row" style="gap:4px;flex:none">
-            ${note.mood ? `<span class="note-mood" title="${escapeHtml(moodLabel(note.mood))}">${moodEmoji(note.mood)}</span>` : ''}
-            <button class="icon-btn" data-action="edit-note" data-id="${note.id}" aria-label="Edit"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-            <button class="icon-btn" data-action="delete-note" data-id="${note.id}" aria-label="Delete" style="color:var(--red-500)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+        ${renderEffortChart(reports, hidden)}
+      </div>
+    </div>
+
+    <div class="cols cols-2">
+      <div class="card">
+        <div class="card-head"><div class="card-title">${ICON.trend} Subject averages</div></div>
+        <div class="card-body">
+          <div class="effort-bars">
+            ${Object.entries(stats.bySubject).sort((a,b) => b[1] - a[1]).map(([subj, r]) => `
+              <div class="effort-bar-row">
+                <div class="effort-bar-subject truncate">${escapeHtml(subj)}</div>
+                <div class="effort-bar-track"><div class="effort-bar-fill ${ratingClass(r)}" style="width:${(r/5)*100}%"></div></div>
+                <div class="effort-bar-val">${r.toFixed(1)}</div>
+              </div>
+            `).join('')}
           </div>
         </div>
-        ${preview ? `<p class="small" style="color:var(--text-2);line-height:1.6;margin:0 0 10px">${escapeHtml(preview)}${note.body.length > 220 ? '…' : ''}</p>` : ''}
-        <div class="row wrap" style="gap:6px">
-          ${stats.completed ? `<span class="chip chip-green">${stats.completed} done</span>` : ''}
-          ${stats.tests ? `<span class="chip chip-amber">${stats.tests} ${stats.tests === 1 ? 'test' : 'tests'}</span>` : ''}
-          ${note.mood ? `<span class="chip chip-violet">${escapeHtml(moodLabel(note.mood))}</span>` : ''}
-        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div class="card-title">All weeks</div></div>
+        ${reports.map(r => {
+          const vals = Object.values(r.ratings || {});
+          const avg = vals.length ? vals.reduce((a,b) => a+b, 0) / vals.length : 0;
+          return `
+            <div class="item">
+              <div class="item-main">
+                <div class="item-title">Week of ${fmtDate(r.date)}</div>
+                <div class="item-meta">
+                  ${Object.entries(r.ratings || {}).map(([s, v]) => `<span class="chip chip-gray">${escapeHtml(s)}: ${v}</span>`).join('')}
+                </div>
+                ${r.notes ? `<div class="item-desc">${escapeHtml(r.notes)}</div>` : ''}
+              </div>
+              <div class="item-side">
+                <span class="effort-avg"><b>${avg.toFixed(1)}</b></span>
+                <div class="row" style="gap:2px">
+                  <button class="icon-btn" data-action="edit-effort" data-id="${r.id}" aria-label="Edit" style="width:30px;height:30px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                  <button class="icon-btn" data-action="delete-effort" data-id="${r.id}" aria-label="Delete" style="width:30px;height:30px;color:var(--red-500)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('')}
       </div>
     </div>
   `;
@@ -2263,7 +2440,7 @@ function viewSettings(){
           <div class="set-row">
             <div class="set-info">
               <div class="set-name">Clear all data</div>
-              <div class="set-desc">Remove all assignments, events, and weekly notes. This can't be undone.</div>
+              <div class="set-desc">Remove all assignments, events and weekly notes. This can't be undone.</div>
             </div>
             <div class="set-control">
               <button class="btn btn-danger-soft" data-action="clear-all">Clear</button>
@@ -2285,6 +2462,13 @@ function bindViewEvents(){
   view.onclick = async e => {
     const actionEl = e.target.closest('[data-action]');
     const filterEl = e.target.closest('[data-filter]');
+    const legendEl = e.target.closest('[data-legend]');
+    if (legendEl){
+      const subj = legendEl.dataset.legend;
+      if (App.hiddenSeries.has(subj)) App.hiddenSeries.delete(subj);
+      else App.hiddenSeries.add(subj);
+      render(); return;
+    }
     if (filterEl){
       App.filters.assignments = filterEl.dataset.filter;
       render(); return;
@@ -2292,13 +2476,13 @@ function bindViewEvents(){
     if (!actionEl) return;
     const action = actionEl.dataset.action;
 
-    if (action === 'new-note'){ openNoteModal(); }
-    if (action === 'edit-note'){ openNoteModal(Store.get('weeklyNotes', actionEl.dataset.id)); }
-    if (action === 'delete-note'){
+    if (action === 'new-effort'){ openEffortModal(); }
+    if (action === 'edit-effort'){ openEffortModal(Store.get('effortReports', actionEl.dataset.id)); }
+    if (action === 'delete-effort'){
       const id = actionEl.dataset.id;
-      if (await confirmDialog('Delete note?', 'This note will be permanently removed.', 'Delete', true)){
-        await Store.remove('weeklyNotes', id);
-        toast('Note deleted', 'success');
+      if (await confirmDialog('Delete weekly note?', 'This week\'s ratings will be permanently removed.', 'Delete', true)){
+        await Store.remove('effortReports', id);
+        toast('Weekly note deleted', 'success');
         render();
       }
     }
@@ -2356,9 +2540,8 @@ function bindViewEvents(){
     }
     if (action === 'signout'){ await signOut(); }
     if (action === 'clear-all'){
-      if (await confirmDialog('Clear all data?', 'All assignments, events and notes will be removed. This cannot be undone.', 'Clear everything', true)){
+      if (await confirmDialog('Clear all data?', 'All assignments, events and weekly notes will be removed. This cannot be undone.', 'Clear everything', true)){
         await Store.removeAll();
-        Store.cache.weeklyNotes = [];
         Store.persistNow();
         await Store.saveUserDoc();
         toast('All data cleared', 'success');
@@ -2393,69 +2576,120 @@ function bindViewEvents(){
 /* ================================================================
    MODALS
    ================================================================ */
-function openNoteModal(existing = null){
-  const thisWeek = getWeekStart(new Date());
-  const defaultWeek = existing ? existing.weekStart : thisWeek;
-  const dateVal = new Date(defaultWeek).toISOString().slice(0,10);
-  const initialMood = existing?.mood || 0;
+function getKnownSubjects(){
+  const set = new Set();
+  Store.all('courses').forEach(c => { if (c.name) set.add(normalizeSubject(c.name)); });
+  Store.all('assignments').forEach(a => { if (a.subject) set.add(a.subject); });
+  Store.all('effortReports').forEach(r => Object.keys(r.ratings || {}).forEach(s => set.add(s)));
+  return [...set].sort();
+}
+
+function renderSubjectRatingRow(subject, rating){
+  return `
+    <div class="rating-row" data-rating="${rating || ''}">
+      <input class="input subject-input" type="text" value="${escapeHtml(subject || '')}" placeholder="Subject">
+      <div class="rating-btns">
+        ${[1,2,3,4,5].map(r => `<button type="button" class="rating-btn ${rating === r ? 'on' : ''}" data-rate="${r}">${r}</button>`).join('')}
+      </div>
+      <button type="button" class="icon-btn" data-remove-row aria-label="Remove" style="width:28px;height:28px;color:var(--text-3)">${ICON.x}</button>
+    </div>
+  `;
+}
+
+function openEffortModal(existing = null){
+  const subjects = getKnownSubjects();
+  const initialRatings = existing?.ratings || {};
+  const initialDate = existing?.date ? new Date(existing.date).toISOString().slice(0,10) : new Date(getLastFriday()).toISOString().slice(0,10);
+
+  const subjectRows = subjects.length
+    ? subjects.map(s => renderSubjectRatingRow(s, initialRatings[s]))
+    : renderSubjectRatingRow('', null);
 
   openModal({
     title: existing ? 'Edit weekly note' : 'New weekly note',
-    subtitle: 'A short reflection on your week.',
+    subtitle: 'Rate your effort in each subject from 1 (low) to 5 (high).',
     body: `
       <div class="stack">
         <div class="field">
-          <label class="label">Week starting</label>
-          <input class="input" type="date" id="note-week" value="${dateVal}">
+          <label class="label">Week of (Friday)</label>
+          <input class="input" type="date" id="effort-date" value="${initialDate}">
         </div>
         <div class="field">
-          <label class="label">Title</label>
-          <input class="input" type="text" id="note-title" value="${escapeHtml(existing?.title || '')}" placeholder="e.g. Week 5 – busy with tests">
+          <label class="label">Ratings</label>
+          <div id="subject-ratings" class="stack" style="gap:8px">${subjectRows}</div>
+          <button type="button" class="btn btn-ghost btn-sm" id="add-subject-row" style="align-self:flex-start;margin-top:6px">+ Add subject</button>
         </div>
         <div class="field">
-          <label class="label">How was your week?</label>
-          <div class="mood-picker" id="mood-picker">
-            ${[1,2,3,4,5].map(m => `<button type="button" class="mood-btn ${initialMood === m ? 'on' : ''}" data-mood="${m}" title="${moodLabel(m)}">${moodEmoji(m)}</button>`).join('')}
-          </div>
-        </div>
-        <div class="field">
-          <label class="label">Notes</label>
-          <textarea class="textarea" id="note-body" rows="7" placeholder="What went well? What was hard? What are you proud of? What's coming up?">${escapeHtml(existing?.body || '')}</textarea>
+          <label class="label">Notes (optional)</label>
+          <textarea class="textarea" id="effort-notes" rows="3" placeholder="Anything worth remembering about this week?">${escapeHtml(existing?.notes || '')}</textarea>
         </div>
       </div>
     `,
-    footer: `<button class="btn btn-ghost" data-close>Cancel</button><button class="btn btn-primary" id="save-note">${existing ? 'Save' : 'Add note'}</button>`,
+    footer: `<button class="btn btn-ghost" data-close>Cancel</button><button class="btn btn-primary" id="save-effort">${existing ? 'Save' : 'Save note'}</button>`,
     onMount(el, closeFn){
-      let selectedMood = initialMood;
-      $$('.mood-btn', el).forEach(btn => {
-        btn.onclick = () => {
-          const m = +btn.dataset.mood;
-          selectedMood = selectedMood === m ? 0 : m;
-          $$('.mood-btn', el).forEach(b => b.classList.toggle('on', +b.dataset.mood === selectedMood));
-        };
+      // Initialize ratings from data attributes
+      $$('.rating-row', el).forEach(row => {
+        row.dataset.rating = row.dataset.rating || '';
       });
-      $('#save-note', el).onclick = async () => {
-        const weekStr = $('#note-week', el).value;
-        const title = $('#note-title', el).value.trim();
-        const body = $('#note-body', el).value.trim();
-        if (!weekStr) return toast('Choose a week', 'error');
-        if (!title && !body) return toast('Add a title or some notes', 'error');
-        const weekStart = getWeekStart(new Date(weekStr + 'T12:00:00'));
+
+      $('#add-subject-row', el).onclick = () => {
+        const container = $('#subject-ratings', el);
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = renderSubjectRatingRow('', null);
+        container.appendChild(wrapper.firstElementChild);
+      };
+
+      el.addEventListener('click', e => {
+        const ratingBtn = e.target.closest('[data-rate]');
+        if (ratingBtn){
+          const row = ratingBtn.closest('.rating-row');
+          if (!row) return;
+          const val = ratingBtn.dataset.rate;
+          if (row.dataset.rating === val){
+            row.dataset.rating = '';
+            $$('.rating-btn', row).forEach(b => b.classList.remove('on'));
+          } else {
+            row.dataset.rating = val;
+            $$('.rating-btn', row).forEach(b => b.classList.toggle('on', b === ratingBtn));
+          }
+        }
+        const removeBtn = e.target.closest('[data-remove-row]');
+        if (removeBtn){
+          const row = removeBtn.closest('.rating-row');
+          if (row && $$('.rating-row', el).length > 1) row.remove();
+        }
+      });
+
+      $('#save-effort', el).onclick = async () => {
+        const dateStr = $('#effort-date', el).value;
+        if (!dateStr) return toast('Choose a date', 'error');
+        const date = startOfDay(new Date(dateStr + 'T12:00:00'));
+
+        const ratings = {};
+        $$('.rating-row', el).forEach(row => {
+          const subj = ($('.subject-input', row)?.value || '').trim();
+          const r = +row.dataset.rating || 0;
+          if (subj && r >= 1 && r <= 5){
+            ratings[normalizeSubject(subj)] = r;
+          }
+        });
+        if (!Object.keys(ratings).length) return toast('Add at least one rating', 'error');
+
         if (!existing){
-          const dupe = Store.all('weeklyNotes').find(n => n.weekStart === weekStart);
+          const dupe = Store.all('effortReports').find(r => startOfDay(new Date(r.date)) === date);
           if (dupe) return toast('A note already exists for that week', 'warn');
         }
+
         const record = {
           id: existing?.id || uid(),
-          weekStart,
-          title: sanitiseText(title, 200),
-          body: sanitiseText(body, 8000),
-          mood: selectedMood || null,
+          date,
+          ratings,
+          notes: sanitiseText($('#effort-notes', el).value, 2000),
           createdAt: existing?.createdAt || now()
         };
-        await Store.put('weeklyNotes', record);
+        await Store.put('effortReports', record);
         closeFn();
-        toast(existing ? 'Note updated' : 'Note saved', 'success');
+        toast(existing ? 'Weekly note updated' : 'Weekly note saved', 'success');
         render();
       };
     }
@@ -2636,7 +2870,7 @@ searchInput.addEventListener('input', () => {
   if (!q){ results.hidden = true; return; }
   const items = [
     ...Store.all('assignments').map(a => ({ title: a.title, sub: a.subject || a.type, href:'#/assignments' })),
-    ...Store.all('weeklyNotes').map(n => ({ title: n.title || 'Untitled note', sub: weekLabel(n.weekStart), href:'#/notes' }))
+    ...Store.all('effortReports').map(n => ({ title: 'Weekly note – ' + fmtDate(n.date), sub: Object.entries(n.ratings||{}).map(([s,v]) => `${s} ${v}/5`).join(' · '), href:'#/notes' }))
   ].filter(i => (i.title + ' ' + (i.sub||'')).toLowerCase().includes(q)).slice(0, 8);
   if (!items.length){ results.innerHTML = '<div class="search-empty">No matches</div>'; }
   else {
