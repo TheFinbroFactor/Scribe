@@ -155,8 +155,6 @@ kbd{display:inline-block;padding:1px 6px;font-family:ui-monospace,Menlo,Consolas
 .auth-features li{display:flex;gap:11px;align-items:flex-start;font-size:14.5px;color:rgba(255,255,255,.92)}
 .tick{width:20px;height:20px;border-radius:99px;background:rgba(255,255,255,.2);display:grid;place-items:center;font-size:11px;font-weight:800;flex:none;margin-top:1px}
 .auth-badges{display:flex;gap:8px;flex-wrap:wrap}
-.auth-panel{display:grid;place-items:center;padding:48px 32px;background:var(--bg)}
-.auth-card{width:100%;max-width:400px}
 .auth-title{font-size:25px;margin-bottom:6px}
 .auth-lead{color:var(--text-2);font-size:14.5px;margin-bottom:26px}
 .auth-fineprint{margin-top:22px;font-size:11.5px;color:var(--text-3);line-height:1.6}
@@ -313,14 +311,58 @@ kbd{display:inline-block;padding:1px 6px;font-family:ui-monospace,Menlo,Consolas
 .effort-chart-wrap{width:100%;overflow-x:auto;overflow-y:hidden}
 .effort-chart-svg{display:block;width:100%;min-width:520px;height:auto}
 .effort-chart-svg text{font-family:var(--font);font-variant-numeric:tabular-nums}
-.effort-chart-svg .dot{transition:r .12s ease}
-.effort-chart-svg .dot:hover{r:6}
+.effort-chart-svg .cdot{transition:r .12s ease}
+.effort-chart-svg .cdot:hover{r:6}
 .effort-legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:14px;font-size:11.5px;color:var(--text-2)}
 .effort-legend span{display:inline-flex;align-items:center;gap:6px}
 .effort-legend i{width:10px;height:10px;border-radius:99px;display:inline-block;flex:none}
 .effort-legend button{display:inline-flex;align-items:center;gap:6px;padding:3px 8px;border-radius:99px;font-size:11.5px;font-weight:600;color:var(--text-2);transition:.14s;border:1px solid transparent}
 .effort-legend button:hover{background:var(--surface-2)}
 .effort-legend button.off{opacity:.35;text-decoration:line-through}
+
+/* ── Weekly note cards ───────────────────────────────────── */
+.wn-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+  gap:14px;
+}
+.wn-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-xs);
+  padding:16px 18px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.wn-card-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.wn-week{font-size:14px;font-weight:700;letter-spacing:-.015em}
+.wn-week-sub{margin-top:2px}
+.wn-card .effort-bars{gap:7px}
+.wn-card .effort-bar-subject{
+  width:118px;
+  font-size:12.5px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.wn-card .effort-bar-track{height:10px;background:var(--surface-2)}
+.wn-card .effort-bar-val{width:24px;font-size:12.5px}
+.wn-note{
+  font-size:12.5px;
+  color:var(--text-2);
+  line-height:1.6;
+  border-top:1px solid var(--border);
+  padding-top:10px;
+  margin-top:2px;
+}
 
 /* ── Rating buttons (modal) ───────────────────────────────── */
 .rating-row{display:flex;gap:8px;align-items:center}
@@ -339,6 +381,7 @@ kbd{display:inline-block;padding:1px 6px;font-family:ui-monospace,Menlo,Consolas
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 .modal{background:var(--surface);border-radius:var(--radius-xl);width:100%;max-width:560px;box-shadow:var(--shadow-xl);animation:slideUp .2s cubic-bezier(.2,.9,.3,1);max-height:92vh;display:flex;flex-direction:column;margin:auto}
 .modal.xl{max-width:980px}
+.modal.wide{max-width:720px}
 @keyframes slideUp{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
 .modal-head{padding:20px 24px 14px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:12px}
 .modal-head h3{font-size:18px;flex:1}
@@ -361,10 +404,12 @@ code{font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;font-size:12.5p
 [data-theme="dark"] code{background:var(--surface-2)}
 .spinner{width:15px;height:15px;border:2px solid var(--border-strong);border-top-color:var(--primary);border-radius:99px;animation:spin .7s linear infinite;flex:none;display:inline-block}
 @keyframes spin{to{transform:rotate(360deg)}}
-.sync-btn{min-width:80px;transition:.16s}
-.sync-btn .sync-spinner{display:none;width:14px;height:14px;border:2px solid var(--border-strong);border-top-color:var(--primary);border-radius:99px;animation:spin .7s linear infinite}
+.sync-btn{min-width:88px;transition:.16s}
+.sync-btn .sync-spinner{display:none;width:15px;height:15px;border:2px solid var(--border-strong);border-top-color:var(--primary);border-radius:99px;animation:spin .7s linear infinite}
 .sync-btn.busy .sync-spinner{display:inline-block}
 .sync-btn.busy .sync-label{display:none}
+.sync-btn.busy{cursor:progress}
+.sync-btn[aria-busy="true"]{pointer-events:none}
 .sync-label{display:inline-flex;align-items:center;gap:7px}
 .sync-label svg{width:13px;height:13px}
 .alert{padding:12px 15px;border-radius:var(--radius);font-size:13px;line-height:1.55;border:1px solid transparent;display:flex;gap:10px;align-items:flex-start}
@@ -389,7 +434,6 @@ code{font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;font-size:12.5p
 .toast-ico svg{width:16px;height:16px}
 .toast-title{font-weight:600;font-size:13.5px;margin-bottom:1px}
 .toast-msg{font-size:12.5px;color:var(--text-2);line-height:1.5}
-@media(max-width:960px){.auth{grid-template-columns:1fr}.auth-hero{display:none}.auth-panel{padding:32px 20px}}
 @media(max-width:900px){
   .only-mobile{display:grid}
   .topbar-search{display:none}
@@ -408,6 +452,8 @@ code{font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;font-size:12.5p
   .effort-bar-subject{width:90px;font-size:12px}
   .toasts{left:14px;right:14px;bottom:14px}
   .toast{min-width:0;max-width:none}
+  .wn-grid{grid-template-columns:1fr}
+  .wn-card .effort-bar-subject{width:92px;font-size:12px}
 }
 </style>
 </head>
@@ -546,7 +592,7 @@ code{font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;font-size:12.5p
   </div>
 </div>
 
-<div class="quick-add" id="quick-add">
+<div class="quick-add" id="quick-add" hidden>
   <div class="quick-add-menu" id="quick-add-menu" hidden>
     <button class="quick-add-option" type="button" data-quick-add="weekly-note">
       <span aria-hidden="true">✎</span><span>Weekly note</span>
@@ -571,10 +617,13 @@ code{font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;font-size:12.5p
    SCRIBE v8.1
    - effort reports renamed to "weekly notes" (same functionality)
    - weekly subject effort ratings, line chart, legend toggle
+   - sync button shows a spinner while syncing
+   - week-by-week note cards under the chart
    ================================================================ */
 
 const LS_CONFIG = 'scribe.config.v1';
 const LS_SESSION = 'scribe.session.v1';
+const LS_DEMO = 'scribe.demo.v1';
 const LS_DATA = uid => `scribe.data.${uid}.v1`;
 
 const GOOGLE_SCOPES = [
@@ -657,6 +706,14 @@ const SUBJECT_ALIASES = {
   'esol': 'ESOL','esl': 'ESOL',
   'reading': 'Reading','library': 'Library'
 };
+
+const DEFAULT_SUBJECT_LIST = [
+  'English','Mathematics','Science','Biology','Chemistry','Physics','History','Geography',
+  'Social Studies','Economics','Accounting','Business','PE & Health','Art','Music','Drama',
+  'Technology','Digital Technology','Design','Food Technology','Media Studies',
+  'Classical Studies','Religious Education','Te Reo Maori','French','Japanese',
+  'Spanish','German','Statistics','Outdoor Education'
+];
 
 function normalizeSubject(name){
   if (!name) return '';
@@ -845,6 +902,11 @@ function sanitiseText(input, maxLen = 4000){
 }
 function fmtDate(ts){ if (!ts) return ''; return new Date(ts).toLocaleDateString(undefined, { day:'numeric', month:'short' }); }
 function fmtDateLong(ts){ if (!ts) return ''; return new Date(ts).toLocaleDateString(undefined, { weekday:'short', day:'numeric', month:'long' }); }
+function toDateInput(ts){
+  const d = new Date(ts || Date.now());
+  const p = n => String(n).padStart(2,'0');
+  return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}`;
+}
 function relativeTime(ts){
   if (!ts) return 'never';
   const diff = now() - ts;
@@ -942,13 +1004,15 @@ function openModal({ title, subtitle='', body, footer='', wide=false, xl=false, 
 
 function confirmDialog(title, message, confirmLabel='Confirm', danger=false){
   return new Promise(resolve => {
+    let settled = false;
+    const done = v => { if (!settled){ settled = true; resolve(v); } };
     openModal({
       title,
       body: `<p style="font-size:14px;line-height:1.65;color:var(--text-2)">${escapeHtml(message)}</p>`,
       footer: `<button class="btn btn-ghost" data-close>Cancel</button><button class="btn ${danger?'btn-danger':'btn-primary'}" id="cf-ok">${escapeHtml(confirmLabel)}</button>`,
       onMount(el, closeFn){
-        $('#cf-ok', el).addEventListener('click', () => { closeFn(); resolve(true); });
-        el.addEventListener('click', e => { if (e.target === el || e.target.closest('[data-close]')) resolve(false); });
+        $('#cf-ok', el).addEventListener('click', () => { done(true); closeFn(); });
+        el.addEventListener('click', e => { if (e.target === el || e.target.closest('[data-close]')) done(false); });
       }
     });
   });
@@ -1499,1464 +1563,1770 @@ async function syncGmail(){
       if (looksLikeClassroomNotification){ skippedClassroom++; continue; }
 
       const haystack = `${parsed.subject} ${parsed.body}`;
+      const lower = haystack.toLowerCase();
       const type = detectType(haystack);
-      const hasDeadline = /\b(due|deadline|by \w+day|hand in|submit|exam|test|assessment|reminder)\b/i.test(haystack);
-      const isSchoolRelated = /\b(homework|assignment|test|exam|quiz|project|notice|reminder|term|class|teacher|school|assessment|ncea|submit|deadline|due)\b/i.test(haystack);
-      const acceptableType = ['Assignment','Homework','Test','Exam','Project','Reminder','Event','School Notice','Announcement'].includes(type);
-      if (!hasDeadline && !isSchoolRelated && !acceptableType) continue;
+      const hasDeadline = /\b(due|deadline|submit|hand in|hand-in|submission|closes|before|no later than)\b/.test(lower);
+      const strong = /\b(assignment|homework|test|exam|quiz|project|assessment|essay|report|worksheet|submit|deadline)\b/.test(lower);
+      const dueDate = parseDate(haystack);
 
+      if (!dueDate && !(strong && hasDeadline)) continue;
+
+      const subject = detectSubject(haystack) || '';
       rawAssignments.push({
         id: localId,
-        title: parsed.subject || 'Email',
-        description: (parsed.from ? `From ${parsed.from}\n\n` : '') + parsed.body.slice(0, 1500),
-        dueDate: parseDate(haystack, new Date(parsed.date)),
+        title: stripTitlePrefixes(parsed.subject) || 'School notice',
+        description: parsed.body.slice(0, 600),
+        dueDate,
+        subject,
+        typeHint: type,
         url: `https://mail.google.com/mail/u/0/#inbox/${id}`,
-        typeHint: type === 'Reminder' ? null : type,
-        subject: detectSubject(haystack),
         source: 'Email'
       });
-    } catch (e){ console.warn(`Failed to read message ${id}:`, e.message); }
+    } catch (e){ console.warn('Email parse failed', e); }
   }
+
   const r = await importItems(rawAssignments, 'Email');
-  Store.cache.integrations.email = {
-    id: 'email', connected: true, lastSync: now(),
-    imported: Store.all('assignments').filter(x => (x.sources||[]).some(s => s.source === 'Email')).length,
-    scanned: ids.length,
-    accepted: rawAssignments.length,
-    skippedClassroom,
-    query: q
+  Store.cache.integrations.gmail = {
+    id: 'gmail', connected: true, lastSync: now(), method: 'api',
+    imported: r.added + r.merged, skippedClassroom
   };
   await Store.saveUserDoc();
-  return { added: r.added, merged: r.merged, scanned: ids.length, accepted: rawAssignments.length, skippedClassroom };
+  return { added: r.added, merged: r.merged, skippedClassroom };
 }
 
-/* ── Dedupe & import ──────────────────────────────────────── */
-function tokenSet(s){
-  return new Set(String(s || '').toLowerCase().replace(/[^a-z0-9\s]/g, ' ').split(/\s+/).filter(w => w.length > 2));
-}
-function jaccard(a, b){
-  if (!a.size || !b.size) return 0;
-  let inter = 0;
-  for (const x of a) if (b.has(x)) inter++;
-  return inter / (a.size + b.size - inter);
-}
-function findDuplicate(incoming, pool){
-  const tIn = tokenSet(incoming.title);
-  for (const existing of pool){
-    if (existing.manual) continue;
-    const tEx = tokenSet(existing.title);
-    if (jaccard(tIn, tEx) < 0.5) continue;
-    const subjMatch = !incoming.subject || !existing.subject || incoming.subject.toLowerCase() === existing.subject.toLowerCase();
-    if (!subjMatch) continue;
-    if (incoming.dueDate && existing.dueDate){
-      const diffDays = Math.abs(incoming.dueDate - existing.dueDate) / 86400000;
-      if (diffDays > 3) continue;
-    }
-    return existing;
-  }
-  return null;
-}
-function mergeInto(existing, incoming){
-  const sources = existing.sources || [];
-  if (!sources.some(s => s.source === incoming.source && s.url === incoming.url)){
-    sources.push({ source: incoming.source, url: incoming.url || '', addedAt: now() });
-  }
-  return {
-    ...existing, sources,
-    dueDate: existing.manual && existing.dueDate ? existing.dueDate : (existing.dueDate || incoming.dueDate),
-    description: (existing.description && existing.description.length > (incoming.description||'').length) ? existing.description : (incoming.description || existing.description),
-    subject: existing.subject || incoming.subject,
-    type: existing.type !== 'Other' ? existing.type : incoming.type,
-    priority: computePriority({ ...existing, dueDate: existing.dueDate || incoming.dueDate }),
-    mergedCount: (existing.mergedCount || 1) + 1
-  };
-}
-
-async function importItems(rawItems, sourceLabel){
+/* ── Merge imported items ─────────────────────────────────── */
+async function importItems(raw, sourceName){
   let added = 0, merged = 0;
-  for (const raw of rawItems){
-    if (Store.isDeleted(raw.id)) continue;
-    const cleanTitle = sanitiseText(raw.title, 220) || 'Untitled item';
-    const cleanDesc  = sanitiseText(raw.description, 4000);
-    const haystack = `${cleanTitle} ${cleanDesc}`;
-    const type = raw.typeHint || raw.type || detectType(haystack);
-    const subject = normalizeSubject(raw.subject || detectSubject(haystack));
-    const dueDate = raw.dueDate || parseDate(haystack);
+  for (const r of raw){
+    const title = sanitiseText(r.title || '', 200);
+    if (!title) continue;
 
-    const candidate = {
-      id: raw.id || uid(),
-      title: cleanTitle, description: cleanDesc, type, subject,
-      dueDate: dueDate || null,
-      source: sourceLabel, url: raw.url || '',
-      sources: raw.sources || [{ source: sourceLabel, url: raw.url || '', addedAt: now() }],
-      completed: false, manual: false, priority: 'low',
+    const subject = r.subject || detectSubject(`${title} ${r.description || ''}`) || 'General';
+    const type = r.typeHint || detectType(`${title} ${r.description || ''}`) || 'Assignment';
+    const norm = normalizeTitle(title);
+
+    const existing = Store.all('assignments').find(a =>
+      !a.manual &&
+      normalizeTitle(a.title) === norm &&
+      (a.subject || '') === subject &&
+      Math.abs((a.dueDate || 0) - (r.dueDate || 0)) < 3 * 86400000
+    );
+
+    if (existing){
+      const srcs = existing.sources || [];
+      if (!srcs.some(s => s.source === sourceName && (s.url || '') === (r.url || ''))){
+        srcs.push({ source: sourceName, url: r.url || '', addedAt: now() });
+        await Store.put('assignments', { ...existing, sources: srcs });
+        merged++;
+      }
+      continue;
+    }
+
+    const rec = {
+      id: r.id || uid(),
+      title,
+      description: sanitiseText(r.description || '', 2000),
+      subject,
+      type,
+      dueDate: r.dueDate || null,
+      completed: false,
+      manual: !!r.manual,
+      sources: [{ source: sourceName, url: r.url || '', addedAt: now() }],
       createdAt: now()
     };
-    candidate.priority = computePriority(candidate);
-
-    if (dueDate){
-      const dayKey = startOfDay(new Date(dueDate));
-      const normalized = normalizeTitle(cleanTitle);
-      const exactDup = Store.all('assignments').find(a => {
-        if (!a.dueDate) return false;
-        if (startOfDay(new Date(a.dueDate)) !== dayKey) return false;
-        return normalizeTitle(a.title) === normalized;
-      });
-      if (exactDup){
-        const mergedRecord = mergeInto(exactDup, candidate);
-        const idx = Store.cache.assignments.findIndex(x => x.id === exactDup.id);
-        if (idx >= 0) Store.cache.assignments.splice(idx, 1);
-        await Store.put('assignments', mergedRecord);
-        merged++; continue;
-      }
-    }
-    const dup = findDuplicate(candidate, Store.all('assignments'));
-    if (dup){ await Store.put('assignments', mergeInto(dup, candidate)); merged++; }
-    else {
-      await Store.put('assignments', candidate);
-      if (candidate.dueDate || candidate.type === 'Test' || candidate.type === 'Exam') await maybeNotify(candidate);
-      added++;
-    }
+    rec.priority = computePriority(rec);
+    await Store.put('assignments', rec);
+    added++;
   }
   return { added, merged };
 }
 
-/* ── Notifications ────────────────────────────────────────── */
-async function pushNotification({ kind, title, body='', link='', dedupeKey='' }){
-  if (dedupeKey){
-    const dupe = Store.all('notifications').find(n => n.dedupeKey === dedupeKey && (now() - n.createdAt) < 7*86400000);
-    if (dupe) return null;
-  }
-  const n = { id: uid(), kind, title: sanitiseText(title, 200), body: sanitiseText(body, 400), link, read: false, dedupeKey, createdAt: now() };
-  await Store.put('notifications', n);
-  renderNotifDot();
-  if ($('#notif-panel') && !$('#notif-panel').hidden) renderNotifPanel();
-  return n;
+/* ── Sync orchestration ───────────────────────────────────── */
+function friendlyErr(e){
+  const m = String(e?.message || e || '');
+  if (m === 'NOT_SIGNED_IN') return 'not signed in with Google';
+  if (m === 'TOKEN_EXPIRED') return 'session expired — sign in again';
+  if (m === 'GMAIL_SCOPE_MISSING') return 'Gmail access not granted';
+  if (m === 'INSUFFICIENT_SCOPE') return 'missing Google permissions';
+  if (m === 'ACCESS_BLOCKED') return 'access blocked by your admin';
+  if (m === 'RATE_LIMITED') return 'rate limited — try again later';
+  return m.slice(0, 140);
 }
 
-async function maybeNotify(item){
-  const s = Store.cache.settings;
-  if (item.type === 'Test' || item.type === 'Exam'){
-    if (s.notifyNewTest){
-      await pushNotification({ kind:'test', title:`New ${item.type.toLowerCase()}: ${item.title}`,
-        body: item.dueDate ? `On ${fmtDateLong(item.dueDate)}${item.subject ? ' · ' + item.subject : ''}` : '',
-        link:'#/assignments', dedupeKey:`test:${item.title}:${item.dueDate || ''}` });
-    }
-    return;
-  }
-  if (s.notifyNewAssignment){
-    await pushNotification({ kind:'assignment', title:`New ${item.type.toLowerCase()}: ${item.title}`,
-      body: item.dueDate ? `Due ${fmtDateLong(item.dueDate)}${item.subject ? ' · ' + item.subject : ''}` : '',
-      link:'#/assignments', dedupeKey:`new:${item.title}:${item.dueDate || ''}` });
-  }
-}
+async function syncAll(){
+  const results = [];
+  const errors = [];
 
-async function checkDueSoon(){
-  if (!Store.cache.settings.notifyDueSoon) return;
-  for (const a of Store.all('assignments')){
-    if (a.completed || !a.dueDate) continue;
-    const d = daysUntil(a.dueDate);
-    if (d === 0 || d === 1){
-      await pushNotification({ kind:'due', title:`${a.title} is due ${d === 0 ? 'today' : 'tomorrow'}`,
-        body: a.subject ? `${a.subject} · ${a.type}` : a.type,
-        link:'#/assignments', dedupeKey:`due:${a.id}:${startOfDay(new Date(a.dueDate))}` });
-    }
-  }
-}
-
-/* ── Master sync ──────────────────────────────────────────── */
-let syncing = false;
-async function syncAll({ silent = false } = {}){
-  if (syncing) return;
-  syncing = true;
-  setSyncUI('busy', 'Syncing…');
-  const results = [], errors = [];
-
-  try {
-    const r = await syncCalendarSubscriptions();
-    if (r.added) results.push(`Calendar: ${r.added} new`);
-    for (const e of r.errors) errors.push(e);
-  } catch (e){ errors.push(`Calendar: ${e.message}`); }
-
-  if (GoogleServices.has()){
+  if (GoogleServices.has([GOOGLE_SCOPES[0]])){
     try {
       const r = await syncClassroom();
-      if (r.added || r.merged) results.push(`Classroom: ${r.added} new${r.merged ? `, ${r.merged} merged` : ''}`);
-    } catch (e){
-      if (e.message === 'TOKEN_EXPIRED' || e.message === 'NOT_SIGNED_IN') errors.push('Google session expired — click Sync to reconnect.');
-      else if (e.message === 'ACCESS_BLOCKED') errors.push('Classroom access blocked by your school admin.');
-      else errors.push(`Classroom: ${e.message}`);
-    }
+      results.push(`Classroom: ${r.added} new${r.merged ? `, ${r.merged} updated` : ''}`);
+    } catch (e){ errors.push('Classroom — ' + friendlyErr(e)); }
 
     try {
       const r = await syncGmail();
-      if (r.added || r.merged) results.push(`Email: ${r.added} new (${r.accepted}/${r.scanned} matched)`);
-      else if (r.scanned === 0) results.push('Email: no messages matched');
-      else results.push(`Email: scanned ${r.scanned}, 0 new`);
-    } catch (e){
-      if (e.message === 'GMAIL_SCOPE_MISSING') errors.push('Gmail permission missing — click Sync to reconnect.');
-      else if (e.message === 'TOKEN_EXPIRED') errors.push('Google session expired — click Sync to reconnect.');
-      else if (e.message === 'ACCESS_BLOCKED') errors.push('Gmail access blocked by your school admin.');
-      else errors.push(`Email: ${e.message}`);
-    }
+      results.push(`Email: ${r.added} new${r.merged ? `, ${r.merged} updated` : ''}`);
+    } catch (e){ errors.push('Email — ' + friendlyErr(e)); }
   } else {
-    if (!silent) errors.push('Not connected to Google — click Sync to reconnect.');
+    errors.push('Google — not connected');
   }
 
-  await dedupeExistingAssignments();
-  await checkDueSoon();
-  syncing = false;
+  try {
+    const r = await syncCalendarSubscriptions();
+    if (r.subs) results.push(`Calendar: ${r.added} new`);
+    if (r.errors.length) errors.push(...r.errors.map(x => 'Calendar — ' + x));
+  } catch (e){ errors.push('Calendar — ' + friendlyErr(e)); }
 
-  for (const err of errors) toast(err, 'error', 'Sync problem');
-
-  if (!errors.length){
-    setSyncUI('ok', `Synced ${relativeTime(now())}`);
-    if (!silent && results.length) toast(results.join(' · '), 'success', 'Sync complete');
-    else if (!silent) toast('Everything up to date', 'success');
-  } else {
-    setSyncUI('err', GoogleServices.has() ? 'Sync issue' : 'Reconnect Google');
-  }
-  render();
   return { results, errors };
 }
 
-async function dedupeExistingAssignments(){
-  const items = Store.all('assignments');
-  const seen = new Map();
-  const toRemove = [];
-  for (const item of items){
-    if (!item.dueDate) continue;
-    const dayKey = startOfDay(new Date(item.dueDate));
-    const normalized = normalizeTitle(item.title);
-    const key = `${normalized}|${dayKey}`;
-    if (seen.has(key)){
-      const existing = seen.get(key);
-      const existingScore = (existing.manual ? 100 : 0) + (existing.sources?.length || 0) * 5 + (existing.description?.length || 0);
-      const newScore = (item.manual ? 100 : 0) + (item.sources?.length || 0) * 5 + (item.description?.length || 0);
-      if (newScore > existingScore){ toRemove.push(existing.id); seen.set(key, item); }
-      else { toRemove.push(item.id); }
-    } else { seen.set(key, item); }
+/* ── Notifications ────────────────────────────────────────── */
+function getNotifications(){
+  const s = Store.cache.settings;
+  const out = [];
+  const open = Store.all('assignments').filter(a => !a.completed);
+
+  for (const a of open){
+    if (!a.dueDate) continue;
+    const d = daysUntil(a.dueDate);
+    if (s.notifyDueSoon && d !== null && d >= 0 && d <= 2){
+      out.push({
+        id: `due-${a.id}`,
+        title: d === 0 ? `Due today: ${a.title}` : d === 1 ? `Due tomorrow: ${a.title}` : `Due in 2 days: ${a.title}`,
+        meta: `${a.subject || 'General'} · ${a.type || 'Task'}`,
+        when: now(),
+        route: '#/assignments'
+      });
+    }
+    if (s.notifyNewTest && (a.type === 'Test' || a.type === 'Exam') && d !== null && d >= 0 && d <= 7){
+      out.push({
+        id: `test-${a.id}`,
+        title: `${a.type}: ${a.title}`,
+        meta: `${a.subject || 'General'} · ${fmtDate(a.dueDate)}`,
+        when: a.createdAt || now(),
+        route: '#/assignments'
+      });
+    }
+    if (s.notifyNewAssignment && a.createdAt && now() - a.createdAt < 2*86400000 && d !== null && d > 2){
+      out.push({
+        id: `new-${a.id}`,
+        title: `New assignment: ${a.title}`,
+        meta: `${a.subject || 'General'} · added ${relativeTime(a.createdAt)}`,
+        when: a.createdAt,
+        route: '#/assignments'
+      });
+    }
   }
-  for (const id of toRemove) await Store.remove('assignments', id);
-  return toRemove.length;
+
+  return out.sort((a, b) => b.when - a.when).slice(0, 20);
 }
 
-function setSyncUI(state, text){
-  const chip = $('#sync-status');
-  const txt = $('#sync-status .sync-text');
-  if (txt) txt.textContent = text;
-  if (chip){ chip.classList.remove('ok','busy','err'); if (state) chip.classList.add(state); }
-}
-
-/* ── App state ────────────────────────────────────────────── */
-const App = {
-  user: null, route: '#/dashboard',
-  filters: { assignments: 'all', search: '', subject: 'all', sort: 'due' },
-  calMonth: new Date().getMonth(), calYear: new Date().getFullYear(),
-  hiddenSeries: new Set(),
-  _searchTimer: null
-};
-
-function render(){
-  const route = (location.hash || '#/dashboard').split('?')[0];
-  App.route = route;
-  $$('.nav-item').forEach(a => a.classList.toggle('active', a.getAttribute('href') === route));
-  const view = $('#view');
-  if (!view) return;
-  switch(route){
-    case '#/assignments': view.innerHTML = viewAssignments(); break;
-    case '#/calendar': view.innerHTML = viewCalendar(); break;
-    case '#/planner': view.innerHTML = viewPlanner(); break;
-    case '#/notes': view.innerHTML = viewNotes(); break;
-    case '#/settings': view.innerHTML = viewSettings(); break;
-    default: view.innerHTML = viewDashboard();
-  }
-  bindViewEvents();
-  updateBadges();
-}
-
-function updateBadges(){
-  const open = Store.all('assignments').filter(a => !a.completed && a.dueDate && daysUntil(a.dueDate) >= 0).length;
-  const badge = $('#badge-assignments');
-  if (badge){ badge.textContent = open; badge.hidden = open === 0; }
-  renderNotifDot();
-}
-function renderNotifDot(){
-  const unread = Store.all('notifications').filter(n => !n.read).length;
-  const dot = $('#notif-dot');
-  if (dot) dot.hidden = unread === 0;
-}
 function renderNotifPanel(){
-  const panel = $('#notif-panel');
-  if (!panel) return;
-  const items = Store.all('notifications').sort((a,b) => b.createdAt - a.createdAt).slice(0, 20);
-  if (!items.length){ panel.innerHTML = '<div class="notif-empty">No notifications yet</div>'; return; }
-  panel.innerHTML = `
-    <div class="notif-head">
-      <div class="strong">Notifications</div>
-      <button class="btn btn-ghost btn-sm" id="mark-read">Mark all read</button>
-    </div>
+  const items = getNotifications();
+  if (!items.length){
+    return `<div class="notif-head"><strong style="font-size:13.5px">Notifications</strong></div>
+      <div class="notif-empty">You're all caught up.</div>`;
+  }
+  return `<div class="notif-head"><strong style="font-size:13.5px">Notifications</strong>
+      <span class="chip chip-indigo">${items.length}</span></div>
     <div class="notif-list">
-      ${items.map(n => `<div class="notif-item ${n.read ? '' : 'unread'}"><div class="notif-body"><div class="notif-title">${escapeHtml(n.title)}</div><div class="notif-meta">${relativeTime(n.createdAt)}</div></div></div>`).join('')}
-    </div>
-  `;
-  const markBtn = $('#mark-read', panel);
-  if (markBtn) markBtn.onclick = async () => {
-    for (const n of Store.all('notifications')) if (!n.read){ n.read = true; await Store.put('notifications', n); }
-    renderNotifDot(); renderNotifPanel();
-  };
+      ${items.map(n => `<div class="notif-item unread" data-route="${n.route}">
+        <div class="notif-body">
+          <div class="notif-title">${escapeHtml(n.title)}</div>
+          <div class="notif-meta">${escapeHtml(n.meta)}</div>
+        </div>
+      </div>`).join('')}
+    </div>`;
 }
 
-/* ================================================================
-   CHART ENGINE
-   ================================================================ */
-const SERIES_COLORS = [
-  '#4f46e5','#10b981','#f59e0b','#ef4444','#8b5cf6','#0ea5e9',
-  '#ec4899','#14b8a6','#f97316','#6366f1','#84cc16','#eab308',
-  '#06b6d4','#a855f7','#22c55e','#f43f5e'
-];
-function colorForIndex(i){ return SERIES_COLORS[i % SERIES_COLORS.length]; }
+/* ── Chart state ──────────────────────────────────────────── */
+const chartState = { hidden: new Set() };
+const CHART_PALETTE = ['#4f46e5','#10b981','#f59e0b','#ef4444','#8b5cf6','#0ea5e9','#ec4899','#84cc16','#f97316','#14b8a6','#a855f7','#64748b'];
 
-function renderEffortChart(reports, hiddenSeries){
-  if (!reports.length) return `<div class="empty"><div class="empty-title">No weekly notes yet</div><div class="empty-sub">Add a note to start tracking your effort over time.</div></div>`;
+function renderEffortChartBlock(){
+  const reports = Store.all('effortReports').filter(r => r.ratings && Object.keys(r.ratings).length);
+  if (!reports.length){
+    return `<div class="empty">
+      <div class="empty-ico">${ICON.trend}</div>
+      <div class="empty-title">No effort data yet</div>
+      <div class="empty-sub">Add a weekly note and your effort trend will appear here.</div>
+    </div>`;
+  }
 
-  const sorted = [...reports].sort((a, b) => a.date - b.date);
-  const dateKeys = [...new Set(sorted.map(r => startOfDay(new Date(r.date))))].sort((a,b) => a - b);
+  const list = [...reports].sort((a, b) => (a.date || 0) - (b.date || 0)).slice(-12);
+  const subjects = [...new Set(list.flatMap(r => Object.keys(r.ratings || {})))].sort();
+  const colorOf = s => CHART_PALETTE[Math.max(0, subjects.indexOf(s)) % CHART_PALETTE.length];
+  const visible = subjects.filter(s => !chartState.hidden.has(s));
 
-  const subjects = new Set();
-  sorted.forEach(r => Object.keys(r.ratings || {}).forEach(s => subjects.add(s)));
-  const subjectList = [...subjects].sort();
+  if (list.length === 1){
+    return `<div class="empty">
+      <div class="empty-ico">${ICON.trend}</div>
+      <div class="empty-title">One week logged</div>
+      <div class="empty-sub">Add another weekly note to see your effort trend over time.</div>
+    </div>`;
+  }
 
-  const W = 720, H = 340;
-  const padL = 46, padR = 24, padT = 20, padB = 48;
+  const W = 760, H = 280, padL = 38, padR = 20, padT = 18, padB = 40;
   const plotW = W - padL - padR;
   const plotH = H - padT - padB;
-
-  const xFor = i => padL + (dateKeys.length === 1 ? plotW/2 : (i / (dateKeys.length - 1)) * plotW);
-  const yFor = rating => padT + plotH - ((rating - 1) / 4) * plotH;
+  const xAt = i => list.length === 1 ? padL + plotW / 2 : padL + (i * plotW / (list.length - 1));
+  const yAt = v => padT + ((5 - v) / 4) * plotH;
 
   let grid = '';
-  for (let r = 1; r <= 5; r++){
-    const y = yFor(r);
-    grid += `<line x1="${padL}" x2="${W-padR}" y1="${y}" y2="${y}" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 3"/>`;
-    grid += `<text x="${padL - 8}" y="${y + 4}" text-anchor="end" font-size="11" fill="var(--text-3)">${r}</text>`;
+  for (let v = 1; v <= 5; v++){
+    grid += `<line x1="${padL}" y1="${yAt(v).toFixed(1)}" x2="${W - padR}" y2="${yAt(v).toFixed(1)}"
+      stroke="var(--border)" stroke-width="1" stroke-dasharray="${v === 1 ? '0' : '3 4'}"/>`;
+    grid += `<text x="${padL - 9}" y="${(yAt(v) + 4).toFixed(1)}" text-anchor="end" font-size="11" fill="var(--text-3)">${v}</text>`;
   }
 
   let xLabels = '';
-  dateKeys.forEach((dk, i) => {
-    const x = xFor(i);
-    const s = new Date(dk).toLocaleDateString(undefined, { day: 'numeric', month: 'short' });
-    xLabels += `<text x="${x}" y="${H - padB + 24}" text-anchor="middle" font-size="10.5" fill="var(--text-3)">${escapeHtml(s)}</text>`;
+  list.forEach((r, i) => {
+    const show = list.length <= 7 || i % 2 === 0 || i === list.length - 1;
+    if (!show) return;
+    xLabels += `<text x="${xAt(i).toFixed(1)}" y="${H - 14}" text-anchor="middle" font-size="10.5" fill="var(--text-3)">${escapeHtml(fmtDate(r.date))}</text>`;
   });
 
   let lines = '';
-  subjectList.forEach((subject, idx) => {
-    const color = colorForIndex(idx);
-    const points = [];
-    dateKeys.forEach((dk, i) => {
-      const report = sorted.find(r => startOfDay(new Date(r.date)) === dk);
-      const rating = report?.ratings?.[subject];
-      if (rating != null) points.push({ x: xFor(i), y: yFor(rating), rating });
+  for (const s of visible){
+    const pts = [];
+    list.forEach((r, i) => {
+      const v = Number(r.ratings?.[s]);
+      if (Number.isFinite(v) && v > 0) pts.push({ x: xAt(i), y: yAt(v), v });
     });
-    if (!points.length) return;
-    const hidden = hiddenSeries.has(subject);
-
-    if (points.length > 1){
-      const d = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' ');
-      lines += `<path d="${d}" fill="none" stroke="${color}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" opacity="${hidden ? '0' : '1'}"/>`;
-    }
-    points.forEach(p => {
-      lines += `<circle class="dot" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="4.5" fill="${color}" stroke="var(--surface)" stroke-width="2" opacity="${hidden ? '0' : '1'}"><title>${escapeHtml(subject)}: ${p.rating}</title></circle>`;
-    });
-  });
-
-  const legend = subjectList.length ? `
-    <div class="effort-legend">
-      ${subjectList.map((s, i) => {
-        const off = hiddenSeries.has(s);
-        return `<button class="${off ? 'off' : ''}" data-legend="${escapeHtml(s)}"><i style="background:${colorForIndex(i)}"></i>${escapeHtml(s)}</button>`;
-      }).join('')}
-    </div>` : '';
-
-  return `
-    <div class="effort-chart-wrap">
-      <svg class="effort-chart-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Effort over time">
-        ${grid}
-        ${xLabels}
-        ${lines}
-      </svg>
-    </div>
-    ${legend}
-  `;
-}
-
-function computeEffortStats(reports){
-  if (!reports.length) return { avg: 0, count: 0, bySubject: {}, best: '', bestAvg: 0, worst: '', worstAvg: 0, latestAvg: 0 };
-  const bySubject = {};
-  let total = 0, count = 0;
-  for (const r of reports){
-    for (const [subj, rating] of Object.entries(r.ratings || {})){
-      if (!bySubject[subj]) bySubject[subj] = { total: 0, count: 0 };
-      bySubject[subj].total += rating;
-      bySubject[subj].count++;
-      total += rating;
-      count++;
+    if (!pts.length) continue;
+    const d = pts.map((p, i) => `${i ? 'L' : 'M'}${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' ');
+    lines += `<path d="${d}" fill="none" stroke="${colorOf(s)}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>`;
+    for (const p of pts){
+      lines += `<circle class="cdot" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="4" fill="${colorOf(s)}"/>`;
     }
   }
-  const subjectAvgs = {};
-  for (const [subj, v] of Object.entries(bySubject)) subjectAvgs[subj] = v.total / v.count;
-  const sorted = Object.entries(subjectAvgs).sort((a, b) => b[1] - a[1]);
-  const latest = [...reports].sort((a,b) => b.date - a.date)[0];
-  const latestVals = Object.values(latest?.ratings || {});
-  return {
-    avg: count ? total / count : 0,
-    count: reports.length,
-    bySubject: subjectAvgs,
-    best: sorted[0]?.[0] || '',
-    bestAvg: sorted[0]?.[1] || 0,
-    worst: sorted[sorted.length - 1]?.[0] || '',
-    worstAvg: sorted[sorted.length - 1]?.[1] || 0,
-    latestAvg: latestVals.length ? latestVals.reduce((a,b) => a+b, 0) / latestVals.length : 0
-  };
+
+  const legend = subjects.map(s =>
+    `<button type="button" class="${chartState.hidden.has(s) ? 'off' : ''}" data-legend="${escapeHtml(s)}">
+      <i style="background:${colorOf(s)}"></i>${escapeHtml(s)}
+    </button>`
+  ).join('');
+
+  return `<div class="effort-chart-wrap">
+      <svg class="effort-chart-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Weekly effort ratings over time">
+        ${grid}${xLabels}${lines}
+      </svg>
+    </div>
+    <div class="effort-legend">${legend}</div>`;
 }
 
-/* ================================================================
-   VIEWS
-   ================================================================ */
-function viewDashboard(){
-  const open = Store.all('assignments').filter(a => !a.completed);
-  const dueThisWeek = open.filter(a => a.dueDate && daysUntil(a.dueDate) >= 0 && daysUntil(a.dueDate) <= 7);
+/* ── Weekly note cards ────────────────────────────────────── */
+function renderWeeklyNoteCards(){
+  const reports = [...Store.all('effortReports')].sort((a, b) => (b.date || 0) - (a.date || 0));
+
+  if (!reports.length){
+    return `<div class="empty">
+      <div class="empty-ico">${ICON.chart}</div>
+      <div class="empty-title">No weekly notes yet</div>
+      <div class="empty-sub">Add a weekly note to start tracking your effort across subjects.</div>
+    </div>`;
+  }
+
+  return `<div class="wn-grid">${reports.map(weeklyNoteCard).join('')}</div>`;
+}
+
+function weeklyNoteCard(report){
+  const ratings = report.ratings || {};
+  const subjects = Object.keys(ratings).sort((a, b) => a.localeCompare(b));
+
+  const scores = subjects
+    .map(s => Math.max(0, Math.min(5, Number(ratings[s]) || 0)))
+    .filter(n => n > 0);
+  const avg = scores.length ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
+
+  const bars = subjects.length
+    ? subjects.map(sub => {
+        const score = Math.max(0, Math.min(5, Number(ratings[sub]) || 0));
+        return `<div class="effort-bar-row">
+          <div class="effort-bar-subject" title="${escapeHtml(sub)}">${escapeHtml(sub)}</div>
+          <div class="effort-bar-track" role="img" aria-label="${escapeHtml(sub)}: ${score} out of 5">
+            <div class="effort-bar-fill ${ratingClass(score)}" style="width:${(score / 5) * 100}%"></div>
+          </div>
+          <div class="effort-bar-val">${score}</div>
+        </div>`;
+      }).join('')
+    : `<div class="tiny muted">No subjects rated this week.</div>`;
+
+  const avgTone = avg >= 4 ? 'green' : avg >= 3 ? 'amber' : 'red';
+  const note = report.notes ? `<div class="wn-note">${escapeHtml(report.notes)}</div>` : '';
+
+  return `<article class="wn-card">
+    <header class="wn-card-head">
+      <div>
+        <div class="wn-week">Week ending ${escapeHtml(fmtDateLong(report.date))}</div>
+        <div class="wn-week-sub tiny muted">${escapeHtml(relativeTime(report.createdAt || report.date))}</div>
+      </div>
+      <span class="chip chip-${avgTone}">Avg ${avg.toFixed(1)} / 5</span>
+    </header>
+    <div class="effort-bars">${bars}</div>
+    ${note}
+  </article>`;
+}
+
+/* ── Views ────────────────────────────────────────────────── */
+let calYear = new Date().getFullYear();
+let calMonth = new Date().getMonth();
+let assignFilter = { status: 'open', subject: '', sort: 'due' };
+
+function assignmentItemHTML(a){
+  const due = dueLabel(a.dueDate);
+  return `<div class="item ${a.completed ? 'done' : ''}" data-id="${a.id}">
+    <button class="item-check ${a.completed ? 'on' : ''}" data-toggle="${a.id}" aria-label="Toggle complete">${a.completed ? ICON.check : ''}</button>
+    <div class="item-main">
+      <div class="item-title">${escapeHtml(a.title)}
+        ${a.type ? `<span class="chip chip-gray">${escapeHtml(a.type)}</span>` : ''}
+      </div>
+      ${a.description ? `<div class="item-desc">${escapeHtml(a.description)}</div>` : ''}
+      <div class="item-meta">
+        <span class="chip chip-indigo">${escapeHtml(a.subject || 'General')}</span>
+        ${(a.sources || []).map(s => `<span class="chip chip-gray">${escapeHtml(s.source)}</span>`).join('')}
+      </div>
+    </div>
+    <div class="item-side">
+      <span class="due ${due.cls}">${escapeHtml(due.text)}</span>
+      <div class="row" style="gap:2px">
+        <button class="icon-btn" data-edit="${a.id}" aria-label="Edit" title="Edit" style="width:30px;height:30px">${ICON.edit}</button>
+        <button class="icon-btn" data-del="${a.id}" aria-label="Delete" title="Delete" style="width:30px;height:30px">${ICON.trash}</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderDashboardView(){
+  const assignments = Store.all('assignments');
+  const open = assignments.filter(a => !a.completed);
   const overdue = open.filter(a => a.dueDate && daysUntil(a.dueDate) < 0);
-  const upcomingTests = open.filter(a => (a.type === 'Test' || a.type === 'Exam') && a.dueDate && daysUntil(a.dueDate) >= 0 && daysUntil(a.dueDate) <= 14);
-  const notes = Store.all('effortReports').sort((a,b) => b.date - a.date);
-  const stats = computeEffortStats(notes);
-  const recentNotes = notes.slice(0, 5);
+  const dueWeek = open.filter(a => a.dueDate && daysUntil(a.dueDate) >= 0 && daysUntil(a.dueDate) <= 7);
+  const tests = open.filter(a => (a.type === 'Test' || a.type === 'Exam') && a.dueDate && daysUntil(a.dueDate) >= 0);
+  const doneWeek = assignments.filter(a => a.completed && a.completedAt && now() - a.completedAt < 7 * 86400000);
 
-  const top5 = [...open].filter(a => a.dueDate).sort((a,b) => {
-    const pa = { urgent:0, high:1, medium:2, low:3 }[a.priority] ?? 4;
-    const pb = { urgent:0, high:1, medium:2, low:3 }[b.priority] ?? 4;
-    if (pa !== pb) return pa - pb;
-    return a.dueDate - b.dueDate;
-  }).slice(0, 5);
+  const nextUp = [...open]
+    .filter(a => a.dueDate)
+    .sort((a, b) => a.dueDate - b.dueDate)
+    .slice(0, 6);
 
-  return `
-    <div class="page-head">
+  const latest = [...Store.all('effortReports')].sort((a, b) => (b.date || 0) - (a.date || 0))[0];
+  const effortRows = latest && latest.ratings
+    ? Object.entries(latest.ratings)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 6)
+        .map(([sub, v]) => `<div class="effort-bar-row">
+            <div class="effort-bar-subject" title="${escapeHtml(sub)}">${escapeHtml(sub)}</div>
+            <div class="effort-bar-track"><div class="effort-bar-fill ${ratingClass(v)}" style="width:${(v / 5) * 100}%"></div></div>
+            <div class="effort-bar-val">${v}</div>
+          </div>`).join('')
+    : `<div class="tiny muted">No weekly notes yet.</div>`;
+
+  const upcomingEvents = Store.all('events')
+    .filter(e => e.start && e.start >= startOfDay())
+    .sort((a, b) => a.start - b.start)
+    .slice(0, 4);
+
+  return `<div class="page-head">
       <h1 class="page-title">Dashboard</h1>
-      <p class="page-sub">Here's what's on this week.</p>
+      <p class="page-sub">Here's where you stand this week.</p>
     </div>
 
     <div class="stat-grid">
-      <div class="stat ${dueThisWeek.length ? '' : 'good'}">
-        <div class="stat-label">Due this week</div>
-        <div class="stat-value">${dueThisWeek.length}</div>
-        <div class="stat-sub">${dueThisWeek.length ? 'Across all subjects' : 'All clear'}</div>
-      </div>
       <div class="stat ${overdue.length ? 'warn' : 'good'}">
         <div class="stat-label">Overdue</div>
         <div class="stat-value">${overdue.length}</div>
-        <div class="stat-sub">${overdue.length ? 'Needs attention' : 'Nothing late'}</div>
+        <div class="stat-sub">${overdue.length ? 'Needs attention' : 'Nothing overdue'}</div>
       </div>
       <div class="stat">
-        <div class="stat-label">Tests (14d)</div>
-        <div class="stat-value">${upcomingTests.length}</div>
+        <div class="stat-label">Due this week</div>
+        <div class="stat-value">${dueWeek.length}</div>
+        <div class="stat-sub">Next 7 days</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Tests &amp; exams</div>
+        <div class="stat-value">${tests.length}</div>
         <div class="stat-sub">Coming up</div>
       </div>
-      <div class="stat">
-        <div class="stat-label">Effort this week</div>
-        <div class="stat-value">${stats.latestAvg ? stats.latestAvg.toFixed(1) : '—'}</div>
-        <div class="stat-sub">${stats.latestAvg ? 'Avg across subjects' : 'No note yet'}</div>
+      <div class="stat good">
+        <div class="stat-label">Done this week</div>
+        <div class="stat-value">${doneWeek.length}</div>
+        <div class="stat-sub">Nice work</div>
       </div>
     </div>
 
     <div class="cols cols-main">
-      <div class="card">
+      <section class="card">
         <div class="card-head">
-          <div class="card-title">Next up</div>
-          <a href="#/assignments" class="small strong">View all →</a>
+          <div class="card-title">${ICON.file}Next up</div>
+          <a class="small" href="#/assignments">View all</a>
         </div>
-        ${top5.length ? top5.map(a => renderNextItem(a)).join('') : `<div class="empty"><div class="empty-title">Nothing on the list</div><div class="empty-sub">Sync to pull in assignments from Google Classroom and your school emails.</div></div>`}
-      </div>
+        ${nextUp.length
+          ? nextUp.map((a, i) => {
+              const due = dueLabel(a.dueDate);
+              const pr = computePriority(a);
+              return `<div class="next-item ${pr}">
+                <div class="next-rank">${i + 1}</div>
+                <div class="item-main">
+                  <div class="item-title">${escapeHtml(a.title)}</div>
+                  <div class="item-meta">
+                    <span class="chip chip-indigo">${escapeHtml(a.subject || 'General')}</span>
+                    <span class="chip chip-gray">${escapeHtml(a.type || 'Task')}</span>
+                    <span class="due ${due.cls}">${escapeHtml(due.text)}</span>
+                  </div>
+                </div>
+              </div>`;
+            }).join('')
+          : `<div class="empty">
+              <div class="empty-ico">${ICON.check}</div>
+              <div class="empty-title">All clear</div>
+              <div class="empty-sub">Nothing due right now. Add an assignment to get started.</div>
+            </div>`}
+      </section>
 
       <div class="stack">
-        <div class="card">
+        <section class="card">
           <div class="card-head">
-            <div class="card-title">${ICON.chart} Weekly notes</div>
-            <a href="#/notes" class="small strong">${notes.length ? 'See all →' : 'Add →'}</a>
+            <div class="card-title">${ICON.chart}Latest effort</div>
+            <a class="small" href="#/notes">Weekly notes</a>
           </div>
-          <div class="card-body">
-            ${stats.latestAvg ? `
-              <div class="row-between" style="margin-bottom:12px">
-                <div>
-                  <div class="tiny muted" style="text-transform:uppercase;letter-spacing:.06em">Latest week</div>
-                  <div class="strong" style="font-size:15px">${fmtDate(notes[0].date)}</div>
-                </div>
-                <span class="effort-avg">Avg <b>${stats.latestAvg.toFixed(1)}</b></span>
-              </div>
-              <div class="effort-bars">
-                ${Object.entries(notes[0].ratings || {}).sort((a,b) => b[1] - a[1]).slice(0, 5).map(([subj, r]) => `
-                  <div class="effort-bar-row">
-                    <div class="effort-bar-subject truncate">${escapeHtml(subj)}</div>
-                    <div class="effort-bar-track"><div class="effort-bar-fill ${ratingClass(r)}" style="width:${(r/5)*100}%"></div></div>
-                    <div class="effort-bar-val">${r}/5</div>
+          <div class="card-body"><div class="effort-bars">${effortRows}</div></div>
+        </section>
+
+        <section class="card">
+          <div class="card-head"><div class="card-title">${ICON.calendar}Upcoming events</div></div>
+          ${upcomingEvents.length
+            ? `<div class="card-body" style="padding-top:6px;padding-bottom:6px">
+                ${upcomingEvents.map(e => `<div class="next-item" style="padding:10px 0">
+                  <div class="next-rank" style="background:var(--violet-500)">${escapeHtml(fmtDate(e.start).split(' ')[0])}</div>
+                  <div class="item-main">
+                    <div class="item-title" style="font-size:13.5px">${escapeHtml(e.title)}</div>
+                    <div class="item-meta"><span class="chip chip-gray">${escapeHtml(e.source || 'Calendar')}</span></div>
                   </div>
-                `).join('')}
-              </div>
-            ` : `
-              <p class="small muted" style="margin:0 0 12px">Rate your effort in each subject — usually done on Fridays.</p>
-              <button class="btn btn-primary btn-sm" data-action="new-effort">Add weekly note</button>
-            `}
-          </div>
-        </div>
-
-        ${recentNotes.length > 1 ? `
-          <div class="card">
-            <div class="card-head"><div class="card-title">${ICON.trend} Trend</div></div>
-            <div class="card-body" style="padding:12px 16px">${renderMiniSparkline(recentNotes)}</div>
-          </div>
-        ` : ''}
+                </div>`).join('')}
+              </div>`
+            : `<div class="empty" style="padding:32px 20px">
+                <div class="empty-title">No events</div>
+                <div class="empty-sub">School events and subscriptions appear here.</div>
+              </div>`}
+        </section>
       </div>
-    </div>
-  `;
+    </div>`;
 }
 
-function renderMiniSparkline(reports){
-  const sorted = [...reports].sort((a, b) => a.date - b.date);
-  const avgs = sorted.map(r => {
-    const vals = Object.values(r.ratings || {});
-    return vals.length ? vals.reduce((a,b)=>a+b,0) / vals.length : 0;
-  });
-  if (!avgs.length) return '';
-  const W = 260, H = 64, pad = 8;
-  const points = avgs.map((v, i) => {
-    const x = pad + (i / Math.max(1, avgs.length - 1)) * (W - 2*pad);
-    const y = H - pad - ((v - 1) / 4) * (H - 2*pad);
-    return { x, y, v };
-  });
-  const lineD = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' ');
-  return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block">
-    <line x1="${pad}" x2="${W-pad}" y1="${H-pad}" y2="${H-pad}" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 3"/>
-    <path d="${lineD}" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    ${points.map(p => `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="2.5" fill="var(--primary)"/>`).join('')}
-  </svg>`;
-}
+function renderAssignmentsView(){
+  const all = Store.all('assignments');
+  const subjects = [...new Set(all.map(a => a.subject || 'General'))].sort();
 
-function renderNextItem(a){
-  const dl = dueLabel(a.dueDate);
-  return `
-    <div class="next-item ${a.priority || 'low'}">
-      <div class="next-rank">${a.priority === 'urgent' ? '!' : a.type === 'Test' || a.type === 'Exam' ? 'T' : '•'}</div>
-      <div style="flex:1;min-width:0">
-        <div class="item-title">${escapeHtml(a.title)}</div>
-        <div class="item-meta">
-          ${a.subject ? `<span class="chip chip-gray">${escapeHtml(a.subject)}</span>` : ''}
-          <span class="chip chip-indigo">${escapeHtml(a.type)}</span>
-          <span class="small ${dl.cls === 'overdue' ? 'strong' : 'muted'}" style="${dl.cls === 'overdue' ? 'color:var(--red-600)' : ''}">${dl.text}</span>
-        </div>
-      </div>
-    </div>
-  `;
-}
+  let list = all.slice();
+  if (assignFilter.status === 'open') list = list.filter(a => !a.completed);
+  else if (assignFilter.status === 'done') list = list.filter(a => a.completed);
+  if (assignFilter.subject) list = list.filter(a => (a.subject || 'General') === assignFilter.subject);
 
-function viewAssignments(){
-  const f = App.filters;
-  let items = Store.all('assignments');
-  if (f.assignments === 'pending') items = items.filter(a => !a.completed);
-  if (f.assignments === 'completed') items = items.filter(a => a.completed);
-  if (f.assignments === 'overdue') items = items.filter(a => !a.completed && a.dueDate && daysUntil(a.dueDate) < 0);
-  if (f.subject !== 'all') items = items.filter(a => a.subject === f.subject);
-  if (f.search){
-    const q = f.search.toLowerCase();
-    items = items.filter(a => (a.title + ' ' + (a.description||'') + ' ' + (a.subject||'')).toLowerCase().includes(q));
+  if (assignFilter.sort === 'due'){
+    list.sort((a, b) => (a.dueDate || Infinity) - (b.dueDate || Infinity));
+  } else if (assignFilter.sort === 'subject'){
+    list.sort((a, b) => (a.subject || '').localeCompare(b.subject || '') || (a.dueDate || Infinity) - (b.dueDate || Infinity));
+  } else {
+    list.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
   }
-  if (f.sort === 'due') items = [...items].sort((a,b) => (a.dueDate || Infinity) - (b.dueDate || Infinity));
-  else if (f.sort === 'subject') items = [...items].sort((a,b) => (a.subject||'').localeCompare(b.subject||''));
-  else if (f.sort === 'added') items = [...items].sort((a,b) => b.createdAt - a.createdAt);
 
-  const subjects = [...new Set(Store.all('assignments').map(a => a.subject).filter(Boolean))].sort();
-
-  return `
-    <div class="page-head row-between wrap">
-      <div>
-        <h1 class="page-title">Assignments</h1>
-        <p class="page-sub">${items.length} item${items.length === 1 ? '' : 's'}${f.assignments !== 'all' ? ` · ${f.assignments}` : ''}</p>
+  return `<div class="page-head">
+      <div class="row-between wrap">
+        <div><h1 class="page-title">Assignments</h1><p class="page-sub">${list.length} item${list.length === 1 ? '' : 's'} shown</p></div>
+        <button class="btn btn-primary" data-add-assignment>${ICON.edit}Add assignment</button>
       </div>
-      <button class="btn btn-primary" data-action="add-assignment">+ Add</button>
     </div>
+
     <div class="filters">
       <div class="seg">
-        <button class="${f.assignments === 'all' ? 'on' : ''}" data-filter="all">All</button>
-        <button class="${f.assignments === 'pending' ? 'on' : ''}" data-filter="pending">Pending</button>
-        <button class="${f.assignments === 'overdue' ? 'on' : ''}" data-filter="overdue">Overdue</button>
-        <button class="${f.assignments === 'completed' ? 'on' : ''}" data-filter="completed">Completed</button>
+        <button data-seg="open" class="${assignFilter.status === 'open' ? 'on' : ''}">Open</button>
+        <button data-seg="done" class="${assignFilter.status === 'done' ? 'on' : ''}">Done</button>
+        <button data-seg="all" class="${assignFilter.status === 'all' ? 'on' : ''}">All</button>
       </div>
-      <select class="select" id="subject-filter">
-        <option value="all">All subjects</option>
-        ${subjects.map(s => `<option value="${escapeHtml(s)}" ${f.subject === s ? 'selected' : ''}>${escapeHtml(s)}</option>`).join('')}
+      <select class="select" id="filter-subject">
+        <option value="">All subjects</option>
+        ${subjects.map(s => `<option value="${escapeHtml(s)}" ${assignFilter.subject === s ? 'selected' : ''}>${escapeHtml(s)}</option>`).join('')}
       </select>
-      <select class="select" id="sort-filter">
-        <option value="due" ${f.sort==='due'?'selected':''}>Due date</option>
-        <option value="subject" ${f.sort==='subject'?'selected':''}>Subject</option>
-        <option value="added" ${f.sort==='added'?'selected':''}>Recently added</option>
+      <select class="select" id="filter-sort">
+        <option value="due" ${assignFilter.sort === 'due' ? 'selected' : ''}>Sort: due date</option>
+        <option value="subject" ${assignFilter.sort === 'subject' ? 'selected' : ''}>Sort: subject</option>
+        <option value="created" ${assignFilter.sort === 'created' ? 'selected' : ''}>Sort: recently added</option>
       </select>
-      <input class="input" style="max-width:220px" type="search" placeholder="Search…" value="${escapeHtml(f.search)}" id="asg-search">
     </div>
+
     <div class="card">
-      ${items.length === 0
-        ? `<div class="empty"><div class="empty-ico">${ICON.file}</div><div class="empty-title">No assignments match</div><div class="empty-sub">Try a different filter, or sync to pull in new items.</div></div>`
-        : items.map(a => renderAssignmentItem(a)).join('')}
-    </div>
-  `;
+      ${list.length
+        ? list.map(assignmentItemHTML).join('')
+        : `<div class="empty">
+            <div class="empty-ico">${ICON.file}</div>
+            <div class="empty-title">Nothing here</div>
+            <div class="empty-sub">Try a different filter, or add an assignment manually.</div>
+          </div>`}
+    </div>`;
 }
 
-function renderAssignmentItem(a){
-  const dl = dueLabel(a.dueDate);
-  return `
-    <div class="item ${a.completed ? 'done' : ''}" data-id="${a.id}">
-      <button class="item-check ${a.completed ? 'on' : ''}" data-action="toggle-done" data-id="${a.id}" aria-label="Toggle complete">
-        ${a.completed ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' : ''}
-      </button>
-      <div class="item-main">
-        <div class="item-title">${escapeHtml(a.title)}</div>
-        ${a.description ? `<div class="item-desc">${escapeHtml(a.description)}</div>` : ''}
-        <div class="item-meta">
-          ${a.subject ? `<span class="chip chip-gray">${escapeHtml(a.subject)}</span>` : ''}
-          <span class="chip chip-indigo">${escapeHtml(a.type)}</span>
-          ${(a.sources||[]).map(s => `<span class="chip chip-sky">${escapeHtml(s.source)}</span>`).join('')}
+function renderCalendarView(){
+  const cells = monthMatrix(calYear, calMonth);
+  const todayKey = startOfDay();
+  const monthLabel = new Date(calYear, calMonth, 1).toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+
+  const events = Store.all('events').filter(e => e.start);
+  const dueItems = Store.all('assignments').filter(a => a.dueDate && !a.completed);
+
+  const byDay = new Map();
+  const push = (key, item) => {
+    if (!byDay.has(key)) byDay.set(key, []);
+    byDay.get(key).push(item);
+  };
+  for (const e of events) push(startOfDay(new Date(e.start)), { kind: 'event', title: e.title, test: false });
+  for (const a of dueItems) push(startOfDay(new Date(a.dueDate)), { kind: 'due', title: a.title, test: a.type === 'Test' || a.type === 'Exam' });
+
+  const dow = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+  const grid = cells.map(d => {
+    const key = startOfDay(d);
+    const items = byDay.get(key) || [];
+    const out = d.getMonth() !== calMonth;
+    const isToday = key === todayKey;
+    const shown = items.slice(0, 2);
+    const more = items.length - shown.length;
+    return `<div class="cal-day ${out ? 'out' : ''} ${isToday ? 'today' : ''}">
+      <div class="cal-num">${d.getDate()}</div>
+      ${shown.map(it => `<span class="cal-ev ${it.test ? 'test' : ''}" title="${escapeHtml(it.title)}">${escapeHtml(it.title)}</span>`).join('')}
+      ${more > 0 ? `<span class="cal-more">+${more} more</span>` : ''}
+    </div>`;
+  }).join('');
+
+  return `<div class="page-head">
+      <div class="row-between wrap">
+        <div><h1 class="page-title">Calendar</h1><p class="page-sub">${escapeHtml(monthLabel)}</p></div>
+        <div class="row">
+          <button class="btn btn-ghost btn-sm" data-cal-prev>‹ Prev</button>
+          <button class="btn btn-ghost btn-sm" data-cal-today>Today</button>
+          <button class="btn btn-ghost btn-sm" data-cal-next>Next ›</button>
+          <button class="btn btn-primary btn-sm" data-add-event>Add event</button>
         </div>
       </div>
-      <div class="item-side">
-        ${a.dueDate ? `<span class="due ${dl.cls}">${dl.text}</span>` : ''}
-        <button class="icon-btn" data-action="delete-assignment" data-id="${a.id}" aria-label="Delete">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-        </button>
-      </div>
     </div>
-  `;
+
+    <div class="card card-body">
+      <div class="cal-head">${dow.map(d => `<div class="cal-dow">${d}</div>`).join('')}</div>
+      <div class="cal-grid">${grid}</div>
+    </div>`;
 }
 
-function viewCalendar(){
-  const y = App.calYear, m = App.calMonth;
-  const cells = monthMatrix(y, m);
-  const monthName = new Date(y, m, 1).toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
-  const todayKey = startOfDay(new Date());
-  const eventsByDay = {};
-  const addEv = (dayKey, ev) => {
-    if (!eventsByDay[dayKey]) eventsByDay[dayKey] = [];
-    eventsByDay[dayKey].push(ev);
-  };
-  for (const a of Store.all('assignments')){
-    if (!a.dueDate) continue;
-    addEv(startOfDay(new Date(a.dueDate)), { type: a.type, title: a.title, isTest: a.type === 'Test' || a.type === 'Exam' });
-  }
-  for (const e of Store.all('events')){
-    if (!e.start) continue;
-    addEv(startOfDay(new Date(e.start)), { type: 'Event', title: e.title });
-  }
-
-  return `
-    <div class="page-head row-between wrap">
-      <div>
-        <h1 class="page-title">Calendar</h1>
-        <p class="page-sub">Everything due, all in one place.</p>
-      </div>
-      <div class="row">
-        <button class="icon-btn" data-action="cal-prev" aria-label="Previous month"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
-        <button class="btn btn-ghost btn-sm" data-action="cal-today">Today</button>
-        <button class="icon-btn" data-action="cal-next" aria-label="Next month"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
-      </div>
-    </div>
-    <div class="card" style="padding:14px">
-      <div class="row-between" style="margin-bottom:10px;padding:0 4px">
-        <div class="strong">${escapeHtml(monthName)}</div>
-        <div class="tiny muted">${Object.values(eventsByDay).reduce((s,a) => s + a.length, 0)} items in view</div>
-      </div>
-      <div class="cal-head">
-        ${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d => `<div class="cal-dow">${d}</div>`).join('')}
-      </div>
-      <div class="cal-grid">
-        ${cells.map(d => {
-          const k = startOfDay(d);
-          const items = (eventsByDay[k] || []).slice(0, 3);
-          const more = Math.max(0, (eventsByDay[k] || []).length - 3);
-          const isToday = k === todayKey;
-          const isOtherMonth = d.getMonth() !== m;
-          return `
-            <div class="cal-day ${isToday ? 'today' : ''} ${isOtherMonth ? 'out' : ''}">
-              <div class="cal-num">${d.getDate()}</div>
-              ${items.map(it => `<span class="cal-ev ${it.isTest ? 'test' : ''}" title="${escapeHtml(it.title)}">${escapeHtml(it.title)}</span>`).join('')}
-              ${more ? `<span class="cal-more">+${more} more</span>` : ''}
-            </div>
-          `;
-        }).join('')}
-      </div>
-    </div>
-  `;
-}
-
-function viewPlanner(){
-  const open = Store.all('assignments').filter(a => !a.completed && a.dueDate).sort((a,b) => a.dueDate - b.dueDate);
-  const next7 = open.filter(a => daysUntil(a.dueDate) >= 0 && daysUntil(a.dueDate) <= 7);
-
-  const plan = {};
+function renderPlannerView(){
+  const open = Store.all('assignments').filter(a => !a.completed && a.dueDate);
+  const days = [];
   for (let i = 0; i < 7; i++){
-    plan[addDays(startOfDay(new Date()), i)] = [];
+    const d = new Date();
+    d.setDate(d.getDate() + i);
+    d.setHours(0, 0, 0, 0);
+    days.push(d);
   }
-  for (const a of next7){
-    const est = estimateMinutes(a);
-    const daysAvailable = Math.max(1, daysUntil(a.dueDate));
-    const perDay = Math.max(15, Math.round(est / daysAvailable / 15) * 15);
-    for (let i = 0; i <= daysAvailable && i < 7; i++){
-      const day = addDays(startOfDay(new Date()), i);
-      if (plan[day]) plan[day].push({ item: a, minutes: perDay });
+
+  const plan = new Map();
+  for (const a of open){
+    const dLeft = daysUntil(a.dueDate);
+    if (dLeft === null || dLeft < 0 || dLeft > 6) continue;
+    const span = Math.max(1, dLeft + 1);
+    const total = estimateMinutes(a);
+    const perDay = Math.max(15, Math.min(60, Math.ceil(total / span / 10) * 10));
+    for (let i = 0; i < span; i++){
+      const d = new Date();
+      d.setDate(d.getDate() + i);
+      d.setHours(0, 0, 0, 0);
+      const key = d.getTime();
+      if (!plan.has(key)) plan.set(key, []);
+      plan.get(key).push({ title: a.title, subject: a.subject || 'General', minutes: perDay, type: a.type });
     }
   }
 
-  return `
-    <div class="page-head">
-      <h1 class="page-title">Study planner</h1>
-      <p class="page-sub">A suggested plan for the next 7 days. Big items get more time each day.</p>
-    </div>
+  const dayCards = days.map(d => {
+    const key = d.getTime();
+    const items = (plan.get(key) || []);
+    let total = 0;
+    const capped = [];
+    for (const it of items){
+      if (total >= 180) break;
+      capped.push(it);
+      total += it.minutes;
+    }
+    const label = d.toDateString() === new Date().toDateString()
+      ? 'Today'
+      : d.toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'short' });
 
-    <div class="stack">
-      ${Object.entries(plan).map(([day, items]) => {
-        const d = new Date(+day);
-        const total = items.reduce((s, i) => s + i.minutes, 0);
-        return `
-          <div class="card">
-            <div class="card-head">
-              <div class="card-title">${d.toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'short' })}</div>
-              <div class="small muted">${total ? `${total} min suggested` : 'Nothing scheduled'}</div>
-            </div>
-            ${items.length ? items.map(({ item, minutes }) => `
-              <div class="item">
-                <div class="item-main">
-                  <div class="item-title">${escapeHtml(item.title)}</div>
-                  <div class="item-meta">
-                    ${item.subject ? `<span class="chip chip-gray">${escapeHtml(item.subject)}</span>` : ''}
-                    <span class="chip chip-indigo">${minutes} min</span>
-                    <span class="chip chip-amber">${escapeHtml(item.type)}</span>
-                  </div>
+    return `<section class="card" style="margin-bottom:14px">
+      <div class="card-head">
+        <div class="card-title">${ICON.calendar}${escapeHtml(label)}</div>
+        <span class="chip chip-indigo">${total} min</span>
+      </div>
+      ${capped.length
+        ? `<div class="card-body" style="padding-top:6px;padding-bottom:6px">
+            ${capped.map(it => `<div class="next-item" style="padding:10px 0">
+              <div class="next-rank" style="background:var(--violet-500)">${it.minutes}</div>
+              <div class="item-main">
+                <div class="item-title" style="font-size:13.5px">${escapeHtml(it.title)}</div>
+                <div class="item-meta">
+                  <span class="chip chip-indigo">${escapeHtml(it.subject)}</span>
+                  <span class="chip chip-gray">${escapeHtml(it.type || 'Study')}</span>
                 </div>
               </div>
-            `).join('') : `<div class="card-body"><p class="small muted" style="margin:0">Nothing planned. Take a break or get ahead on future work.</p></div>`}
-          </div>
-        `;
-      }).join('')}
+            </div>`).join('')}
+          </div>`
+        : `<div class="empty" style="padding:26px 20px">
+            <div class="empty-title">Free day</div>
+            <div class="empty-sub">Nothing scheduled — good time to get ahead.</div>
+          </div>`}
+    </section>`;
+  }).join('');
+
+  return `<div class="page-head">
+      <h1 class="page-title">Study planner</h1>
+      <p class="page-sub">A suggested plan for the next 7 days, built from your due dates.</p>
     </div>
-  `;
+    ${dayCards}`;
 }
 
-function viewNotes(){
-  const reports = Store.all('effortReports').sort((a, b) => b.date - a.date);
-  const stats = computeEffortStats(reports);
-  const hidden = App.hiddenSeries;
+function renderNotesView(){
+  const reports = Store.all('effortReports');
+  const lastFriday = getLastFriday();
+  const hasThisWeek = reports.some(r => startOfDay(new Date(r.date)) === startOfDay(new Date(lastFriday)));
 
-  if (!reports.length){
-    return `
-      <div class="page-head row-between wrap">
-        <div>
-          <h1 class="page-title">Weekly notes</h1>
-          <p class="page-sub">Rate your effort in each subject, week by week.</p>
-        </div>
-        <button class="btn btn-primary" data-action="new-effort">+ Add weekly note</button>
-      </div>
-      <div class="card">
-        <div class="empty" style="padding:64px 24px">
-          <div class="empty-ico">${ICON.chart}</div>
-          <div class="empty-title">No weekly notes yet</div>
-          <div class="empty-sub">On Friday, rate your effort in each subject from 1 (low) to 5 (high). Your ratings will show up here so you can spot trends over time.</div>
-          <button class="btn btn-primary" data-action="new-effort" style="margin-top:16px">Add your first note</button>
-        </div>
-      </div>
-    `;
-  }
-
-  return `
-    <div class="page-head row-between wrap">
-      <div>
-        <h1 class="page-title">Weekly notes</h1>
-        <p class="page-sub">Rate your effort in each subject, week by week.</p>
-      </div>
-      <button class="btn btn-primary" data-action="new-effort">+ Add weekly note</button>
-    </div>
-
-    <div class="stat-grid">
-      <div class="stat">
-        <div class="stat-label">Average effort</div>
-        <div class="stat-value">${stats.avg.toFixed(1)}</div>
-        <div class="stat-sub">${stats.count} ${stats.count === 1 ? 'week' : 'weeks'} logged</div>
-      </div>
-      <div class="stat good">
-        <div class="stat-label">Best subject</div>
-        <div class="stat-value" style="font-size:18px">${escapeHtml(stats.best)}</div>
-        <div class="stat-sub">${stats.bestAvg.toFixed(1)} average</div>
-      </div>
-      <div class="stat ${stats.worstAvg && stats.worstAvg < 3 ? 'warn' : ''}">
-        <div class="stat-label">Needs attention</div>
-        <div class="stat-value" style="font-size:18px">${escapeHtml(stats.worst)}</div>
-        <div class="stat-sub">${stats.worstAvg.toFixed(1)} average</div>
-      </div>
-      <div class="stat">
-        <div class="stat-label">Latest week</div>
-        <div class="stat-value">${stats.latestAvg.toFixed(1)}</div>
-        <div class="stat-sub">${fmtDate(reports[0].date)}</div>
+  return `<div class="page-head">
+      <div class="row-between wrap">
+        <div><h1 class="page-title">Weekly notes</h1>
+        <p class="page-sub">Rate your effort across subjects each week.</p></div>
+        <button class="btn btn-primary" data-add-note>${ICON.edit}${hasThisWeek ? 'Add another note' : 'Add this week’s note'}</button>
       </div>
     </div>
 
     <div class="card" style="margin-bottom:18px">
       <div class="card-head">
-        <div class="card-title">${ICON.chart} Effort over time</div>
-        <div class="small muted">Click a subject to hide / show it</div>
+        <div class="card-title">${ICON.trend}Effort over time</div>
+        <span class="effort-avg">Average <b id="chart-avg">–</b>/ 5</span>
       </div>
       <div class="card-body">
-        ${renderEffortChart(reports, hidden)}
+        <div id="effort-chart-block">${renderEffortChartBlock()}</div>
       </div>
     </div>
 
-    <div class="cols cols-2">
-      <div class="card">
-        <div class="card-head"><div class="card-title">${ICON.trend} Subject averages</div></div>
-        <div class="card-body">
-          <div class="effort-bars">
-            ${Object.entries(stats.bySubject).sort((a,b) => b[1] - a[1]).map(([subj, r]) => `
-              <div class="effort-bar-row">
-                <div class="effort-bar-subject truncate">${escapeHtml(subj)}</div>
-                <div class="effort-bar-track"><div class="effort-bar-fill ${ratingClass(r)}" style="width:${(r/5)*100}%"></div></div>
-                <div class="effort-bar-val">${r.toFixed(1)}</div>
-              </div>
-            `).join('')}
-          </div>
-        </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">${ICON.chart}Week by week</div>
+        <span class="chip chip-gray">${reports.length} week${reports.length === 1 ? '' : 's'} logged</span>
       </div>
-
-      <div class="card">
-        <div class="card-head"><div class="card-title">All weeks</div></div>
-        ${reports.map(r => {
-          const vals = Object.values(r.ratings || {});
-          const avg = vals.length ? vals.reduce((a,b) => a+b, 0) / vals.length : 0;
-          return `
-            <div class="item">
-              <div class="item-main">
-                <div class="item-title">Week of ${fmtDate(r.date)}</div>
-                <div class="item-meta">
-                  ${Object.entries(r.ratings || {}).map(([s, v]) => `<span class="chip chip-gray">${escapeHtml(s)}: ${v}</span>`).join('')}
-                </div>
-                ${r.notes ? `<div class="item-desc">${escapeHtml(r.notes)}</div>` : ''}
-              </div>
-              <div class="item-side">
-                <span class="effort-avg"><b>${avg.toFixed(1)}</b></span>
-                <div class="row" style="gap:2px">
-                  <button class="icon-btn" data-action="edit-effort" data-id="${r.id}" aria-label="Edit" style="width:30px;height:30px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-                  <button class="icon-btn" data-action="delete-effort" data-id="${r.id}" aria-label="Delete" style="width:30px;height:30px;color:var(--red-500)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
-                </div>
-              </div>
-            </div>
-          `;
-        }).join('')}
-      </div>
-    </div>
-  `;
+      <div class="card-body">${renderWeeklyNoteCards()}</div>
+    </div>`;
 }
 
-function viewSettings(){
+function renderSettingsView(){
   const s = Store.cache.settings;
-  const isDark = s.theme === 'dark';
-  const subs = s.calendarSubscriptions || [];
-  return `
-    <div class="page-head">
+  const cls = Store.cache.integrations.classroom;
+  const gm = Store.cache.integrations.gmail;
+
+  return `<div class="page-head">
       <h1 class="page-title">Settings</h1>
-      <p class="page-sub">Customise your Scribe experience.</p>
+      <p class="page-sub">Manage your sync, notifications and data.</p>
     </div>
 
-    <div class="stack" style="max-width:820px">
-      <div class="card">
-        <div class="card-head"><div class="card-title">${ICON.palette} Appearance</div></div>
-        <div class="card-body">
-          <div class="set-row">
-            <div class="set-info">
-              <div class="set-name">Dark mode</div>
-              <div class="set-desc">Use a darker colour scheme.</div>
-            </div>
-            <div class="set-control">
-              <button class="btn ${isDark ? 'btn-primary' : 'btn-ghost'}" data-action="toggle-theme">${isDark ? 'On' : 'Off'}</button>
-            </div>
+    <section class="card" style="margin-bottom:18px">
+      <div class="card-head"><div class="card-title">${ICON.palette}Appearance</div></div>
+      <div class="card-body" style="padding-top:4px;padding-bottom:4px">
+        <div class="set-row">
+          <div class="set-info">
+            <div class="set-name">Theme</div>
+            <div class="set-desc">Switch between light and dark mode.</div>
+          </div>
+          <div class="set-control">
+            <select class="select" id="set-theme">
+              <option value="light" ${s.theme === 'light' ? 'selected' : ''}>Light</option>
+              <option value="dark" ${s.theme === 'dark' ? 'selected' : ''}>Dark</option>
+            </select>
           </div>
         </div>
       </div>
+    </section>
 
-      <div class="card">
-        <div class="card-head"><div class="card-title">${ICON.bell} Notifications</div></div>
-        <div class="card-body">
-          <div class="set-row">
-            <div class="set-info"><div class="set-name">New assignments</div><div class="set-desc">Show a notification when a new assignment appears.</div></div>
-            <div class="set-control"><button class="btn ${s.notifyNewAssignment ? 'btn-primary' : 'btn-ghost'}" data-action="toggle-pref" data-key="notifyNewAssignment">${s.notifyNewAssignment ? 'On' : 'Off'}</button></div>
+    <section class="card" style="margin-bottom:18px">
+      <div class="card-head"><div class="card-title">${ICON.bell}Notifications</div></div>
+      <div class="card-body" style="padding-top:4px;padding-bottom:4px">
+        <div class="set-row">
+          <div class="set-info">
+            <div class="set-name">New assignments</div>
+            <div class="set-desc">Show a notification when new work is imported.</div>
           </div>
-          <div class="set-row">
-            <div class="set-info"><div class="set-name">Due soon</div><div class="set-desc">Remind me when things are due today or tomorrow.</div></div>
-            <div class="set-control"><button class="btn ${s.notifyDueSoon ? 'btn-primary' : 'btn-ghost'}" data-action="toggle-pref" data-key="notifyDueSoon">${s.notifyDueSoon ? 'On' : 'Off'}</button></div>
+          <div class="set-control">
+            <label class="checkbox"><input type="checkbox" id="set-notify-assignment" ${s.notifyNewAssignment ? 'checked' : ''}></label>
           </div>
-          <div class="set-row">
-            <div class="set-info"><div class="set-name">New tests & exams</div><div class="set-desc">Show a notification when a test or exam is added.</div></div>
-            <div class="set-control"><button class="btn ${s.notifyNewTest ? 'btn-primary' : 'btn-ghost'}" data-action="toggle-pref" data-key="notifyNewTest">${s.notifyNewTest ? 'On' : 'Off'}</button></div>
+        </div>
+        <div class="set-row">
+          <div class="set-info">
+            <div class="set-name">Due soon</div>
+            <div class="set-desc">Remind me about work due in the next 2 days.</div>
+          </div>
+          <div class="set-control">
+            <label class="checkbox"><input type="checkbox" id="set-notify-due" ${s.notifyDueSoon ? 'checked' : ''}></label>
+          </div>
+        </div>
+        <div class="set-row">
+          <div class="set-info">
+            <div class="set-name">Tests &amp; exams</div>
+            <div class="set-desc">Highlight assessments in the next week.</div>
+          </div>
+          <div class="set-control">
+            <label class="checkbox"><input type="checkbox" id="set-notify-test" ${s.notifyNewTest ? 'checked' : ''}></label>
           </div>
         </div>
       </div>
+    </section>
 
-      <div class="card">
-        <div class="card-head"><div class="card-title">${ICON.mail} Email scanning</div></div>
-        <div class="card-body">
-          <div class="set-row stacked">
-            <div class="set-info"><div class="set-name">Look back</div><div class="set-desc">How many days of email to scan on each sync.</div></div>
-            <div class="set-control"><input class="input" type="number" min="1" max="365" value="${s.emailLookbackDays}" data-action="set-lookback"></div>
+    <section class="card" style="margin-bottom:18px">
+      <div class="card-head"><div class="card-title">${ICON.mail}Email scanning</div></div>
+      <div class="card-body" style="padding-top:4px;padding-bottom:4px">
+        <div class="set-row">
+          <div class="set-info">
+            <div class="set-name">Lookback window</div>
+            <div class="set-desc">How many days of email to scan when syncing.</div>
           </div>
-          <div class="set-row stacked">
-            <div class="set-info"><div class="set-name">Trusted senders</div><div class="set-desc">Only scan emails from these addresses or domains (comma-separated). Leave blank to scan all school-related mail.</div></div>
-            <div class="set-control"><input class="input" type="text" value="${escapeHtml((s.trustedSenders||[]).join(', '))}" placeholder="e.g. teacher@school.nz, @school.nz" data-action="set-senders"></div>
+          <div class="set-control">
+            <input class="input" type="number" min="1" max="365" id="set-lookback" value="${s.emailLookbackDays}" style="width:100px">
           </div>
-          <div class="set-row stacked">
-            <div class="set-info"><div class="set-name">Trusted domains</div><div class="set-desc">Treat all emails from these domains as school-related (comma-separated).</div></div>
-            <div class="set-control"><input class="input" type="text" value="${escapeHtml((s.trustedDomains||[]).join(', '))}" placeholder="e.g. sacredheart.school.nz" data-action="set-domains"></div>
+        </div>
+        <div class="set-row stacked">
+          <div class="set-info">
+            <div class="set-name">Trusted domains</div>
+            <div class="set-desc">Only scan mail from these domains. One per line.</div>
           </div>
-          <div class="set-row stacked">
-            <div class="set-info"><div class="set-name">Keywords</div><div class="set-desc">Only scan emails mentioning these keywords (comma-separated). Leave blank to use defaults.</div></div>
-            <div class="set-control"><input class="input" type="text" value="${escapeHtml(s.emailKeywords || '')}" placeholder="e.g. homework, test, due, submit" data-action="set-keywords"></div>
+          <div class="set-control">
+            <textarea class="textarea" id="set-domains" placeholder="school.nz">${escapeHtml((s.trustedDomains || []).join('\n'))}</textarea>
+          </div>
+        </div>
+        <div class="set-row stacked">
+          <div class="set-info">
+            <div class="set-name">Extra keywords</div>
+            <div class="set-desc">Comma-separated keywords to widen the search.</div>
+          </div>
+          <div class="set-control">
+            <input class="input" id="set-keywords" value="${escapeHtml(s.emailKeywords || '')}" placeholder="assignment, deadline, NCEA">
           </div>
         </div>
       </div>
+    </section>
 
-      <div class="card">
-        <div class="card-head"><div class="card-title">${ICON.calendar} Calendar subscriptions</div></div>
-        <div class="card-body">
-          ${subs.length === 0
-            ? `<p class="small muted" style="margin:0 0 10px">No subscriptions yet. Add your school's ICS feed to pull in events automatically.</p>`
-            : subs.map((sub, i) => `
-              <div class="set-row">
-                <div class="set-info">
-                  <div class="set-name">${escapeHtml(sub.name || sub.url)}</div>
-                  <div class="set-desc" style="word-break:break-all">${escapeHtml(sub.url)}</div>
-                  ${sub.error ? `<div class="alert alert-warn" style="margin-top:8px;font-size:12px">${escapeHtml(sub.error)}</div>` : ''}
-                </div>
-                <div class="set-control">
-                  <button class="btn btn-ghost btn-sm" data-action="remove-cal" data-idx="${i}">Remove</button>
+    <section class="card" style="margin-bottom:18px">
+      <div class="card-head"><div class="card-title">${ICON.calendar}Calendar subscriptions</div></div>
+      <div class="card-body" style="padding-top:4px;padding-bottom:4px">
+        ${(s.calendarSubscriptions || []).length
+          ? (s.calendarSubscriptions || []).map((sub, i) => `<div class="set-row">
+              <div class="set-info">
+                <div class="set-name">${escapeHtml(sub.name || 'Subscription')}</div>
+                <div class="set-desc"><code>${escapeHtml(sub.url)}</code>
+                  ${sub.error ? `<div class="alert alert-error" style="margin-top:8px">${escapeHtml(sub.error)}</div>` : ''}
+                  ${sub.lastSync ? `<div style="margin-top:4px">Last sync ${escapeHtml(relativeTime(sub.lastSync))}</div>` : ''}
                 </div>
               </div>
-            `).join('')}
-          <div class="row" style="margin-top:10px;gap:8px">
-            <input class="input" id="cal-name" placeholder="Name (e.g. School calendar)">
-            <input class="input" id="cal-url" placeholder="https://...ics">
-            <button class="btn btn-primary" data-action="add-cal">Add</button>
-          </div>
-          <div class="row" style="margin-top:8px">
-            <button class="btn btn-ghost btn-sm" data-action="add-sacred-heart">+ Sacred Heart calendar</button>
+              <div class="set-control">
+                <button class="btn btn-ghost btn-sm" data-sync-cal="${i}">Sync</button>
+                <button class="btn btn-danger-soft btn-sm" data-del-sub="${i}">Remove</button>
+              </div>
+            </div>`).join('')
+          : `<div class="empty" style="padding:26px 20px"><div class="empty-title">No subscriptions</div><div class="empty-sub">Add a school calendar feed below.</div></div>`}
+        <div class="set-row stacked">
+          <div class="set-info"><div class="set-name">Add a calendar</div><div class="set-desc">Paste an .ics feed URL.</div></div>
+          <div class="set-control">
+            <input class="input" id="sub-name" placeholder="Name (e.g. Sacred Heart College)">
+            <input class="input" id="sub-url" placeholder="https://…/school.ics">
+            <button class="btn btn-primary btn-sm" data-add-sub>Add</button>
           </div>
         </div>
       </div>
+    </section>
 
-      <div class="card">
-        <div class="card-head"><div class="card-title">${ICON.user} Account</div></div>
-        <div class="card-body">
-          <div class="set-row">
-            <div class="set-info">
-              <div class="set-name">${escapeHtml(App.user?.displayName || 'Not signed in')}</div>
-              <div class="set-desc">${escapeHtml(App.user?.email || 'Local mode')}</div>
-            </div>
-            <div class="set-control">
-              <button class="btn btn-ghost btn-sm" data-action="signout">Sign out</button>
-            </div>
+    <section class="card" style="margin-bottom:18px">
+      <div class="card-head"><div class="card-title">${ICON.info}Connections</div></div>
+      <div class="card-body" style="padding-top:4px;padding-bottom:4px">
+        <div class="set-row">
+          <div class="set-info">
+            <div class="set-name">Google Classroom</div>
+            <div class="set-desc">${cls && cls.lastSync ? `Last sync ${escapeHtml(relativeTime(cls.lastSync))}` : 'Not synced yet'}</div>
+          </div>
+          <div class="set-control">
+            <button class="btn btn-ghost btn-sm" data-sync="classroom">Sync now</button>
+          </div>
+        </div>
+        <div class="set-row">
+          <div class="set-info">
+            <div class="set-name">Gmail</div>
+            <div class="set-desc">${gm && gm.lastSync ? `Last sync ${escapeHtml(relativeTime(gm.lastSync))}` : 'Not synced yet'}</div>
+          </div>
+          <div class="set-control">
+            <button class="btn btn-ghost btn-sm" data-sync="gmail">Sync now</button>
           </div>
         </div>
       </div>
+    </section>
 
-      <div class="card">
-        <div class="card-head"><div class="card-title">Data</div></div>
-        <div class="card-body">
-          <div class="set-row">
-            <div class="set-info">
-              <div class="set-name">Clear all data</div>
-              <div class="set-desc">Remove all assignments, events and weekly notes. This can't be undone.</div>
-            </div>
-            <div class="set-control">
-              <button class="btn btn-danger-soft" data-action="clear-all">Clear</button>
-            </div>
+    <section class="card">
+      <div class="card-head"><div class="card-title" style="color:var(--red-600)">${ICON.alert}Danger zone</div></div>
+      <div class="card-body" style="padding-top:4px;padding-bottom:4px">
+        <div class="set-row">
+          <div class="set-info">
+            <div class="set-name">Clear all data</div>
+            <div class="set-desc">Deletes every assignment, event and weekly note in this account.</div>
+          </div>
+          <div class="set-control">
+            <button class="btn btn-danger-soft btn-sm" data-clear-data>Clear data</button>
           </div>
         </div>
       </div>
-    </div>
-  `;
+    </section>`;
 }
 
-/* ================================================================
-   EVENT BINDINGS
-   ================================================================ */
-function bindViewEvents(){
+/* ── Router ───────────────────────────────────────────────── */
+function currentRoute(){
+  const raw = (location.hash || '#/dashboard').split('?')[0];
+  const known = ['#/dashboard','#/assignments','#/calendar','#/planner','#/notes','#/settings'];
+  return known.includes(raw) ? raw : '#/dashboard';
+}
+
+function updateNav(route){
+  $$('.nav-item').forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === route);
+  });
+}
+
+function updateBadges(){
+  const open = Store.all('assignments').filter(a => !a.completed).length;
+  const badge = $('#badge-assignments');
+  if (!badge) return;
+  if (open > 0){ badge.textContent = open > 99 ? '99+' : String(open); badge.hidden = false; }
+  else badge.hidden = true;
+}
+
+function updateNotifDot(){
+  const dot = $('#notif-dot');
+  if (!dot) return;
+  dot.hidden = getNotifications().length === 0;
+}
+
+function updateChartAvg(){
+  const el = $('#chart-avg');
+  if (!el) return;
+  const vals = Store.all('effortReports').flatMap(r => Object.values(r.ratings || {})).map(Number).filter(n => n > 0);
+  el.textContent = vals.length ? (vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(1) : '–';
+}
+
+function render(){
   const view = $('#view');
-  if (!view) return;
+  if (!view || $('#app').hidden) return;
+  const route = currentRoute();
 
-  view.onclick = async e => {
-    const actionEl = e.target.closest('[data-action]');
-    const filterEl = e.target.closest('[data-filter]');
-    const legendEl = e.target.closest('[data-legend]');
-    if (legendEl){
-      const subj = legendEl.dataset.legend;
-      if (App.hiddenSeries.has(subj)) App.hiddenSeries.delete(subj);
-      else App.hiddenSeries.add(subj);
-      render(); return;
-    }
-    if (filterEl){
-      App.filters.assignments = filterEl.dataset.filter;
-      render(); return;
-    }
-    if (!actionEl) return;
-    const action = actionEl.dataset.action;
+  switch (route){
+    case '#/assignments': view.innerHTML = renderAssignmentsView(); break;
+    case '#/calendar':    view.innerHTML = renderCalendarView(); break;
+    case '#/planner':     view.innerHTML = renderPlannerView(); break;
+    case '#/notes':       view.innerHTML = renderNotesView(); break;
+    case '#/settings':    view.innerHTML = renderSettingsView(); break;
+    default:              view.innerHTML = renderDashboardView();
+  }
 
-    if (action === 'new-effort'){ openEffortModal(); }
-    if (action === 'edit-effort'){ openEffortModal(Store.get('effortReports', actionEl.dataset.id)); }
-    if (action === 'delete-effort'){
-      const id = actionEl.dataset.id;
-      if (await confirmDialog('Delete weekly note?', 'This week\'s ratings will be permanently removed.', 'Delete', true)){
-        await Store.remove('effortReports', id);
-        toast('Weekly note deleted', 'success');
+  updateNav(route);
+  updateBadges();
+  updateNotifDot();
+  updateChartAvg();
+
+  const sidebar = $('#sidebar');
+  if (sidebar) sidebar.classList.remove('open');
+  const scrim = $('#scrim');
+  if (scrim) scrim.hidden = true;
+  const menuBtn = $('#menu-btn');
+  if (menuBtn) menuBtn.setAttribute('aria-expanded', 'false');
+
+  view.scrollTop = 0;
+  window.scrollTo(0, 0);
+}
+
+/* ── Modals: assignment / event / weekly note ─────────────── */
+function openAssignmentModal(existing){
+  const isNew = !existing;
+  const a = existing || {
+    id: uid(), title: '', description: '', subject: 'General',
+    type: 'Assignment', dueDate: null, completed: false, manual: true, sources: []
+  };
+
+  const subjectOptions = [...new Set([
+    ...Store.all('courses').map(c => normalizeSubject(c.name)).filter(Boolean),
+    ...Store.all('assignments').map(x => x.subject || 'General'),
+    ...DEFAULT_SUBJECT_LIST
+  ])].sort();
+
+  openModal({
+    title: isNew ? 'New assignment' : 'Edit assignment',
+    subtitle: isNew ? 'Add something manually — it stays on your device unless you sync.' : '',
+    body: `
+      <div class="stack">
+        <div class="field">
+          <label class="label">Title</label>
+          <input class="input" id="am-title" value="${escapeHtml(a.title)}" placeholder="e.g. Algebra practice set">
+        </div>
+        <div class="field">
+          <label class="label">Description</label>
+          <textarea class="textarea" id="am-desc" placeholder="Optional details…">${escapeHtml(a.description || '')}</textarea>
+        </div>
+        <div class="row" style="gap:12px;align-items:flex-start">
+          <div class="field" style="flex:1">
+            <label class="label">Subject</label>
+            <select class="select" id="am-subject">
+              ${subjectOptions.map(s => `<option value="${escapeHtml(s)}" ${a.subject === s ? 'selected' : ''}>${escapeHtml(s)}</option>`).join('')}
+            </select>
+          </div>
+          <div class="field" style="flex:1">
+            <label class="label">Type</label>
+            <select class="select" id="am-type">
+              ${['Assignment','Homework','Test','Exam','Project','Event','Reminder'].map(t => `<option value="${t}" ${a.type === t ? 'selected' : ''}>${t}</option>`).join('')}
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Due date</label>
+          <input class="input" type="date" id="am-due" value="${a.dueDate ? toDateInput(a.dueDate) : ''}">
+        </div>
+      </div>`,
+    footer: `<button class="btn btn-ghost" data-close>Cancel</button>
+      <button class="btn btn-primary" id="am-save">${isNew ? 'Add assignment' : 'Save changes'}</button>`,
+    onMount(el, closeFn){
+      $('#am-save', el).addEventListener('click', async () => {
+        const title = sanitiseText($('#am-title', el).value, 200);
+        if (!title){ toast('Give it a title first.', 'warn'); return; }
+        const dueVal = $('#am-due', el).value;
+        const rec = {
+          ...a,
+          title,
+          description: sanitiseText($('#am-desc', el).value, 2000),
+          subject: $('#am-subject', el).value || 'General',
+          type: $('#am-type', el).value || 'Assignment',
+          dueDate: dueVal ? new Date(`${dueVal}T23:59:00`).getTime() : null,
+          manual: true
+        };
+        rec.priority = computePriority(rec);
+        await Store.put('assignments', rec);
+        closeFn();
         render();
-      }
+        toast(isNew ? 'Assignment added.' : 'Assignment updated.', 'success');
+      });
     }
-    if (action === 'toggle-done'){
-      const id = actionEl.dataset.id;
+  });
+}
+
+function openEventModal(existing){
+  const isNew = !existing;
+  const e = existing || { id: uid(), title: '', description: '', start: Date.now(), manual: true };
+
+  openModal({
+    title: isNew ? 'New calendar event' : 'Edit event',
+    body: `
+      <div class="stack">
+        <div class="field">
+          <label class="label">Title</label>
+          <input class="input" id="em-title" value="${escapeHtml(e.title)}" placeholder="e.g. Science fair setup">
+        </div>
+        <div class="field">
+          <label class="label">Description</label>
+          <textarea class="textarea" id="em-desc">${escapeHtml(e.description || '')}</textarea>
+        </div>
+        <div class="field">
+          <label class="label">Date</label>
+          <input class="input" type="date" id="em-date" value="${toDateInput(e.start)}">
+        </div>
+      </div>`,
+    footer: `<button class="btn btn-ghost" data-close>Cancel</button>
+      <button class="btn btn-primary" id="em-save">${isNew ? 'Add event' : 'Save changes'}</button>`,
+    onMount(el, closeFn){
+      $('#em-save', el).addEventListener('click', async () => {
+        const title = sanitiseText($('#em-title', el).value, 200);
+        if (!title){ toast('Give it a title first.', 'warn'); return; }
+        const dateVal = $('#em-date', el).value;
+        const start = dateVal ? new Date(`${dateVal}T09:00:00`).getTime() : Date.now();
+        await Store.put('events', {
+          ...e,
+          title,
+          description: sanitiseText($('#em-desc', el).value, 2000),
+          start,
+          source: e.source || 'Manual',
+          manual: true
+        });
+        closeFn();
+        render();
+        toast(isNew ? 'Event added.' : 'Event updated.', 'success');
+      });
+    }
+  });
+}
+
+function openWeeklyNoteModal(existing){
+  const isNew = !existing;
+  const report = existing
+    ? JSON.parse(JSON.stringify(existing))
+    : { id: uid(), date: getLastFriday(), ratings: {}, notes: '' };
+
+  const allSubjects = [...new Set([
+    ...DEFAULT_SUBJECT_LIST,
+    ...Store.all('courses').map(c => normalizeSubject(c.name)).filter(Boolean),
+    ...Store.all('assignments').map(a => a.subject || 'General'),
+    ...Object.keys(report.ratings || {})
+  ])].sort();
+
+  openModal({
+    title: isNew ? 'Weekly note' : 'Edit weekly note',
+    subtitle: 'Rate your effort from 1 (poor) to 5 (excellent) for each subject.',
+    wide: true,
+    body: `
+      <div class="field" style="margin-bottom:16px">
+        <label class="label">Week ending</label>
+        <input class="input" type="date" id="wn-date" value="${toDateInput(report.date)}" style="max-width:220px">
+      </div>
+      <div class="label" style="margin-bottom:8px">Subject ratings</div>
+      <div id="wn-rows" class="stack" style="gap:10px"></div>
+      <div class="row" style="margin-top:14px">
+        <select class="select" id="wn-add-subject" style="flex:1">
+          <option value="">Add a subject…</option>
+          ${allSubjects.map(s => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join('')}
+        </select>
+        <button class="btn btn-ghost" type="button" id="wn-add-btn">Add</button>
+      </div>
+      <div class="field" style="margin-top:18px">
+        <label class="label">Notes (optional)</label>
+        <textarea class="textarea" id="wn-notes" placeholder="How did the week go?">${escapeHtml(report.notes || '')}</textarea>
+      </div>`,
+    footer: `<button class="btn btn-ghost" data-close>Cancel</button>
+      <button class="btn btn-primary" id="wn-save">${isNew ? 'Save weekly note' : 'Save changes'}</button>`,
+    onMount(el, closeFn){
+      const rowsEl = $('#wn-rows', el);
+
+      const paint = () => {
+        const subs = Object.keys(report.ratings);
+        if (!subs.length){
+          rowsEl.innerHTML = `<div class="tiny muted">No subjects yet — add one below.</div>`;
+          return;
+        }
+        rowsEl.innerHTML = subs.map(s => `<div class="rating-row" data-subject="${escapeHtml(s)}">
+          <div class="subject-input"><input class="input" data-rename value="${escapeHtml(s)}"></div>
+          <div class="rating-btns">
+            ${[1,2,3,4,5].map(n => `<button type="button" class="rating-btn ${Number(report.ratings[s]) === n ? 'on' : ''}" data-rate="${n}">${n}</button>`).join('')}
+          </div>
+          <button type="button" class="icon-btn" data-remove style="width:32px;height:32px" aria-label="Remove subject">×</button>
+        </div>`).join('');
+      };
+
+      paint();
+
+      rowsEl.addEventListener('click', e => {
+        const row = e.target.closest('.rating-row');
+        if (!row) return;
+        const sub = row.getAttribute('data-subject');
+
+        const rateBtn = e.target.closest('[data-rate]');
+        if (rateBtn){
+          report.ratings[sub] = Number(rateBtn.getAttribute('data-rate'));
+          paint();
+          return;
+        }
+
+        if (e.target.closest('[data-remove]')){
+          delete report.ratings[sub];
+          paint();
+        }
+      });
+
+      rowsEl.addEventListener('change', e => {
+        const input = e.target.closest('[data-rename]');
+        if (!input) return;
+        const row = input.closest('.rating-row');
+        const oldKey = row.getAttribute('data-subject');
+        const newKey = sanitiseText(input.value, 60) || oldKey;
+        if (newKey === oldKey) return;
+        const val = report.ratings[oldKey];
+        delete report.ratings[oldKey];
+        report.ratings[newKey] = val;
+        paint();
+      });
+
+      const addSubject = () => {
+        const sel = $('#wn-add-subject', el);
+        const val = sanitiseText(sel.value, 60);
+        if (!val) return;
+        if (!(val in report.ratings)) report.ratings[val] = 3;
+        sel.value = '';
+        paint();
+      };
+
+      $('#wn-add-btn', el).addEventListener('click', addSubject);
+      $('#wn-add-subject', el).addEventListener('change', addSubject);
+
+      $('#wn-save', el).addEventListener('click', async () => {
+        const keys = Object.keys(report.ratings);
+        if (!keys.length){ toast('Add at least one subject.', 'warn'); return; }
+        const dateVal = $('#wn-date', el).value;
+        const rec = {
+          ...report,
+          date: dateVal ? new Date(`${dateVal}T12:00:00`).getTime() : getLastFriday(),
+          notes: sanitiseText($('#wn-notes', el).value, 2000),
+          ratings: { ...report.ratings }
+        };
+        await Store.put('effortReports', rec);
+        closeFn();
+        render();
+        toast(isNew ? 'Weekly note saved.' : 'Weekly note updated.', 'success');
+      });
+    }
+  });
+}
+
+/* ── Sync button with spinner ─────────────────────────────── */
+function setSyncStatus(state, text){
+  const el = $('#sync-status');
+  if (!el) return;
+  el.className = 'sync-chip' + (state ? ' ' + state : '');
+  const t = el.querySelector('.sync-text');
+  if (t) t.textContent = text;
+}
+
+function updateSyncStatusFromCache(){
+  if (!Store.cache) return;
+  const cls = Store.cache.integrations.classroom;
+  const gm = Store.cache.integrations.gmail;
+  const last = Math.max(cls?.lastSync || 0, gm?.lastSync || 0);
+  if (last) setSyncStatus('ok', `Synced ${relativeTime(last)}`);
+  else setSyncStatus('', 'Not synced yet');
+}
+
+const syncBtn = $('#sync-btn');
+
+async function runSyncWithSpinner(){
+  if (!syncBtn || syncBtn.classList.contains('busy')) return;
+
+  syncBtn.classList.add('busy');
+  syncBtn.disabled = true;
+  syncBtn.setAttribute('aria-busy', 'true');
+  setSyncStatus('busy', 'Syncing…');
+
+  let outcome = { results: [], errors: [] };
+  try {
+    outcome = await syncAll();
+  } catch (e){
+    outcome.errors.push(friendlyErr(e));
+  } finally {
+    syncBtn.classList.remove('busy');
+    syncBtn.disabled = false;
+    syncBtn.removeAttribute('aria-busy');
+  }
+
+  if (outcome.errors.length && !outcome.results.length){
+    setSyncStatus('err', 'Sync failed');
+    toast(outcome.errors[0], 'error', 'Sync failed');
+  } else if (outcome.errors.length){
+    setSyncStatus('err', 'Partly synced');
+    toast(outcome.errors[0], 'warn', 'Some sources failed');
+  } else {
+    setSyncStatus('ok', 'Synced just now');
+    toast(outcome.results.join(' · ') || 'Everything is up to date.', 'success', 'Sync complete');
+  }
+
+  render();
+}
+
+if (syncBtn) syncBtn.addEventListener('click', runSyncWithSpinner);
+
+/* ── Topbar wiring ────────────────────────────────────────── */
+function closeDropdowns(){
+  const np = $('#notif-panel'); if (np) np.hidden = true;
+  const ap = $('#account-panel'); if (ap) ap.hidden = true;
+  const nb = $('#notif-btn'); if (nb) nb.setAttribute('aria-expanded', 'false');
+  const ab = $('#account-btn'); if (ab) ab.setAttribute('aria-expanded', 'false');
+}
+
+function initTopbar(){
+  const menuBtn = $('#menu-btn');
+  const sidebar = $('#sidebar');
+  const scrim = $('#scrim');
+
+  menuBtn?.addEventListener('click', () => {
+    const open = sidebar.classList.toggle('open');
+    scrim.hidden = !open;
+    menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+
+  scrim?.addEventListener('click', () => {
+    sidebar.classList.remove('open');
+    scrim.hidden = true;
+    menuBtn?.setAttribute('aria-expanded', 'false');
+  });
+
+  const notifBtn = $('#notif-btn');
+  const notifPanel = $('#notif-panel');
+  notifBtn?.addEventListener('click', e => {
+    e.stopPropagation();
+    const willOpen = notifPanel.hidden;
+    closeDropdowns();
+    if (willOpen){
+      notifPanel.innerHTML = renderNotifPanel();
+      notifPanel.hidden = false;
+      notifBtn.setAttribute('aria-expanded', 'true');
+    }
+  });
+
+  const accountBtn = $('#account-btn');
+  const accountPanel = $('#account-panel');
+  accountBtn?.addEventListener('click', e => {
+    e.stopPropagation();
+    const willOpen = accountPanel.hidden;
+    closeDropdowns();
+    if (willOpen){
+      accountPanel.hidden = false;
+      accountBtn.setAttribute('aria-expanded', 'true');
+    }
+  });
+
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.dropdown')) closeDropdowns();
+    const routeEl = e.target.closest('[data-route]');
+    if (routeEl){
+      location.hash = routeEl.getAttribute('data-route');
+      closeDropdowns();
+    }
+  });
+
+  $$('[data-nav]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      location.hash = btn.getAttribute('data-nav');
+      closeDropdowns();
+    });
+  });
+
+  $('#signout-btn')?.addEventListener('click', async () => {
+    closeDropdowns();
+    const ok = await confirmDialog('Sign out?', 'You will need to sign in again to sync.', 'Sign out', true);
+    if (!ok) return;
+    await signOut();
+  });
+
+  /* Search */
+  const searchInput = $('#global-search');
+  const searchResults = $('#search-results');
+
+  const runSearch = q => {
+    if (!q || q.length < 2){ searchResults.hidden = true; return; }
+    const needle = q.toLowerCase();
+
+    const aHits = Store.all('assignments')
+      .filter(a => (a.title || '').toLowerCase().includes(needle) ||
+                   (a.subject || '').toLowerCase().includes(needle) ||
+                   (a.description || '').toLowerCase().includes(needle))
+      .slice(0, 6)
+      .map(a => ({ kind: 'Assignment', id: a.id, title: a.title, meta: a.subject || 'General' }));
+
+    const nHits = Store.all('effortReports')
+      .filter(r => (r.notes || '').toLowerCase().includes(needle))
+      .slice(0, 3)
+      .map(r => ({ kind: 'Weekly note', id: r.id, title: `Week ending ${fmtDate(r.date)}`, meta: 'Weekly note' }));
+
+    const eHits = Store.all('events')
+      .filter(e => (e.title || '').toLowerCase().includes(needle))
+      .slice(0, 3)
+      .map(e => ({ kind: 'Event', id: e.id, title: e.title, meta: fmtDate(e.start) }));
+
+    const hits = [...aHits, ...nHits, ...eHits];
+
+    if (!hits.length){
+      searchResults.innerHTML = `<div class="search-empty">No matches for “${escapeHtml(q)}”.</div>`;
+    } else {
+      searchResults.innerHTML = hits.map(h => `<div class="search-item" data-kind="${h.kind}" data-id="${escapeHtml(h.id)}">
+        <span class="t">${escapeHtml(h.title)}</span>
+        <span class="tiny muted">${escapeHtml(h.kind)} · ${escapeHtml(h.meta)}</span>
+      </div>`).join('');
+    }
+    searchResults.hidden = false;
+  };
+
+  searchInput?.addEventListener('input', () => runSearch(searchInput.value.trim()));
+  searchInput?.addEventListener('focus', () => { if (searchInput.value.trim().length >= 2) runSearch(searchInput.value.trim()); });
+
+  searchResults?.addEventListener('click', e => {
+    const item = e.target.closest('.search-item');
+    if (!item) return;
+    const kind = item.getAttribute('data-kind');
+    const id = item.getAttribute('data-id');
+    searchResults.hidden = true;
+    searchInput.value = '';
+
+    if (kind === 'Assignment'){
+      const a = Store.get('assignments', id);
+      if (a) openAssignmentModal(a);
+    } else if (kind === 'Weekly note'){
+      const r = Store.get('effortReports', id);
+      if (r) openWeeklyNoteModal(r);
+    } else if (kind === 'Event'){
+      location.hash = '#/calendar';
+    }
+  });
+
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.topbar-search')) searchResults.hidden = true;
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === '/' && !/input|textarea|select/i.test(e.target.tagName)){
+      e.preventDefault();
+      searchInput?.focus();
+    }
+    if (e.key === 'Escape'){ searchResults.hidden = true; closeDropdowns(); }
+  });
+}
+
+/* ── View event delegation ────────────────────────────────── */
+function initViewEvents(){
+  const view = $('#view');
+  if (!view || view.dataset.bound === '1') return;
+  view.dataset.bound = '1';
+
+  view.addEventListener('click', async e => {
+    /* assignment toggle */
+    const toggle = e.target.closest('[data-toggle]');
+    if (toggle){
+      const id = toggle.getAttribute('data-toggle');
       const a = Store.get('assignments', id);
       if (a){
-        const newCompleted = !a.completed;
-        await Store.put('assignments', { ...a, completed: newCompleted, completedAt: newCompleted ? now() : null });
-        render();
-      }
-    }
-    if (action === 'delete-assignment'){
-      const id = actionEl.dataset.id;
-      if (await confirmDialog('Delete assignment?', 'This will be removed from your list.', 'Delete', true)){
-        await Store.remove('assignments', id);
-        toast('Assignment deleted', 'success');
-        render();
-      }
-    }
-    if (action === 'add-assignment'){ openAssignmentModal(); }
-    if (action === 'cal-prev'){ App.calMonth--; if (App.calMonth < 0){ App.calMonth = 11; App.calYear--; } render(); }
-    if (action === 'cal-next'){ App.calMonth++; if (App.calMonth > 11){ App.calMonth = 0; App.calYear++; } render(); }
-    if (action === 'cal-today'){ App.calMonth = new Date().getMonth(); App.calYear = new Date().getFullYear(); render(); }
-    if (action === 'toggle-theme'){ await toggleTheme(); }
-    if (action === 'toggle-pref'){
-      const k = actionEl.dataset.key;
-      Store.cache.settings[k] = !Store.cache.settings[k];
-      await Store.saveUserDoc();
-      render();
-    }
-    if (action === 'add-cal'){
-      const name = $('#cal-name').value.trim();
-      const url = $('#cal-url').value.trim();
-      if (!url) return toast('Enter a URL', 'error');
-      Store.cache.settings.calendarSubscriptions.push({ name: name || url, url, addedAt: now() });
-      await Store.saveUserDoc();
-      toast('Calendar added', 'success');
-      syncAll({ silent: true });
-      render();
-    }
-    if (action === 'add-sacred-heart'){
-      if (Store.cache.settings.calendarSubscriptions.some(s => s.url === SACRED_HEART_CALENDAR.url)) return toast('Already added', 'warn');
-      Store.cache.settings.calendarSubscriptions.push({ ...SACRED_HEART_CALENDAR, addedAt: now() });
-      await Store.saveUserDoc();
-      toast('Sacred Heart calendar added', 'success');
-      syncAll({ silent: true });
-      render();
-    }
-    if (action === 'remove-cal'){
-      const idx = +actionEl.dataset.idx;
-      Store.cache.settings.calendarSubscriptions.splice(idx, 1);
-      await Store.saveUserDoc();
-      render();
-    }
-    if (action === 'signout'){ await signOut(); }
-    if (action === 'clear-all'){
-      if (await confirmDialog('Clear all data?', 'All assignments, events and weekly notes will be removed. This cannot be undone.', 'Clear everything', true)){
-        await Store.removeAll();
-        Store.persistNow();
-        await Store.saveUserDoc();
-        toast('All data cleared', 'success');
-        render();
-      }
-    }
-  };
-
-  view.onchange = async e => {
-    const t = e.target;
-    if (t.id === 'subject-filter'){ App.filters.subject = t.value; render(); return; }
-    if (t.id === 'sort-filter'){ App.filters.sort = t.value; render(); return; }
-    if (t.dataset.action === 'set-lookback'){ Store.cache.settings.emailLookbackDays = Math.max(1, Math.min(365, +t.value || 30)); await Store.saveUserDoc(); }
-    if (t.dataset.action === 'set-senders'){ Store.cache.settings.trustedSenders = t.value.split(',').map(s=>s.trim()).filter(Boolean); await Store.saveUserDoc(); }
-    if (t.dataset.action === 'set-domains'){ Store.cache.settings.trustedDomains = t.value.split(',').map(s=>s.trim()).filter(Boolean); await Store.saveUserDoc(); }
-    if (t.dataset.action === 'set-keywords'){ Store.cache.settings.emailKeywords = t.value; await Store.saveUserDoc(); }
-  };
-
-  view.oninput = e => {
-    if (e.target.id === 'asg-search'){
-      App.filters.search = e.target.value;
-      clearTimeout(App._searchTimer);
-      App._searchTimer = setTimeout(() => {
-        render();
-        const newInput = $('#asg-search');
-        if (newInput){ newInput.focus(); newInput.setSelectionRange(newInput.value.length, newInput.value.length); }
-      }, 250);
-    }
-  };
-}
-
-/* ================================================================
-   MODALS
-   ================================================================ */
-function getKnownSubjects(){
-  const set = new Set();
-  Store.all('courses').forEach(c => { if (c.name) set.add(normalizeSubject(c.name)); });
-  Store.all('assignments').forEach(a => { if (a.subject) set.add(a.subject); });
-  Store.all('effortReports').forEach(r => Object.keys(r.ratings || {}).forEach(s => set.add(s)));
-  return [...set].sort();
-}
-
-function renderSubjectRatingRow(subject, rating){
-  return `
-    <div class="rating-row" data-rating="${rating || ''}">
-      <input class="input subject-input" type="text" value="${escapeHtml(subject || '')}" placeholder="Subject">
-      <div class="rating-btns">
-        ${[1,2,3,4,5].map(r => `<button type="button" class="rating-btn ${rating === r ? 'on' : ''}" data-rate="${r}">${r}</button>`).join('')}
-      </div>
-      <button type="button" class="icon-btn" data-remove-row aria-label="Remove" style="width:28px;height:28px;color:var(--text-3)">${ICON.x}</button>
-    </div>
-  `;
-}
-
-function openEffortModal(existing = null){
-  const subjects = getKnownSubjects();
-  const initialRatings = existing?.ratings || {};
-  const initialDate = existing?.date ? new Date(existing.date).toISOString().slice(0,10) : new Date(getLastFriday()).toISOString().slice(0,10);
-
-  const subjectRows = subjects.length
-    ? subjects.map(s => renderSubjectRatingRow(s, initialRatings[s]))
-    : renderSubjectRatingRow('', null);
-
-  openModal({
-    title: existing ? 'Edit weekly note' : 'New weekly note',
-    subtitle: 'Rate your effort in each subject from 1 (low) to 5 (high).',
-    body: `
-      <div class="stack">
-        <div class="field">
-          <label class="label">Week of (Friday)</label>
-          <input class="input" type="date" id="effort-date" value="${initialDate}">
-        </div>
-        <div class="field">
-          <label class="label">Ratings</label>
-          <div id="subject-ratings" class="stack" style="gap:8px">${subjectRows}</div>
-          <button type="button" class="btn btn-ghost btn-sm" id="add-subject-row" style="align-self:flex-start;margin-top:6px">+ Add subject</button>
-        </div>
-        <div class="field">
-          <label class="label">Notes (optional)</label>
-          <textarea class="textarea" id="effort-notes" rows="3" placeholder="Anything worth remembering about this week?">${escapeHtml(existing?.notes || '')}</textarea>
-        </div>
-      </div>
-    `,
-    footer: `<button class="btn btn-ghost" data-close>Cancel</button><button class="btn btn-primary" id="save-effort">${existing ? 'Save' : 'Save note'}</button>`,
-    onMount(el, closeFn){
-      // Initialize ratings from data attributes
-      $$('.rating-row', el).forEach(row => {
-        row.dataset.rating = row.dataset.rating || '';
-      });
-
-      $('#add-subject-row', el).onclick = () => {
-        const container = $('#subject-ratings', el);
-        const wrapper = document.createElement('div');
-        wrapper.innerHTML = renderSubjectRatingRow('', null);
-        container.appendChild(wrapper.firstElementChild);
-      };
-
-      el.addEventListener('click', e => {
-        const ratingBtn = e.target.closest('[data-rate]');
-        if (ratingBtn){
-          const row = ratingBtn.closest('.rating-row');
-          if (!row) return;
-          const val = ratingBtn.dataset.rate;
-          if (row.dataset.rating === val){
-            row.dataset.rating = '';
-            $$('.rating-btn', row).forEach(b => b.classList.remove('on'));
-          } else {
-            row.dataset.rating = val;
-            $$('.rating-btn', row).forEach(b => b.classList.toggle('on', b === ratingBtn));
-          }
-        }
-        const removeBtn = e.target.closest('[data-remove-row]');
-        if (removeBtn){
-          const row = removeBtn.closest('.rating-row');
-          if (row && $$('.rating-row', el).length > 1) row.remove();
-        }
-      });
-
-      $('#save-effort', el).onclick = async () => {
-        const dateStr = $('#effort-date', el).value;
-        if (!dateStr) return toast('Choose a date', 'error');
-        const date = startOfDay(new Date(dateStr + 'T12:00:00'));
-
-        const ratings = {};
-        $$('.rating-row', el).forEach(row => {
-          const subj = ($('.subject-input', row)?.value || '').trim();
-          const r = +row.dataset.rating || 0;
-          if (subj && r >= 1 && r <= 5){
-            ratings[normalizeSubject(subj)] = r;
-          }
+        const completed = !a.completed;
+        await Store.put('assignments', {
+          ...a,
+          completed,
+          completedAt: completed ? now() : null
         });
-        if (!Object.keys(ratings).length) return toast('Add at least one rating', 'error');
+        render();
+      }
+      return;
+    }
 
-        if (!existing){
-          const dupe = Store.all('effortReports').find(r => startOfDay(new Date(r.date)) === date);
-          if (dupe) return toast('A note already exists for that week', 'warn');
+    /* assignment edit */
+    const edit = e.target.closest('[data-edit]');
+    if (edit){
+      const a = Store.get('assignments', edit.getAttribute('data-edit'));
+      if (a) openAssignmentModal(a);
+      return;
+    }
+
+    /* assignment delete */
+    const del = e.target.closest('[data-del]');
+    if (del){
+      const id = del.getAttribute('data-del');
+      const a = Store.get('assignments', id);
+      if (!a) return;
+      const ok = await confirmDialog('Delete assignment?', `“${a.title}” will be removed from your list.`, 'Delete', true);
+      if (ok){
+        await Store.remove('assignments', id);
+        render();
+        toast('Assignment deleted.', 'success');
+      }
+      return;
+    }
+
+    if (e.target.closest('[data-add-assignment]')){ openAssignmentModal(null); return; }
+    if (e.target.closest('[data-add-event]')){ openEventModal(null); return; }
+    if (e.target.closest('[data-add-note]')){ openWeeklyNoteModal(null); return; }
+
+    /* assignment filters */
+    const seg = e.target.closest('[data-seg]');
+    if (seg){
+      assignFilter.status = seg.getAttribute('data-seg');
+      render();
+      return;
+    }
+
+    /* calendar navigation */
+    if (e.target.closest('[data-cal-prev]')){
+      calMonth--;
+      if (calMonth < 0){ calMonth = 11; calYear--; }
+      render();
+      return;
+    }
+    if (e.target.closest('[data-cal-next]')){
+      calMonth++;
+      if (calMonth > 11){ calMonth = 0; calYear++; }
+      render();
+      return;
+    }
+    if (e.target.closest('[data-cal-today]')){
+      calMonth = new Date().getMonth();
+      calYear = new Date().getFullYear();
+      render();
+      return;
+    }
+
+    /* chart legend toggle */
+    const legend = e.target.closest('[data-legend]');
+    if (legend){
+      const sub = legend.getAttribute('data-legend');
+      if (chartState.hidden.has(sub)) chartState.hidden.delete(sub);
+      else chartState.hidden.add(sub);
+      const block = $('#effort-chart-block');
+      if (block) block.innerHTML = renderEffortChartBlock();
+      return;
+    }
+
+    /* settings — calendar subs */
+    const addSub = e.target.closest('[data-add-sub]');
+    if (addSub){
+      const name = sanitiseText($('#sub-name').value, 80);
+      const url = $('#sub-url').value.trim();
+      if (!url){ toast('Paste an .ics feed URL first.', 'warn'); return; }
+      Store.cache.settings.calendarSubscriptions.push({ name: name || 'Calendar', url, addedAt: now() });
+      await Store.saveUserDoc();
+      Store.persistNow();
+      render();
+      toast('Calendar added — hit Sync to import it.', 'success');
+      return;
+    }
+
+    const delSub = e.target.closest('[data-del-sub]');
+    if (delSub){
+      const i = Number(delSub.getAttribute('data-del-sub'));
+      Store.cache.settings.calendarSubscriptions.splice(i, 1);
+      await Store.saveUserDoc();
+      Store.persistNow();
+      render();
+      return;
+    }
+
+    const syncCal = e.target.closest('[data-sync-cal]');
+    if (syncCal){
+      const btn = syncCal;
+      btn.disabled = true;
+      btn.textContent = 'Syncing…';
+      try {
+        const r = await syncCalendarSubscriptions();
+        toast(r.added ? `${r.added} event(s) imported.` : 'Calendar already up to date.', 'success');
+      } catch (err){
+        toast(friendlyErr(err), 'error', 'Calendar sync failed');
+      } finally {
+        render();
+      }
+      return;
+    }
+
+    /* settings — targeted syncs */
+    const syncOne = e.target.closest('[data-sync]');
+    if (syncOne){
+      const which = syncOne.getAttribute('data-sync');
+      syncOne.disabled = true;
+      const original = syncOne.textContent;
+      syncOne.textContent = 'Syncing…';
+      try {
+        if (which === 'classroom'){
+          const r = await syncClassroom();
+          toast(`Classroom: ${r.added} new, ${r.merged} updated.`, 'success');
+        } else {
+          const r = await syncGmail();
+          toast(`Email: ${r.added} new, ${r.merged} updated.`, 'success');
         }
-
-        const record = {
-          id: existing?.id || uid(),
-          date,
-          ratings,
-          notes: sanitiseText($('#effort-notes', el).value, 2000),
-          createdAt: existing?.createdAt || now()
-        };
-        await Store.put('effortReports', record);
-        closeFn();
-        toast(existing ? 'Weekly note updated' : 'Weekly note saved', 'success');
+      } catch (err){
+        toast(friendlyErr(err), 'error', 'Sync failed');
+        syncOne.textContent = original;
+      } finally {
         render();
-      };
+      }
+      return;
+    }
+
+    /* clear data */
+    if (e.target.closest('[data-clear-data]')){
+      const ok = await confirmDialog('Clear all data?',
+        'Every assignment, event, weekly note and integration will be permanently deleted.', 'Delete everything', true);
+      if (ok){
+        await Store.removeAll();
+        render();
+        toast('All data cleared.', 'success');
+      }
+      return;
+    }
+  });
+
+  view.addEventListener('change', async e => {
+    const id = e.target.id;
+
+    if (id === 'filter-subject'){
+      assignFilter.subject = e.target.value;
+      render();
+      return;
+    }
+    if (id === 'filter-sort'){
+      assignFilter.sort = e.target.value;
+      render();
+      return;
+    }
+
+    const s = Store.cache.settings;
+
+    if (id === 'set-theme'){
+      s.theme = e.target.value;
+      applyTheme(s.theme);
+      Store.persistNow();
+      await Store.saveUserDoc();
+      return;
+    }
+    if (id === 'set-notify-assignment'){ s.notifyNewAssignment = e.target.checked; }
+    if (id === 'set-notify-due'){ s.notifyDueSoon = e.target.checked; }
+    if (id === 'set-notify-test'){ s.notifyNewTest = e.target.checked; }
+    if (id === 'set-lookback'){
+      let n = Number(e.target.value);
+      if (!Number.isFinite(n) || n <= 0) n = 30;
+      s.emailLookbackDays = Math.min(365, Math.max(1, Math.round(n)));
+      e.target.value = s.emailLookbackDays;
+    }
+    if (id === 'set-domains'){
+      s.trustedDomains = e.target.value.split(/\n+/).map(x => x.trim()).filter(Boolean);
+    }
+    if (id === 'set-keywords'){
+      s.emailKeywords = e.target.value.trim();
+    }
+
+    if (['set-notify-assignment','set-notify-due','set-notify-test','set-lookback','set-domains','set-keywords'].includes(id)){
+      Store.persistNow();
+      await Store.saveUserDoc();
+      updateNotifDot();
     }
   });
 }
 
-function openAssignmentModal(defaultType = "Assignment"){
-  openModal({
-    title: 'Add assignment',
-    body: `
-      <div class="stack">
-        <div class="field"><label class="label">Title</label><input class="input" id="a-title" placeholder="e.g. Chapter 5 questions"></div>
-        <div class="field"><label class="label">Subject</label><input class="input" id="a-subject" placeholder="e.g. Mathematics"></div>
-        <div class="field"><label class="label">Type</label>
-          <select class="select" id="a-type">
-            <option ${defaultType === 'Assignment' ? 'selected' : ''}>Assignment</option><option ${defaultType === 'Homework' ? 'selected' : ''}>Homework</option><option ${defaultType === 'Test' ? 'selected' : ''}>Test</option><option ${defaultType === 'Exam' ? 'selected' : ''}>Exam</option><option ${defaultType === 'Project' ? 'selected' : ''}>Project</option><option ${defaultType === 'Event' ? 'selected' : ''}>Event</option>
-          </select>
-        </div>
-        <div class="field"><label class="label">Due date</label><input class="input" type="date" id="a-due"></div>
-        <div class="field"><label class="label">Notes</label><textarea class="textarea" id="a-desc" rows="3"></textarea></div>
-      </div>
-    `,
-    footer: `<button class="btn btn-ghost" data-close>Cancel</button><button class="btn btn-primary" id="save-asg">Add</button>`,
-    onMount(el, closeFn){
-      $('#save-asg', el).onclick = async () => {
-        const title = $('#a-title', el).value.trim();
-        if (!title) return toast('Title required', 'error');
-        const due = $('#a-due', el).value;
-        const record = {
-          id: uid(),
-          title: sanitiseText(title, 200),
-          description: sanitiseText($('#a-desc', el).value, 4000),
-          subject: normalizeSubject($('#a-subject', el).value),
-          type: $('#a-type', el).value,
-          dueDate: due ? new Date(due + 'T23:59:00').getTime() : null,
-          manual: true, completed: false,
-          sources: [{ source: 'Manual', url: '', addedAt: now() }],
-          createdAt: now()
-        };
-        record.priority = computePriority(record);
-        await Store.put('assignments', record);
-        closeFn();
-        toast('Assignment added', 'success');
-        render();
-      };
+/* ── Quick add ────────────────────────────────────────────── */
+function initQuickAdd(){
+  const trigger = $('#quick-add-trigger');
+  const menu = $('#quick-add-menu');
+  if (!trigger || !menu) return;
+
+  trigger.addEventListener('click', e => {
+    e.stopPropagation();
+    const open = menu.hidden;
+    menu.hidden = !open;
+    trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+
+  menu.addEventListener('click', e => {
+    const opt = e.target.closest('[data-quick-add]');
+    if (!opt) return;
+    menu.hidden = true;
+    trigger.setAttribute('aria-expanded', 'false');
+    const which = opt.getAttribute('data-quick-add');
+    if (which === 'weekly-note') openWeeklyNoteModal(null);
+    else if (which === 'assignment') openAssignmentModal(null);
+    else if (which === 'event') openEventModal(null);
+  });
+
+  document.addEventListener('click', e => {
+    if (!e.target.closest('#quick-add')){
+      menu.hidden = true;
+      trigger.setAttribute('aria-expanded', 'false');
     }
   });
 }
 
-/* ================================================================
-   AUTH & BOOT
-   ================================================================ */
-async function toggleTheme(){
-  const cur = Store.cache.settings.theme === 'dark' ? 'light' : 'dark';
-  Store.cache.settings.theme = cur;
-  document.documentElement.dataset.theme = cur;
-  await Store.saveUserDoc();
+/* ── Theme / profile ──────────────────────────────────────── */
+function applyTheme(t){
+  document.documentElement.setAttribute('data-theme', t === 'dark' ? 'dark' : 'light');
+}
+
+function renderProfile(user){
+  const fallback = `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='32' fill='%234f46e5'/><text x='32' y='42' font-size='28' font-family='sans-serif' font-weight='700' fill='white' text-anchor='middle'>${encodeURIComponent((user.name || 'S')[0].toUpperCase())}</text></svg>`;
+  const src = user.photo || fallback;
+
+  const av = $('#avatar');
+  if (av) av.src = src;
+  const avLg = $('#avatar-lg');
+  if (avLg) avLg.src = src;
+
+  const nm = $('#account-name');
+  if (nm) nm.textContent = user.name || 'Student';
+
+  const em = $('#account-email');
+  if (em) em.textContent = user.email || '';
+}
+
+/* ── Auth / session ───────────────────────────────────────── */
+let sessionStarted = false;
+
+function showAuth(){
+  $('#boot').classList.add('gone');
+  $('#app').hidden = true;
+  $('#quick-add').hidden = true;
+  $('#auth-screen').hidden = false;
+}
+
+function saveDemoSession(){
+  try { localStorage.setItem(LS_DEMO, JSON.stringify({ on: true, at: now() })); } catch {}
+}
+function loadDemoSession(){
+  try {
+    const raw = localStorage.getItem(LS_DEMO);
+    if (!raw) return null;
+    const v = JSON.parse(raw);
+    return v.on ? { uid: 'demo-user', name: 'Demo Student', email: 'demo@scribe.app', photo: '', real: false } : null;
+  } catch { return null; }
+}
+function clearDemoSession(){
+  try { localStorage.removeItem(LS_DEMO); } catch {}
+}
+
+async function startSession(user){
+  if (sessionStarted) return;
+  sessionStarted = true;
+
+  $('#auth-screen').hidden = true;
+  $('#boot').classList.add('gone');
+
+  await Store.init(user);
+  if (Store.mode === 'firebase'){
+    try { await Store.loadFromFirestore(); } catch (e){ console.warn('Firestore load failed', e); }
+  }
+
+  applyTheme(Store.cache.settings.theme);
+  renderProfile(user);
+
+  $('#app').hidden = false;
+  $('#quick-add').hidden = false;
+
+  initTopbar();
+  initViewEvents();
+  initQuickAdd();
+
+  window.removeEventListener('hashchange', render);
+  window.addEventListener('hashchange', render);
+
+  if (!location.hash) location.hash = '#/dashboard';
   render();
+  updateSyncStatusFromCache();
+
+  if (!Store.cache.settings.onboardingSeen){
+    Store.cache.settings.onboardingSeen = true;
+    Store.persistNow();
+    Store.saveUserDoc();
+    setTimeout(() => {
+      if (Store.mode === 'local'){
+        toast('Demo mode — this data lives in your browser only.', 'info', 'Welcome to Scribe');
+      } else {
+        toast('Hit Sync to pull in Classroom and email.', 'info', 'Welcome to Scribe');
+      }
+    }, 500);
+  }
+}
+
+async function signInWithGoogle(){
+  if (!FB.ready){ toast('Firebase not available.', 'error'); return; }
+  const { GoogleAuthProvider, signInWithPopup } = FB.mod;
+  const provider = new GoogleAuthProvider();
+  GOOGLE_SCOPES.forEach(s => provider.addScope(s));
+  provider.setCustomParameters({ prompt: 'consent' });
+
+  const result = await signInWithPopup(FB.auth, provider);
+  try {
+    const cred = GoogleAuthProvider.credentialFromResult(result);
+    if (cred?.accessToken) GoogleServices.setToken(cred.accessToken, 3600, GOOGLE_SCOPES);
+  } catch (e){ console.warn('Token capture failed', e); }
+
+  clearDemoSession();
+  sessionStarted = false;
+  await startSession({
+    uid: result.user.uid,
+    name: result.user.displayName || 'Student',
+    email: result.user.email || '',
+    photo: result.user.photoURL || '',
+    real: true
+  });
 }
 
 async function signOut(){
   GoogleServices.clear();
-  try { if (FB.auth) await FB.mod.signOut(FB.auth); } catch {}
-  localStorage.removeItem(LS_SESSION);
-  sessionStorage.removeItem('scribe.demo');
-  location.reload();
+  clearDemoSession();
+  try { if (FB.ready) await FB.mod.signOut(FB.auth); } catch {}
+  sessionStarted = false;
+
+  Store.uid = null;
+  Store.cache = null;
+
+  $('#app').hidden = true;
+  $('#quick-add').hidden = true;
+  $('#view').innerHTML = '';
+  $('#auth-screen').hidden = false;
+  history.replaceState(null, '', location.pathname);
 }
 
-async function enterApp(user){
-  App.user = user;
-  await Store.init(user);
-  if (Store.mode === 'firebase') await Store.loadFromFirestore();
-  document.documentElement.dataset.theme = Store.cache.settings.theme || 'light';
-  $('#auth-screen').hidden = true;
-  $('#app').hidden = false;
-  const avatar = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName||'S')}&background=4f46e5&color=fff`;
-  $('#avatar').src = avatar;
-  $('#avatar-lg').src = avatar;
-  $('#account-name').textContent = user.displayName || 'Student';
-  $('#account-email').textContent = user.email || '';
-  render();
-  renderNotifDot();
-  if (Store.mode === 'firebase'){ setTimeout(() => syncAll({ silent: true }), 500); }
-  else { setSyncUI('ok', 'Local mode'); }
+function startDemo(){
+  saveDemoSession();
+  sessionStarted = false;
+  startSession({ uid: 'demo-user', name: 'Demo Student', email: 'demo@scribe.app', photo: '', real: false });
 }
 
-async function bootstrap(){
-  const cfg = loadConfig();
-  try { await initFirebase(cfg); } catch (e){ console.warn('Firebase init failed', e); }
-
-  const storedSession = localStorage.getItem(LS_SESSION);
-  let user = null;
-  if (storedSession){
-    try { user = JSON.parse(storedSession); } catch {}
-  } else if (sessionStorage.getItem('scribe.demo')){
-    user = { uid: 'demo-user', displayName: 'Demo Student', email: 'demo@scribe.app', real: false };
+/* ── Boot ─────────────────────────────────────────────────── */
+async function boot(){
+  try {
+    await initFirebase(loadConfig());
+  } catch (e){
+    console.warn('Firebase init failed — demo/local only.', e);
   }
 
   GoogleServices.restore();
-  $('#boot').classList.add('gone');
 
-  if (user){
-    await enterApp(user);
+  $('#enter-btn')?.addEventListener('click', async () => {
+    const errBox = $('#google-error');
+    errBox.hidden = true;
+    try {
+      await signInWithGoogle();
+    } catch (e){
+      const msg = String(e?.message || e);
+      errBox.textContent = /popup-closed|cancelled/i.test(msg)
+        ? 'Sign-in was cancelled.'
+        : /unauthorized-domain|configuration/i.test(msg)
+          ? 'This domain is not authorised in Firebase Authentication.'
+          : `Sign-in failed: ${msg.slice(0, 160)}`;
+      errBox.hidden = false;
+    }
+  });
+
+  $('#demo-btn')?.addEventListener('click', startDemo);
+
+  let resolved = false;
+
+  const fallback = () => {
+    if (resolved || sessionStarted) return;
+    resolved = true;
+    const demo = loadDemoSession();
+    if (demo) startSession(demo);
+    else showAuth();
+  };
+
+  if (FB.ready){
+    FB.mod.onAuthStateChanged(FB.auth, async user => {
+      if (user){
+        if (resolved || sessionStarted) return;
+        resolved = true;
+        await startSession({
+          uid: user.uid,
+          name: user.displayName || 'Student',
+          email: user.email || '',
+          photo: user.photoURL || '',
+          real: true
+        });
+      } else {
+        fallback();
+      }
+    });
+    setTimeout(fallback, 1400);
   } else {
-    $('#auth-screen').hidden = false;
+    fallback();
   }
 }
 
-/* ── Auth buttons ─────────────────────────────────────────── */
-$('#enter-btn').addEventListener('click', async () => {
-  if (!FB.ready){
-    return toast('Firebase not configured — try the demo instead', 'error');
-  }
-  try {
-    const provider = new FB.mod.GoogleAuthProvider();
-    for (const scope of GOOGLE_SCOPES) provider.addScope(scope);
-    const result = await FB.mod.signInWithPopup(FB.auth, provider);
-    const credential = FB.mod.GoogleAuthProvider.credentialFromResult(result);
-    if (credential?.accessToken) GoogleServices.setToken(credential.accessToken, 3600, GOOGLE_SCOPES);
-    const u = result.user;
-    const user = { uid: u.uid, displayName: u.displayName || 'Student', email: u.email, photoURL: u.photoURL, real: true };
-    localStorage.setItem(LS_SESSION, JSON.stringify(user));
-    $('#google-error').hidden = true;
-    await enterApp(user);
-  } catch (e){
-    console.error(e);
-    $('#google-error').hidden = false;
-    $('#google-error').textContent = e?.message || 'Sign in failed. Check your internet or try the demo.';
-  }
-});
-
-$('#demo-btn').addEventListener('click', async () => {
-  const user = { uid: 'demo-user', displayName: 'Demo Student', email: 'demo@scribe.app', real: false };
-  sessionStorage.setItem('scribe.demo', '1');
-  await enterApp(user);
-});
-
-$('#signout-btn').addEventListener('click', signOut);
-
-/* ── Menu / dropdowns ─────────────────────────────────────── */
-$('#menu-btn').addEventListener('click', () => {
-  const sb = $('#sidebar');
-  const open = sb.classList.toggle('open');
-  $('#scrim').hidden = !open;
-  $('#menu-btn').setAttribute('aria-expanded', open);
-});
-$('#scrim').addEventListener('click', () => {
-  $('#sidebar').classList.remove('open');
-  $('#scrim').hidden = true;
-  $('#menu-btn').setAttribute('aria-expanded', false);
-});
-
-document.addEventListener('click', e => {
-  const notifBtn = e.target.closest('#notif-btn');
-  const accBtn = e.target.closest('#account-btn');
-  const navBtn = e.target.closest('[data-nav]');
-  const notifPanel = $('#notif-panel');
-  const accPanel = $('#account-panel');
-  if (navBtn){ location.hash = navBtn.dataset.nav; accPanel.hidden = true; notifPanel.hidden = true; return; }
-  if (notifBtn){
-    notifPanel.hidden = !notifPanel.hidden;
-    if (!notifPanel.hidden){ accPanel.hidden = true; renderNotifPanel(); }
-  } else if (accBtn){
-    accPanel.hidden = !accPanel.hidden;
-    if (!accPanel.hidden) notifPanel.hidden = true;
-  } else if (!e.target.closest('.dropdown-panel')){
-    notifPanel.hidden = true; accPanel.hidden = true;
-  }
-});
-
-$('#sync-btn').addEventListener('click', () => syncAll());
-
-/* Quick-add menu */
-const quickAddTrigger = $('#quick-add-trigger');
-const quickAddMenu = $('#quick-add-menu');
-quickAddTrigger.addEventListener('click', () => {
-  const isOpen = quickAddMenu.hidden;
-  quickAddMenu.hidden = !isOpen;
-  quickAddTrigger.setAttribute('aria-expanded', String(isOpen));
-});
-quickAddMenu.addEventListener('click', e => {
-  const option = e.target.closest('[data-quick-add]');
-  if (!option) return;
-  quickAddMenu.hidden = true;
-  quickAddTrigger.setAttribute('aria-expanded', 'false');
-  const type = option.dataset.quickAdd;
-  if (type === 'weekly-note') openEffortModal();
-  if (type === 'assignment') openAssignmentModal('Assignment');
-  if (type === 'event') openAssignmentModal('Event');
-});
-document.addEventListener('click', e => {
-  if (!e.target.closest('#quick-add')){
-    quickAddMenu.hidden = true;
-    quickAddTrigger.setAttribute('aria-expanded', 'false');
-  }
-});
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape'){
-    quickAddMenu.hidden = true;
-    quickAddTrigger.setAttribute('aria-expanded', 'false');
-  }
-});
-
-/* ── Global search ────────────────────────────────────────── */
-const searchInput = $('#global-search');
-searchInput.addEventListener('input', () => {
-  const q = searchInput.value.trim().toLowerCase();
-  const results = $('#search-results');
-  if (!q){ results.hidden = true; return; }
-  const items = [
-    ...Store.all('assignments').map(a => ({ title: a.title, sub: a.subject || a.type, href:'#/assignments' })),
-    ...Store.all('effortReports').map(n => ({ title: 'Weekly note – ' + fmtDate(n.date), sub: Object.entries(n.ratings||{}).map(([s,v]) => `${s} ${v}/5`).join(' · '), href:'#/notes' }))
-  ].filter(i => (i.title + ' ' + (i.sub||'')).toLowerCase().includes(q)).slice(0, 8);
-  if (!items.length){ results.innerHTML = '<div class="search-empty">No matches</div>'; }
-  else {
-    results.innerHTML = items.map(i => `<div class="search-item" data-href="${i.href}"><div class="t">${escapeHtml(i.title)}</div><div class="tiny muted">${escapeHtml(i.sub||'')}</div></div>`).join('');
-  }
-  results.hidden = false;
-  results.onclick = ev => {
-    const item = ev.target.closest('[data-href]');
-    if (item){ location.hash = item.dataset.href; results.hidden = true; searchInput.value = ''; }
-  };
-});
-
-document.addEventListener('keydown', e => {
-  if (e.key === '/' && !['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName)){
-    e.preventDefault(); searchInput.focus();
-  }
-});
-
-window.addEventListener('hashchange', render);
-
-/* ── Boot ─────────────────────────────────────────────────── */
-bootstrap();
+boot();
 </script>
 </body>
 </html>
