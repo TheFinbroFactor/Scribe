@@ -684,6 +684,46 @@ code{font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;font-size:12.5p
 @media(max-width:700px){.results-average{width:100%;justify-content:space-between;}.results-average>div{align-items:flex-start;}.results-average strong{font-size:20px;}.results-table th,.results-table td{padding:8px 9px;}}
 @media(max-width:900px){.app.sidebar-collapsed .sidebar{display:flex;}}
 
+
+.subject-settings-hint{font-size:11px;color:var(--text-3);margin-top:12px;line-height:1.45}
+.results-subject-tools{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.results-subject-tools>.checkbox{white-space:nowrap}
+.email-inbox-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:16px}
+.email-inbox-stats>div{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:13px 15px;display:flex;flex-direction:column;gap:3px}
+.email-inbox-stats strong{font-size:22px;font-weight:800;line-height:1.1;font-variant-numeric:tabular-nums}
+.email-inbox-stats span{font-size:11px;color:var(--text-3)}
+.email-inbox-card{margin-bottom:12px}
+.email-inbox-subject{font-weight:700;font-size:14px;min-width:0}
+.email-inbox-meta{font-size:11.5px;color:var(--text-3);margin-top:4px}
+.email-inbox-summary{font-size:13px;line-height:1.6;margin-top:12px}
+.email-inbox-points{font-size:12px;color:var(--text-2);padding-left:20px;margin:9px 0 0}
+@media(max-width:700px){.email-inbox-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.results-subject-tools{width:100%;justify-content:space-between}.results-subject-tools .results-average{flex:1}}
+
+
+/* School email inbox */
+.email-scan-status{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;padding:14px 16px;margin-bottom:14px}
+.email-scan-stat{display:flex;flex-direction:column;gap:3px;min-width:0}
+.email-scan-stat strong{font-size:20px;line-height:1.1;font-variant-numeric:tabular-nums}
+.email-scan-stat span{font-size:11px;color:var(--text-2)}
+.email-filter-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:14px 0}
+.email-filter-row .select{width:auto;min-width:210px}
+.email-record-list{display:flex;flex-direction:column;gap:12px}
+.email-record{padding:16px 18px;min-width:0}
+.email-record-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
+.email-record-main{min-width:0;flex:1}
+.email-record-title{font-size:15px;margin-top:9px;overflow-wrap:anywhere}
+.email-record-meta{font-size:11.5px;color:var(--text-3);margin-top:4px;overflow-wrap:anywhere}
+.email-record-summary{font-size:13px;line-height:1.6;margin-top:12px;white-space:pre-wrap}
+.email-record-extra{font-size:12px;color:var(--text-2);margin-top:10px}
+.email-record-extra ul{margin:4px 0 0;padding-left:20px}
+.email-record-extra li{margin:2px 0}
+.email-record-dates{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.email-record-dates span{padding:4px 8px;border-radius:7px;background:var(--surface-2);font-size:11px;color:var(--text-2)}
+.email-original summary{font-size:12px;color:var(--text-2);cursor:pointer;list-style:none;padding:7px 9px;border:1px solid var(--border);border-radius:7px}
+.email-original[open]{width:100%;margin-top:8px}
+.email-original pre{white-space:pre-wrap;overflow-wrap:anywhere;max-height:320px;overflow:auto;background:var(--surface-2);padding:12px;border-radius:8px;font:12px/1.5 var(--font);margin-top:8px}
+@media(max-width:760px){.email-scan-status{grid-template-columns:repeat(2,minmax(0,1fr))}.email-record-head{flex-direction:column}.email-filter-row .select{width:100%}}
+
 </style>
 </head>
 
@@ -804,6 +844,7 @@ code{font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;font-size:12.5p
         <a class="nav-item" href="#/assignments"><span class="nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/></svg></span><span>Assignments</span><span class="nav-badge" id="badge-assignments" hidden></span></a>
         <a class="nav-item" href="#/calendar"><span class="nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span><span>Calendar</span></a>
         <a class="nav-item" href="#/notices"><span class="nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg></span><span>Notices</span></a>
+        <a class="nav-item" href="#/emails"><span class="nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span><span>School Email</span></a>
       </div>
       <div class="sidebar-group">
         <div class="sidebar-label">Organise</div>
@@ -905,6 +946,7 @@ const DEFAULT_SETTINGS = {
   enrolledSubjects: [],
   calendarSubscriptions: [],
   resultsWeighted: false,
+  weightedSubjects: {},
   studyPlanner: {
     dailyMinutes: { mon:60, tue:60, wed:60, thu:60, fri:45, sat:90, sun:90 },
     activities: []
@@ -989,29 +1031,38 @@ const DEFAULT_SUBJECT_LIST = [
 
 function normalizeSubject(name){
   if (!name) return '';
-  const k = String(name).toLowerCase().trim().replace(/\s+/g, ' ').replace(/[.,;:]+$/,'');
-  return SUBJECT_ALIASES[k] || String(name).trim();
+  const raw = String(name).trim();
+  const canonical = DEFAULT_SUBJECT_LIST.find(subject => subject.toLowerCase() === raw.toLowerCase());
+  if (canonical) return canonical;
+  const k = raw.toLowerCase().replace(/\s+/g, ' ').replace(/[.,;:]+$/,'');
+  return SUBJECT_ALIASES[k] || raw;
 }
 
 function detectSubject(text){
-  if (!text) return '';
-  const t = String(text).toLowerCase();
-  const keys = Object.keys(SUBJECT_ALIASES).sort((a,b) => b.length - a.length);
-  for (const alias of keys){
-    let idx = t.indexOf(alias);
-    while (idx !== -1){
-      const before = idx === 0 ? ' ' : t[idx - 1];
-      const after = t[idx + alias.length] || ' ';
-      if (!/[a-z]/.test(before) && !/[a-z]/.test(after)) return SUBJECT_ALIASES[alias];
-      idx = t.indexOf(alias, idx + 1);
-    }
-  }
-  return '';
+  // Never infer a course the student has not selected in Settings.
+  return detectEnrolledSubject(text);
 }
 
 function getEnrolledSubjects(){
   const allowed = new Set(DEFAULT_SUBJECT_LIST);
   return [...new Set((Store.cache?.settings?.enrolledSubjects || []).map(normalizeSubject).filter(x => allowed.has(x)))].sort((a,b) => a.localeCompare(b));
+}
+
+function getSubjectHint(){
+  return "<div class=\"subject-settings-hint\">Not seeing your subject here? Make sure it's selected in settings.</div>";
+}
+
+function selectedSubjectRatings(ratings={}){
+  const selected=new Set(getEnrolledSubjects()),out={};
+  for(const [raw,value] of Object.entries(ratings||{})){
+    const subject=normalizeSubject(raw);
+    if(selected.has(subject)&&!Object.prototype.hasOwnProperty.call(out,subject))out[subject]=value;
+  }
+  return out;
+}
+
+function isSubjectWeighted(subject){
+  return !!Store.cache?.settings?.weightedSubjects?.[subject];
 }
 
 /* Class timetable lessons belong in a timetable, not the general calendar.
@@ -1514,8 +1565,11 @@ const Store = {
     this.mode = FB.ready && user.real ? 'firebase' : 'local';
     if (this.mode === 'local'){
       const raw = localStorage.getItem(LS_DATA(this.uid));
-      this.cache = raw ? JSON.parse(raw) : emptyData();
-      if (!raw && user.uid === 'demo-user') this.cache = seedDemoData();
+      let saved = null;
+      try { saved = raw ? JSON.parse(raw) : null; } catch(e){ console.warn('Could not read saved Scribe data; starting fresh.', e); }
+      this.cache = saved || emptyData();
+      // Refresh only the demo account once so existing demo sessions receive the richer sample data.
+      if (user.uid === 'demo-user' && Number(saved?.demoContentVersion || 0) < 3) this.cache = seedDemoData();
       this.persistNow();
     } else {
       this.cache = emptyData();
@@ -1528,7 +1582,7 @@ const Store = {
 
   ensureShape(){
     const d = this.cache;
-    for (const k of ['assignments','events','notifications','courses','studySessions','effortReports','quickNotes','results']){
+    for (const k of ['assignments','events','notifications','courses','studySessions','effortReports','quickNotes','results','emailMessages']){
       if (!Array.isArray(d[k])) d[k] = [];
     }
     if (!d.integrations || typeof d.integrations !== 'object') d.integrations = {};
@@ -1543,6 +1597,11 @@ const Store = {
     const allowedSubjects = new Set(DEFAULT_SUBJECT_LIST);
     d.settings.enrolledSubjects = [...new Set(d.settings.enrolledSubjects.map(normalizeSubject).filter(x => allowedSubjects.has(x)))];
     d.settings.resultsWeighted = !!d.settings.resultsWeighted;
+    if (!d.settings.weightedSubjects || typeof d.settings.weightedSubjects !== 'object' || Array.isArray(d.settings.weightedSubjects)) d.settings.weightedSubjects = {};
+    // Migrate the former global switch to a per-subject preference once.
+    for (const subject of d.settings.enrolledSubjects){
+      if (typeof d.settings.weightedSubjects[subject] !== 'boolean') d.settings.weightedSubjects[subject] = d.settings.resultsWeighted;
+    }
     if (!Array.isArray(d.settings.calendarSubscriptions)) d.settings.calendarSubscriptions = [];
     d.settings.calendarSubscriptions = [...new Map(d.settings.calendarSubscriptions.filter(x => x && x.url).map(x => [x.url, x])).values()];
     if (!d.settings.studyPlanner || typeof d.settings.studyPlanner !== 'object') d.settings.studyPlanner = { ...DEFAULT_SETTINGS.studyPlanner };
@@ -1624,7 +1683,7 @@ const Store = {
   },
 
   async removeAll(){
-    const cols = ['assignments','events','notifications','courses','studySessions','effortReports','quickNotes','results'];
+    const cols = ['assignments','events','notifications','courses','studySessions','effortReports','quickNotes','results','emailMessages'];
     for (const k of cols){
       for (const item of this.all(k)) this._deletedIds.add(item.id);
       this.cache[k] = [];
@@ -1647,7 +1706,7 @@ const Store = {
 
   async loadFromFirestore(){
     if (this.mode !== 'firebase' || !FB.db) return this.cache;
-    const { collection, getDocs, query, limit } = FB.mod.fs;
+    const { collection, getDocs, query, limit, orderBy } = FB.mod.fs;
     try {
       const { doc: fdoc, getDoc } = FB.mod.fs;
       const s = await getDoc(fdoc(FB.db, 'users', this.uid));
@@ -1660,10 +1719,14 @@ const Store = {
       }
     } catch(e){ console.warn('Failed to read user doc', e); }
 
-    const cols = ['assignments','events','notifications','courses','studySessions','effortReports','quickNotes','results'];
+    const cols = ['assignments','events','notifications','courses','studySessions','effortReports','quickNotes','results','emailMessages'];
     for (const c of cols){
       try {
-        const snap = await getDocs(query(collection(FB.db,'users',this.uid,c), limit(500)));
+        const colRef = collection(FB.db,'users',this.uid,c);
+        const colQuery = c === 'emailMessages'
+          ? query(colRef, orderBy('date','desc'), limit(500))
+          : query(colRef, limit(500));
+        const snap = await getDocs(colQuery);
         this.cache[c] = snap.docs
           .map(d => ({ id: d.id, ...d.data() }))
           .filter(item => !this._deletedIds.has(item.id));
@@ -1693,52 +1756,105 @@ const Store = {
 function emptyData(){
   return {
     assignments: [], events: [], notifications: [],
-    courses: [], studySessions: [], effortReports: [], quickNotes: [], results: [],
+    courses: [], studySessions: [], effortReports: [], quickNotes: [], results: [], emailMessages: [],
     integrations: {}, settings: { ...DEFAULT_SETTINGS }, profile: {},
     deletedIds: []
   };
 }
 
 function seedDemoData(){
-  const d = emptyData();
-  const today = new Date();
-  const day = n => { const x = new Date(today); x.setDate(x.getDate() + n); x.setHours(0,0,0,0); return x.getTime(); };
-  const lastFriday = getLastFriday();
-
-  d.assignments = [
-    { id:'a-1', title:'Algebra practice set', description:'Chapter 6, exercises 1–15.', subject:'Mathematics', type:'Homework',
-      dueDate: day(1), completed:false, manual:false, priority:'high',
-      sources:[{source:'Google Classroom', url:'', addedAt:now()}], createdAt: now()-2*86400000 },
-    { id:'a-2', title:'Cell biology worksheet', description:'Label the diagram and answer questions 1–8.', subject:'Biology', type:'Assignment',
-      dueDate: day(3), completed:false, manual:false, priority:'medium',
-      sources:[{source:'Email', url:'', addedAt:now()}], createdAt: now()-3*86400000 },
-    { id:'a-3', title:'Essay: themes in "The Great Gatsby"', description:'1500 words, focus on symbolism.', subject:'English', type:'Assignment',
-      dueDate: day(6), completed:false, manual:false, priority:'medium',
-      sources:[{source:'Google Classroom', url:'', addedAt:now()}], createdAt: now()-4*86400000 },
-    { id:'a-4', title:'Physics test – forces and motion', description:'Bring a calculator.', subject:'Physics', type:'Test',
-      dueDate: day(4), completed:false, manual:false, priority:'urgent',
-      sources:[{source:'Email', url:'', addedAt:now()}], createdAt: now()-1*86400000 },
-    { id:'a-5', title:'Geography mapping task', description:'Hand in the map you completed in class.', subject:'Geography', type:'Assignment',
-      dueDate: day(-2), completed:true, completedAt: now()-2*86400000+3600000, manual:false, priority:'high',
-      sources:[{source:'Email', url:'', addedAt:now()}], createdAt: now()-8*86400000 }
+  const d=emptyData();
+  const today=new Date();
+  const day=n=>{const x=new Date(today);x.setDate(x.getDate()+n);x.setHours(0,0,0,0);return x.getTime();};
+  const ago=n=>day(-n);
+  const lastFriday=getLastFriday();
+  const subjects=['Accounting','Biology','Digital Technologies','English','Mathematics','Physics','Physical Education','Religious Education'];
+  d.demoContentVersion=3;
+  d.settings.enrolledSubjects=subjects;
+  d.settings.weightedSubjects={
+    'Accounting':true,'Biology':false,'Digital Technologies':true,'English':true,
+    'Mathematics':true,'Physics':true,'Physical Education':false,'Religious Education':false
+  };
+  d.assignments=[
+    {id:'a-1',title:'Algebra and functions practice',description:'Complete the mixed practice questions on quadratic functions.',subject:'Mathematics',type:'Homework',dueDate:day(1),completed:false,manual:false,priority:'high',sources:[{source:'Google Classroom',url:'',addedAt:now()}],createdAt:ago(2)},
+    {id:'a-2',title:'Cell biology investigation',description:'Label the cell structures and explain how they support specialised functions.',subject:'Biology',type:'Assignment',dueDate:day(3),completed:false,manual:false,priority:'medium',sources:[{source:'Email',url:'',addedAt:now()}],createdAt:ago(3)},
+    {id:'a-3',title:'Close reading essay plan',description:'Plan an essay with a clear argument and evidence from the text.',subject:'English',type:'Assignment',dueDate:day(6),completed:false,manual:false,priority:'medium',sources:[{source:'Google Classroom',url:'',addedAt:now()}],createdAt:ago(4)},
+    {id:'a-4',title:'Physics forces and motion revision',description:'Revise vector diagrams, Newton’s laws and resultant force.',subject:'Physics',type:'Test',dueDate:day(4),completed:false,manual:false,priority:'urgent',sources:[{source:'Email',url:'',addedAt:now()}],createdAt:ago(1)},
+    {id:'a-5',title:'Accounting ledger practice',description:'Complete the adjustment entries and balance the trial balance.',subject:'Accounting',type:'Homework',dueDate:day(5),completed:false,manual:false,priority:'medium',sources:[{source:'Google Classroom',url:'',addedAt:now()}],createdAt:ago(2)},
+    {id:'a-6',title:'Digital technology prototype',description:'Finish the interactive prototype and document two rounds of user testing.',subject:'Digital Technologies',type:'Project',dueDate:day(9),completed:false,manual:false,priority:'medium',sources:[{source:'Google Classroom',url:'',addedAt:now()}],createdAt:ago(4)},
+    {id:'a-7',title:'Geography mapping task',description:'Hand in the completed map and explain the spatial pattern.',subject:'Mathematics',type:'Assignment',dueDate:day(-2),completed:true,completedAt:ago(1),manual:false,priority:'high',sources:[{source:'Email',url:'',addedAt:now()}],createdAt:ago(8)}
   ];
-
-  d.events = [
-    { id:'e-1', title:'Science fair setup', description:'Gym, 3:30pm.', start: day(2)+15*3600000, source:'School', manual:false, createdAt: now() },
-    { id:'e-2', title:'Parent-teacher interviews', description:'', start: day(8)+18*3600000, source:'School', manual:false, createdAt: now() }
+  d.events=[
+    {id:'e-1',title:'Science fair setup',description:'Gym, 3:30 pm.',start:day(2)+15*3600000,source:'School',manual:false,createdAt:now()},
+    {id:'e-2',title:'Parent-teacher interviews',description:'Bookings open from the school portal.',start:day(8)+18*3600000,source:'School',manual:false,createdAt:now()},
+    {id:'e-3',title:'Year level assembly',description:'Bring your Chromebook.',start:day(5)+9*3600000,source:'School',manual:false,createdAt:now()}
   ];
-
-  d.effortReports = [
-    { id:'er-1', date: lastFriday - 21*86400000, createdAt: lastFriday - 21*86400000,
-      ratings: { 'Mathematics':4, 'English':3, 'Science':4, 'History':3, 'PE & Health':4 } },
-    { id:'er-2', date: lastFriday - 14*86400000, createdAt: lastFriday - 14*86400000,
-      ratings: { 'Mathematics':5, 'English':4, 'Science':4, 'History':3, 'PE & Health':4 } },
-    { id:'er-3', date: lastFriday - 7*86400000, createdAt: lastFriday - 7*86400000,
-      ratings: { 'Mathematics':4, 'English':4, 'Science':3, 'History':2, 'PE & Health':4 } },
-    { id:'er-4', date: lastFriday, createdAt: lastFriday, notes:'Getting into a good rhythm with maths.',
-      ratings: { 'Mathematics':5, 'English':4, 'Science':4, 'History':3, 'PE & Health':5 } }
+  d.effortReports=[
+    {id:'er-1',date:lastFriday-28*86400000,createdAt:lastFriday-28*86400000,ratings:{'Mathematics':3,'English':3,'Biology':4,'Physics':3,'Accounting':3,'Digital Technologies':4,'Physical Education':4,'Religious Education':4}},
+    {id:'er-2',date:lastFriday-21*86400000,createdAt:lastFriday-21*86400000,ratings:{'Mathematics':4,'English':4,'Biology':4,'Physics':3,'Accounting':4,'Digital Technologies':4,'Physical Education':5,'Religious Education':4}},
+    {id:'er-3',date:lastFriday-14*86400000,createdAt:lastFriday-14*86400000,notes:'Needed to spend more time revising Physics, but the study sessions were more focused.',ratings:{'Mathematics':5,'English':4,'Biology':3,'Physics':2,'Accounting':4,'Digital Technologies':5,'Physical Education':4,'Religious Education':4}},
+    {id:'er-4',date:lastFriday-7*86400000,createdAt:lastFriday-7*86400000,notes:'Good progress on the prototype and English essay planning.',ratings:{'Mathematics':4,'English':5,'Biology':4,'Physics':3,'Accounting':4,'Digital Technologies':5,'Physical Education':4,'Religious Education':5}},
+    {id:'er-5',date:lastFriday,createdAt:lastFriday,notes:'Getting into a consistent routine. Keep practising Physics questions.',ratings:{'Mathematics':5,'English':4,'Biology':4,'Physics':4,'Accounting':4,'Digital Technologies':5,'Physical Education':5,'Religious Education':4}}
   ];
-
+  const note=(id,title,body,daysAgo)=>({id,title,body,createdAt:ago(daysAgo),updatedAt:ago(daysAgo)});
+  d.quickNotes=[
+    note('qn-1','Essay ideas','Possible argument: the setting reflects the characters’ changing sense of identity. Find two quotations that show this clearly.',1),
+    note('qn-2','Ask my maths teacher','Check whether the next practice test includes completing the square and graph transformations.',1),
+    note('qn-3','Physics formula reminders','Resultant force = mass × acceleration. Remember to include units and show the direction of each force.',2),
+    note('qn-4','Biology revision','Make flashcards for organelles, specialised cells and the relationship between structure and function.',3),
+    note('qn-5','Prototype improvements','Make the navigation clearer, increase contrast on the buttons and test the layout on a phone.',4),
+    note('qn-6','Accounting checklist','Check opening balances, adjustment entries, totals and whether the trial balance balances.',5),
+    note('qn-7','Study routine idea','Try 25 minutes of focused work, a five-minute break, then write down what still feels confusing.',6),
+    note('qn-8','Questions for English','Can I use a short quotation in each body paragraph? How much context should I give before analysing it?',8),
+    note('qn-9','Assessment preparation','Start revision earlier by splitting each subject into three small topics rather than trying to revise everything at once.',10),
+    note('qn-10','Ideas for later','Make a one-page summary sheet for each topic once the notes and examples are complete.',12),
+    note('qn-11','PE reflection','Write down one strength from the last practical lesson and one specific skill to improve next time.',14),
+    note('qn-12','Religious Education','Review key terms and prepare an example that links the concept to a real-life situation.',16),
+    note('qn-13','Essay introduction','Start with the central idea, give only the context the reader needs, then make the argument clear.',18),
+    note('qn-14','Physics questions to revisit','Practise converting between speed, distance and time. Check the units before substituting values.',20),
+    note('qn-15','Biology vocabulary','Define diffusion, osmosis and active transport in my own words, then give one example of each.',22),
+    note('qn-16','Accounting reminders','For each transaction, identify the accounts affected before deciding which side to record it on.',24),
+    note('qn-17','Digital technology testing','Ask two people to try the prototype without instructions. Record where they hesitate or get stuck.',26),
+    note('qn-18','Study plan adjustment','Keep a short list of the three topics that need the most attention this week, then update it after practice.',28),
+    note('qn-19','Questions for my teacher','Ask which parts of the marking schedule distinguish an Achieved response from Merit or Excellence.',30),
+    note('qn-20','Exam-week checklist','Charge the Chromebook, organise equipment, check the room and start revision with the topics I find hardest.',32)
+  ];
+  const result=(id,subject,title,grade,weight,daysAgo,notes='')=>({id,subject,title,grade,weight,date:ago(daysAgo),notes});
+  d.results=[
+    result('r-1','Mathematics','Algebra skills test',84,20,28,'Strong algebra manipulation; revise worded problems.'),
+    result('r-2','Mathematics','Functions investigation',78,30,18,'Good working shown.'),
+    result('r-3','Mathematics','Trigonometry quiz',null,20,4,'Not marked yet.'),
+    result('r-4','Mathematics','End-of-topic test',null,30,-10,'Upcoming assessment.'),
+    result('r-5','English','Close reading',81,25,26,'Clear explanations and relevant evidence.'),
+    result('r-6','English','Written text essay',76,35,14,'Work on deeper analysis.'),
+    result('r-7','English','Unfamiliar text practice',null,40,-7,'Not completed yet.'),
+    result('r-8','Biology','Cell structure test',88,0,25),
+    result('r-9','Biology','Enzymes assignment',79,0,13),
+    result('r-10','Biology','Genetics test',null,0,-5),
+    result('r-11','Physics','Forces quiz',73,15,23),
+    result('r-12','Physics','Motion practical',86,25,12),
+    result('r-13','Physics','Mechanics exam',null,60,-12),
+    result('r-14','Accounting','Ledger exercise',91,20,30),
+    result('r-15','Accounting','Adjustments test',83,30,17),
+    result('r-16','Accounting','Financial statements task',null,50,-9),
+    result('r-17','Digital Technologies','Design portfolio checkpoint',87,30,22),
+    result('r-18','Digital Technologies','Prototype evaluation',92,40,8),
+    result('r-19','Digital Technologies','Final project',null,30,-14),
+    result('r-20','Physical Education','Movement skills assessment',89,0,21),
+    result('r-21','Physical Education','Training principles reflection',82,0,9),
+    result('r-22','Religious Education','Ethics response',85,0,19),
+    result('r-23','Religious Education','Written analysis',90,0,6),
+    result('r-24','Religious Education','End-of-unit response',null,0,-8),
+    result('r-25','Mathematics','Statistics investigation',88,20,10,'Explain the conclusion in context and support it with evidence.'),
+    result('r-26','English','Comparative paragraph',84,0,9,'Good use of evidence; develop the explanation further.'),
+    result('r-27','Biology','Practical write-up',91,0,7,'Clear method and accurate results table.'),
+    result('r-28','Physics','Energy and power test',79,20,5,'Revise rearranging equations and unit conversions.'),
+    result('r-29','Accounting','Cash budget task',87,25,4,'Check the timing of cash receipts and payments.'),
+    result('r-30','Digital Technologies','User testing report',90,30,3,'Strong feedback summary and justified changes.'),
+    result('r-31','Physical Education','Training programme',86,0,2,'Link the training choices to the performance goal.'),
+    result('r-32','Religious Education','Social justice reflection',93,0,1,'Specific examples support the response well.')
+  ];
+  d.settings.studyPlanner.activities=[{id:'act-1',name:'Football training',days:['tue','thu'],start:'16:00',end:'17:30'},{id:'act-2',name:'Music practice',days:['mon','wed'],start:'17:00',end:'17:45'}];
   return d;
 }
 
@@ -1876,6 +1992,8 @@ async function syncClassroom(){
 
   const raw = [];
   for (const c of courses){
+    const selectedSubject = matchSelectedSubject(c.name) || detectEnrolledSubject(c.name);
+    if (!selectedSubject) continue;
     try {
       let pageToken = '';
       let pages = 0;
@@ -1894,7 +2012,7 @@ async function syncClassroom(){
             title: w.title || 'Coursework',
             description: w.description || '',
             dueDate: due,
-            subject: normalizeSubject(c.name),
+            subject: selectedSubject,
             typeHint: mapWorkType(w.workType),
             url: w.alternateLink || '',
             source: 'Google Classroom'
@@ -1932,35 +2050,10 @@ function getLookbackDays(){
 }
 
 function buildGmailQuery(){
-  const s = Store.cache.settings;
-  const days = getLookbackDays();
-  const parts = [];
-
-  const domainList = (s.trustedDomains || []).map(d => String(d).trim()).filter(Boolean);
-  const senderList = (s.trustedSenders || []).map(d => String(d).trim()).filter(Boolean);
-
-  if (domainList.length) parts.push('(' + domainList.map(d => `from:${d}`).join(' OR ') + ')');
-  if (senderList.length) parts.push('(' + senderList.map(d => `from:${d}`).join(' OR ') + ')');
-
-  // Keep the Gmail search focused on actual coursework. The stricter local
-  // checks below remain authoritative, even when users add extra keywords.
-  if (s.emailKeywords && s.emailKeywords.trim()){
-    const kw = s.emailKeywords.split(/[,\s]+/).map(k => k.trim()).filter(Boolean);
-    if (kw.length) parts.push('(' + kw.join(' OR ') + ')');
-  } else {
-    parts.push('{assignment homework coursework task assessment test exam quiz project essay report worksheet deadline "due date" "submit by" "hand in"}');
-  }
-
-  parts.push('-from:classroom.google.com');
-  parts.push('-from:no-reply@classroom.google.com');
-  parts.push('-category:promotions');
-  parts.push('-category:social');
-  parts.push('-category:forums');
-  parts.push('-subject:newsletter');
-  parts.push('-subject:bulletin');
-  parts.push('-subject:digest');
-  parts.push(`newer_than:${days}d`);
-  return parts.join(' ');
+  // Empty query intentionally means all Gmail messages across Inbox, archive,
+  // Sent and user labels. Gmail API excludes Spam and Trash by default.
+  // Trusted domains and keywords are retained as hints for Scribble, never hard filters.
+  return '';
 }
 
 function emailHtmlToText(html){
@@ -2018,26 +2111,52 @@ function parseGmailMessage(msg){
 const SCRIBBLE_API_URL = 'https://scribble.coeus1.tech/api/ai/summarise';
 const SCRIBBLE_API_KEY = '83ee680525a15e5284ce525479356a41de559966fb6d70a35ba984215ee4edf7';
 
+function parseSchoolRelevance(value){
+  if (value === true || value === false) return value;
+  if (typeof value === 'string'){
+    const v=value.trim().toLowerCase();
+    if(['true','yes','school','school-related','school_related','relevant'].includes(v))return true;
+    if(['false','no','personal','not-school-related','not_school_related','irrelevant'].includes(v))return false;
+  }
+  return null;
+}
+
 async function summariseEmailWithScribble(parsed){
+  const subjects=getEnrolledSubjects();
   const response = await fetch(SCRIBBLE_API_URL, {
     method:'POST',
     mode:'cors',
     credentials:'omit',
     headers:{'Content-Type':'application/json','X-API-Key':SCRIBBLE_API_KEY},
-    body:JSON.stringify({subject:parsed.subject||'',from:parsed.from||'',body:parsed.body||''}),
+    body:JSON.stringify({
+      subject:parsed.subject||'',from:parsed.from||'',body:parsed.body||'',
+      analysis_mode:'school_email_triage',
+      student_subjects:subjects,
+      trusted_school_domains:Store.cache.settings.trustedDomains||[],
+      trusted_school_senders:Store.cache.settings.trustedSenders||[],
+      requested_fields:['school_related','category','subject','assessment_title','assessment_type','confidence','summary','importance','key_points','dates','actions'],
+      instructions:'Decide whether this message is genuinely related to this student’s school life. Use the selected subjects as the authoritative subject list. Do not infer a subject that is not selected. Return school_related as true or false, category, matched subject if any, confidence, and summary/action/date fields. Personal or unrelated mail must be school_related=false. If unsure, return school_related=null.'
+    }),
     signal:AbortSignal.timeout(180000)
   });
   let payload=null;
   try{payload=await response.json();}catch{}
   if(!response.ok) throw new Error(payload?.error||`Scribble returned HTTP ${response.status}`);
   const result=payload?.result||payload;
-  if(payload?.success===false||!result||typeof result!=='object') throw new Error(payload?.error||'Scribble returned no summary.');
+  if(payload?.success===false||!result||typeof result!=='object') throw new Error(payload?.error||'Scribble returned no analysis.');
+  const relevance=parseSchoolRelevance(result.school_related??result.is_school_related??result.school_relevant??result.relevant_to_school);
   return {
     summary:sanitiseText(result.summary||'',1800),
     importance:['low','normal','high','urgent'].includes(String(result.importance||'normal').toLowerCase())?String(result.importance||'normal').toLowerCase():'normal',
     key_points:Array.isArray(result.key_points)?result.key_points.map(x=>sanitiseText(x,400)).filter(Boolean).slice(0,10):[],
     dates:Array.isArray(result.dates)?result.dates.slice(0,10).map(d=>({date:sanitiseText(d.date||'',100),event:sanitiseText(d.event||'Date',240),deadline:!!d.deadline})):[],
-    actions:Array.isArray(result.actions)?result.actions.map(x=>sanitiseText(x,400)).filter(Boolean).slice(0,10):[]
+    actions:Array.isArray(result.actions)?result.actions.map(x=>sanitiseText(x,400)).filter(Boolean).slice(0,10):[],
+    schoolRelated:relevance,
+    category:sanitiseText(result.category||result.email_category||result.type||'',80),
+    subject:sanitiseText(result.subject||result.matched_subject||result.course||'',100),
+    assessmentTitle:sanitiseText(result.assessment_title||result.assignment_title||'',180),
+    assessmentType:sanitiseText(result.assessment_type||result.task_type||'',60),
+    confidence:Number.isFinite(Number(result.confidence))?Math.max(0,Math.min(1,Number(result.confidence))):null
   };
 }
 
@@ -2166,91 +2285,129 @@ function base64UrlDecode(data){
   } catch { return ''; }
 }
 
+async function listAllGmailMessageIds(token){
+  const ids=[];
+  let pageToken='';
+  do{
+    const params=new URLSearchParams({maxResults:'500',includeSpamTrash:'true'});
+    if(pageToken)params.set('pageToken',pageToken);
+    // No q parameter: include the full mailbox, including Spam and Trash.
+    const page=await gfetchJson(`https://gmail.googleapis.com/gmail/v1/users/me/messages?${params.toString()}`,token);
+    for(const message of page.messages||[])if(message?.id)ids.push(message.id);
+    pageToken=page.nextPageToken||'';
+  }while(pageToken);
+  return ids;
+}
+
+function emailCategoryLabel(ai){
+  if(ai?.schoolRelated===false)return 'Personal / unrelated';
+  if(ai?.schoolRelated!==true)return 'Needs review';
+  return ai.category||'School-related';
+}
+
+function getAiAssessmentDueDate(ai,parsed){
+  for(const entry of ai?.dates||[]){
+    if(!entry.deadline||!entry.date)continue;
+    const value=parseDate(entry.date,new Date(parsed.date||now()));
+    if(value)return value;
+  }
+  return extractEmailDueDate(parsed);
+}
+
+function tryImportAiAssessment(emailRecord,parsed,ai){
+  if(ai?.schoolRelated!==true)return null;
+  const kind=String(ai.category||ai.assessmentType||'').toLowerCase();
+  const taskKind=/assignment|homework|assessment|test|exam|project|coursework|quiz/.test(kind);
+  if(!taskKind)return null;
+  const dueDate=getAiAssessmentDueDate(ai,parsed);
+  if(!dueDate)return null;
+  const title=ai.assessmentTitle||extractEmailAssignmentName(parsed);
+  if(!title)return null;
+  const candidate=ai.subject||detectEmailSubject(parsed,title);
+  const subject=matchSelectedSubject(candidate)||detectEmailSubject(parsed,title);
+  if(!subject)return null;
+  return {
+    id:emailRecord.id,title,description:ai.summary||parsed.body.slice(0,1800),dueDate,subject,
+    typeHint:detectType(`${kind} ${parsed.subject} ${title}`),
+    url:emailRecord.url,source:'Email',emailSummary:ai,emailSummaryAt:now(),
+    emailFrom:emailRecord.from,emailDate:emailRecord.date
+  };
+}
+
 async function syncGmail(){
   if (!GoogleServices.has()) throw new Error('NOT_SIGNED_IN');
-  if (!GoogleServices.hasScope('https://www.googleapis.com/auth/gmail.readonly')){
-    throw new Error('GMAIL_SCOPE_MISSING');
-  }
-  const token = GoogleServices.accessToken;
-  const q = buildGmailQuery();
+  if (!GoogleServices.hasScope('https://www.googleapis.com/auth/gmail.readonly')) throw new Error('GMAIL_SCOPE_MISSING');
+  const token=GoogleServices.accessToken;
+  const ids=await listAllGmailMessageIds(token);
+  const gmailState=Store.cache.integrations.gmail||{};
+  const processed=new Set([...(gmailState.processedIds||[]),...Store.all('emailMessages').map(x=>x.gmailId).filter(Boolean)]);
+  const pending=ids.filter(id=>!processed.has(id));
+  const batch=pending.slice(0,20);
+  const imported=[];
+  let aiSummarised=0,aiFailed=0,schoolRelated=0,notSchool=0,needsReview=0;
 
-  const list = await gfetchJson(
-    `https://gmail.googleapis.com/gmail/v1/users/me/messages?maxResults=50&q=${encodeURIComponent(q)}`, token);
-  const ids = (list.messages || []).map(m => m.id);
-
-  const rawAssignments = [];
-  let skippedClassroom = 0;
-  for (const id of ids){
-    try {
-      const localId = `gm-${id}`;
-      if (Store.isDeleted(localId)) continue;
-      const msg = await gfetchJson(`https://gmail.googleapis.com/gmail/v1/users/me/messages/${id}?format=full`, token);
-      const parsed = parseGmailMessage(msg);
-      if (!parsed) continue;
-
-      const fromLower = (parsed.from || '').toLowerCase();
-      const bodyLower = (parsed.body || '').toLowerCase();
-      const looksLikeClassroomNotification =
-        fromLower.includes('classroom.google.com') ||
-        fromLower.includes('classroom-noreply@') ||
-        (/\bnew (assignment|material|announcement|question)\b/i.test(parsed.subject) &&
-         bodyLower.includes('classroom.google.com'));
-      if (looksLikeClassroomNotification){ skippedClassroom++; continue; }
-
-      const haystack = `${parsed.subject}\n${parsed.body}`;
-      const irrelevantBroadcast = /\b(newsletter|weekly bulletin|school bulletin|daily digest|weekly update|term newsletter|whole school news)\b/i.test(`${parsed.subject}\n${parsed.body.slice(0, 500)}`);
-      const genericNoticeSubject = /^(?:(?:important|general|school)\s+)?(?:notice|announcement|update|reminder)\b/i.test(parsed.subject || '') &&
-        !/\b(assignment|homework|coursework|task|assessment|test|exam|quiz|project|essay|report|worksheet|submission)\b/i.test(parsed.subject || '');
-      if (irrelevantBroadcast || genericNoticeSubject) continue;
-
-      const taskSignal = /\b(assignment|homework|coursework|task|assessment|test|exam|quiz|project|essay|report|worksheet|submission)\b/i.test(haystack);
-      if (!taskSignal) continue;
-
-      // A date elsewhere in an email is not a due date. It must follow an
-      // explicit deadline phrase such as "Due date:" or "Submit by".
-      const dueDate = extractEmailDueDate(parsed);
-      if (!dueDate) continue;
-
-      const title = extractEmailAssignmentName(parsed);
-      if (!title) continue;
-
-      const subject = detectEmailSubject(parsed, title);
-      if (!subject || !DEFAULT_SUBJECT_LIST.includes(subject)) continue;
-
-      const type = detectType(`${parsed.subject} ${title}`);
-      rawAssignments.push({
-        id: localId,
-        title,
-        description: '',
-        dueDate,
-        subject,
-        typeHint: type,
-        url: `https://mail.google.com/mail/u/0/#inbox/${id}`,
-        source: 'Email',
-        emailParsed: parsed
-      });
-    } catch (e){ console.warn('Email parse failed', e); }
+  for(const id of batch){
+    const localId=`gm-${id}`;
+    try{
+      const msg=await gfetchJson(`https://gmail.googleapis.com/gmail/v1/users/me/messages/${id}?format=full`,token);
+      const parsed=parseGmailMessage(msg);
+      const emailRecord={
+        id:localId,gmailId:id,threadId:msg.threadId||'',subject:parsed.subject||'(No subject)',
+        from:parsed.from||'Unknown sender',date:parsed.date||now(),snippet:sanitiseText(msg.snippet||parsed.body||'',420),
+        body:String(parsed.body||'').slice(0,12000),url:`https://mail.google.com/mail/u/0/#all/${id}`,
+        aiStatus:'pending',schoolRelated:null,category:'Needs review',importance:'normal'
+      };
+      try{
+        const ai=await summariseEmailWithScribble(parsed);
+        emailRecord.aiStatus='complete';emailRecord.ai=ai;emailRecord.schoolRelated=ai.schoolRelated;
+        emailRecord.category=emailCategoryLabel(ai);emailRecord.importance=ai.importance;
+        emailRecord.subjectMatch=matchSelectedSubject(ai.subject)||detectEmailSubject(parsed,ai.assessmentTitle||'');
+        aiSummarised++;
+        if(ai.schoolRelated===true)schoolRelated++;
+        else if(ai.schoolRelated===false)notSchool++;
+        else needsReview++;
+        const assignment=tryImportAiAssessment(emailRecord,parsed,ai);
+        if(assignment){imported.push(assignment);emailRecord.importedAssignment=true;}
+      }catch(err){
+        emailRecord.aiStatus='failed';emailRecord.aiError=sanitiseText(err?.message||err,240);
+        emailRecord.category='Needs review';aiFailed++;needsReview++;
+      }
+      await Store.put('emailMessages',emailRecord);
+      processed.add(id);
+    }catch(err){
+      console.warn('Gmail message fetch failed:',id,err);
+      // Leave this ID unprocessed so that a later sync can retry it.
+    }
   }
 
-  let aiSummarised=0, aiFailed=0, aiAttempted=0;
-  for(const item of rawAssignments){
-    const existingById=Store.get('assignments',item.id);
-    const norm=normalizeTitle(item.title);
-    const existing=existingById||Store.all('assignments').find(a=>!a.manual&&normalizeTitle(a.title)===norm&&(a.subject||'')===item.subject&&Math.abs((a.dueDate||0)-(item.dueDate||0))<3*86400000);
-    if(existing?.emailSummary) continue;
-    if(aiAttempted>=12) continue;
-    aiAttempted++;
-    try{item.emailSummary=await summariseEmailWithScribble(item.emailParsed);item.emailSummaryAt=now();aiSummarised++;}
-    catch(err){aiFailed++;item.emailSummaryError=sanitiseText(err?.message||err,240);console.warn('Scribble email summary failed:',item.emailSummaryError);}
-    delete item.emailParsed;
-  }
-  const r = await importItems(rawAssignments, 'Email');
-  Store.cache.integrations.gmail = {
-    id: 'gmail', connected: true, lastSync: now(), method: 'api',
-    imported: r.added + r.merged, skippedClassroom, aiSummarised, aiFailed
+  const r=await importItems(imported,'Email');
+  const processedIds=[...processed].slice(-30000);
+  const pendingAfter=Math.max(0,ids.length-processed.size);
+  Store.cache.integrations.gmail={
+    id:'gmail',connected:true,lastSync:now(),method:'api',mailboxMessages:ids.length,
+    processedIds,processedCount:processed.size,pendingCount:pendingAfter,
+    aiSummarised:(gmailState.aiSummarised||0)+aiSummarised,
+    aiFailed:(gmailState.aiFailed||0)+aiFailed,
+    schoolRelated:(gmailState.schoolRelated||0)+schoolRelated,
+    notSchool:(gmailState.notSchool||0)+notSchool,
+    needsReview:(gmailState.needsReview||0)+needsReview,
+    imported:(gmailState.imported||0)+r.added+r.merged
   };
+  // Keep the in-memory and local cache bounded; Firestore retains the individual email records.
+  Store.cache.emailMessages.sort((a,b)=>(b.date||0)-(a.date||0));
+  Store.cache.emailMessages=Store.cache.emailMessages.slice(0,500);
   await Store.saveUserDoc();
-  return { added: r.added, merged: r.merged, skippedClassroom, aiSummarised, aiFailed };
+  return {added:r.added,merged:r.merged,processed:batch.length,mailboxMessages:ids.length,pending:pendingAfter,aiSummarised,aiFailed,schoolRelated,notSchool,needsReview};
+}
+
+function matchSelectedSubject(value){
+  const selected=getEnrolledSubjects();
+  if(!selected.length||!value)return '';
+  const raw=String(value).trim();
+  const direct=selected.find(s=>s.toLowerCase()===raw.toLowerCase());
+  if(direct)return direct;
+  const detected=detectEnrolledSubject(raw);
+  return detected||'';
 }
 
 /* ── Merge imported items ─────────────────────────────────── */
@@ -2260,7 +2417,8 @@ async function importItems(raw, sourceName){
     const title = sanitiseText(r.title || '', 200);
     if (!title) continue;
 
-    const subject = r.subject || detectSubject(`${title} ${r.description || ''}`) || 'General';
+    const subject = matchSelectedSubject(r.subject) || detectEnrolledSubject(`${title} ${r.description || ''}`);
+    if (!subject) continue;
     const type = r.typeHint || detectType(`${title} ${r.description || ''}`) || 'Assignment';
     const norm = normalizeTitle(title);
 
@@ -2327,7 +2485,7 @@ async function syncAll(){
 
     try {
       const r = await syncGmail();
-      results.push(`Email: ${r.added} new${r.merged ? `, ${r.merged} updated` : ''}${r.aiSummarised ? `, ${r.aiSummarised} AI summaries` : ''}`);
+      results.push(`Email: analysed ${r.processed} of ${r.mailboxMessages} messages, ${r.pending} remaining${r.added ? `, ${r.added} assignments added` : ''}`);
     } catch (e){ errors.push('Email — ' + friendlyErr(e)); }
   } else {
     errors.push('Google — not connected');
@@ -2412,7 +2570,9 @@ const CHART_PALETTE = ['#4f46e5','#10b981','#f59e0b','#ef4444','#8b5cf6','#0ea5e
 const CHART_AVERAGE_COLOR = '#312e81';
 
 function renderEffortChartBlock(){
-  const reports = Store.all('effortReports').filter(r => r.ratings && Object.keys(r.ratings).length);
+  const reports = Store.all('effortReports')
+    .map(r => ({...r,ratings:selectedSubjectRatings(r.ratings)}))
+    .filter(r => Object.keys(r.ratings).length);
   if (!reports.length){
     return `<div class="empty">
       <div class="empty-ico">${ICON.trend}</div>
@@ -2422,7 +2582,8 @@ function renderEffortChartBlock(){
   }
 
   const list = [...reports].sort((a, b) => (a.date || 0) - (b.date || 0)).slice(-12);
-  const subjects = [...new Set(list.flatMap(r => Object.keys(r.ratings || {})))].sort();
+  const enrolled = getEnrolledSubjects();
+  const subjects = enrolled.filter(subject => list.some(r => Object.prototype.hasOwnProperty.call(r.ratings || {}, subject)));
 
   /* New subjects are hidden by default. Existing manual toggles are preserved. */
   for (const s of subjects){
@@ -2471,7 +2632,7 @@ function renderEffortChartBlock(){
   if (chartState.averageVisible){
     const avgPts = [];
     list.forEach((r, i) => {
-      const scores = Object.values(r.ratings || {})
+      const scores = subjects.map(subject => r.ratings?.[subject])
         .map(v => Number(v))
         .filter(v => Number.isFinite(v) && v > 0);
       if (!scores.length) return;
@@ -2536,7 +2697,7 @@ function renderWeeklyNoteCards(){
 }
 
 function weeklyNoteCard(report){
-  const ratings = report.ratings || {};
+  const ratings = selectedSubjectRatings(report.ratings);
   const subjects = Object.keys(ratings).sort((a, b) => a.localeCompare(b));
 
   const scores = subjects
@@ -2581,6 +2742,7 @@ function weeklyNoteCard(report){
 let calYear = new Date().getFullYear();
 let calMonth = new Date().getMonth();
 let assignFilter = { status: 'open', subject: '', sort: 'due' };
+let emailInboxFilter = 'all';
 
 function emailSummaryHTML(a){
   const r=a.emailSummary;
@@ -2623,7 +2785,8 @@ function assignmentItemHTML(a){
 }
 
 function renderDashboardView(){
-  const assignments = Store.all('assignments');
+  const selectedSubjects = new Set(getEnrolledSubjects());
+  const assignments = Store.all('assignments').filter(a => selectedSubjects.has(matchSelectedSubject(a.subject)));
   const open = assignments.filter(a => !a.completed);
   const overdue = open.filter(a => a.dueDate && daysUntil(a.dueDate) < 0);
   const dueWeek = open.filter(a => a.dueDate && daysUntil(a.dueDate) >= 0 && daysUntil(a.dueDate) <= 7);
@@ -2637,7 +2800,7 @@ function renderDashboardView(){
 
   const latest = [...Store.all('effortReports')].sort((a, b) => (b.date || 0) - (a.date || 0))[0];
   const effortRows = latest && latest.ratings
-    ? Object.entries(latest.ratings)
+    ? Object.entries(latest.ratings).filter(([sub]) => selectedSubjects.has(normalizeSubject(sub)))
         .sort((a, b) => b[1] - a[1])
         .slice(0, 6)
         .map(([sub, v]) => `<div class="effort-bar-row">
@@ -2743,7 +2906,7 @@ function renderDashboardView(){
 
 function renderAssignmentsView(){
   const all = Store.all('assignments');
-  const subjects = [...new Set(all.map(a => a.subject || 'General'))].sort();
+  const subjects = getEnrolledSubjects();
 
   let list = all.slice();
   if (assignFilter.status === 'open') list = list.filter(a => !a.completed);
@@ -2867,7 +3030,8 @@ function plannerAcademicItems(){
   // The Assignments collection is the authoritative source for actual work.
   // Never infer an assignment merely because a school notice mentions one.
   for(const a of Store.all('assignments').filter(a=>!a.completed&&!plannerIsNoticeRecord(a))){
-    const subject=normalizeSubject(a.subject||'')||detectSubject(`${a.title} ${a.description||''}`)||'General';
+    const subject=matchSelectedSubject(a.subject)||detectEnrolledSubject(`${a.title} ${a.description||''}`);
+    if(!subject)continue;
     const type=a.type||detectType(`${a.title} ${a.description||''}`);
     items.push({id:`a-${a.id}`,subject,topic:sanitiseText(a.title||'Study',120),type,dueDate:a.dueDate||null,description:a.description||'',source:'assignment'});
   }
@@ -2881,12 +3045,13 @@ function plannerAcademicItems(){
     if(!fromAssessmentFeed&&!manuallyCreated)continue;
     const title=sanitiseText(e.title||'',160),type=detectType(title);
     if(!/^(Test|Exam|Assignment|Project)$/.test(type))continue;
-    const subject=normalizeSubject(e.subject||'')||detectSubject(`${title} ${e.description||''}`)||'General';
+    const subject=matchSelectedSubject(e.subject)||detectEnrolledSubject(`${title} ${e.description||''}`);
+    if(!subject)continue;
     items.push({id:`e-${e.id}`,subject,topic:title,type,dueDate:e.start,description:e.description||'',source:fromAssessmentFeed?'assessment-feed':'manual-calendar'});
   }
   return items;
 }
-function plannerWeaknessMap(){const map={};for(const r of Store.all('effortReports'))for(const [subject,val] of Object.entries(r.ratings||{})){const s=normalizeSubject(subject),n=Number(val);if(!s||!Number.isFinite(n)||n<=0)continue;(map[s]??=[]).push(n);}const out={};for(const [s,v] of Object.entries(map))out[s]=v.slice(-4).reduce((a,b)=>a+b,0)/Math.min(4,v.length);return out;}
+function plannerWeaknessMap(){const map={},selected=new Set(getEnrolledSubjects());for(const r of Store.all('effortReports'))for(const [subject,val] of Object.entries(r.ratings||{})){const s=normalizeSubject(subject),n=Number(val);if(!selected.has(s)||!Number.isFinite(n)||n<=0)continue;(map[s]??=[]).push(n);}const out={};for(const [s,v] of Object.entries(map))out[s]=v.slice(-4).reduce((a,b)=>a+b,0)/Math.min(4,v.length);return out;}
 function plannerBuildWork(){const weak=plannerWeaknessMap(),items=plannerAcademicItems(),map=new Map();for(const item of items){const k=`${item.subject}|${item.topic}|${item.type}`;if(map.has(k)){const x=map.get(k);if(item.dueDate&&(!x.dueDate||item.dueDate<x.dueDate))x.dueDate=item.dueDate;}else map.set(k,{...item});}const work=[...map.values()].map(item=>{const d=daysUntil(item.dueDate),rating=weak[item.subject];const urgency=d===null?0:d<0?100:d===0?95:d===1?85:d<=3?70:d<=7?50:d<=14?25:10;const typeBoost={Exam:30,Test:24,Project:16,Assignment:12,Homework:6}[item.type]||0;const weakness=rating?Math.max(0,5-rating)*11:0;return {...item,rating,score:urgency+typeBoost+weakness};}).sort((a,b)=>b.score-a.score);return {work,weak};}
 function plannerReasons(item){const r=[],d=daysUntil(item.dueDate);if(d!==null){if(d<0)r.push('This work is overdue.');else if(d===0)r.push('It is due today.');else if(d===1)r.push('It is due tomorrow.');else if(d<=5)r.push(`It is due in ${d} days.`);}if(item.type==='Exam'||item.type==='Test')r.push(`Upcoming ${item.type.toLowerCase()} preparation is prioritised.`);if(item.rating&&item.rating<3)r.push(`Your recent effort rating for ${item.subject} is ${item.rating.toFixed(1)}/5.`);else if(item.rating&&item.rating<4)r.push(`Your recent effort rating for ${item.subject} is ${item.rating.toFixed(1)}/5, so it gets extra practice.`);return r.join(' ')||'This is useful preparation for upcoming school work.';}
 function plannerGenerateSessions(){const {work}=plannerBuildWork(),sessions=[],days=[];for(let i=0;i<7;i++){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()+i);days.push(d);}const rem=new Map(work.map(w=>[w.id,{...w,remaining:{Exam:180,Test:100,Project:150,Assignment:70,Homework:40}[w.type]||30}]));for(const day of days){let budget=plannerMinutesForDay(day);if(!budget)continue;const occupied=plannerActivityBlocks(day).map(b=>({start:plannerTimeToMin(b.start),end:plannerTimeToMin(b.end)})).filter(x=>x.start!==null&&x.end>x.start);for(const win of plannerFreeWindows(day,occupied)){let cursor=win.start;while(cursor+20<=win.end&&budget>=20){const c=[...rem.values()].filter(w=>w.remaining>0&&(!w.dueDate||daysUntil(w.dueDate)>=-1)).sort((a,b)=>b.score-a.score);if(!c.length)break;const w=c[0],mins=Math.min(w.remaining,budget,win.end-cursor,50),rounded=Math.floor(mins/5)*5;if(rounded<20)break;const end=cursor+rounded;sessions.push({day:day.getTime(),start:cursor,end,minutes:rounded,subject:w.subject,topic:w.topic,type:w.type,reason:plannerReasons(w),workId:w.id});w.remaining-=rounded;budget-=rounded;cursor=end+10;}}}return {days,sessions,work};}
@@ -2989,33 +3154,108 @@ function openQuickNoteModal(existing=null){
   openModal({title:isNew?'New note':'Edit note',subtitle:'Your changes are saved to your Scribe account.',body:`<div class="stack"><div class="field"><label class="label">Title</label><input class="input" id="qn-title" maxlength="120" value="${escapeHtml(n.title||'')}" placeholder="Optional title"></div><div class="field"><label class="label">Note</label><textarea class="textarea" id="qn-body" rows="8" placeholder="Write your note…">${escapeHtml(n.body||'')}</textarea></div></div>`,footer:`<button class="btn btn-ghost" data-close>Cancel</button><button class="btn btn-primary" id="qn-save">Save note</button>`,onMount(el,close){$('#qn-save',el).addEventListener('click',async()=>{const body=sanitiseText($('#qn-body',el).value,12000);if(!body){toast('Write something before saving.','warn');return;}await Store.put('quickNotes',{...n,title:sanitiseText($('#qn-title',el).value,120)||'',body});close();render();toast('Note saved.','success');});}});
 }
 
+function emailDateLabel(value){
+  const date = new Date(Number(value)||0);
+  return Number.isNaN(date.getTime()) ? 'Unknown date' : date.toLocaleString('en-NZ',{day:'numeric',month:'short',year:'numeric',hour:'numeric',minute:'2-digit'});
+}
+
+function renderEmailsView(){
+  const all=[...Store.all('emailMessages')].sort((a,b)=>(b.date||0)-(a.date||0));
+  const gmail=Store.cache.integrations.gmail||{};
+  const schoolCount=all.filter(x=>x.schoolRelated===true).length;
+  const reviewCount=all.filter(x=>x.schoolRelated!==true&&x.schoolRelated!==false).length;
+  const personalCount=all.filter(x=>x.schoolRelated===false).length;
+  const filtered=all.filter(x=>{
+    if(emailInboxFilter==='school')return x.schoolRelated===true;
+    if(emailInboxFilter==='review')return x.schoolRelated!==true&&x.schoolRelated!==false;
+    if(emailInboxFilter==='personal')return x.schoolRelated===false;
+    return true;
+  });
+  const cards=filtered.map(e=>{
+    const ai=e.ai||{};
+    const status=e.schoolRelated===true?'School-related':e.schoolRelated===false?'Not school-related':'Needs review';
+    const category=e.category||status;
+    const actions=Array.isArray(ai.actions)?ai.actions:[];
+    const keyPoints=Array.isArray(ai.key_points)?ai.key_points:[];
+    const dates=Array.isArray(ai.dates)?ai.dates:[];
+    const shouldRetry=e.schoolRelated==null||e.aiStatus==='failed';
+    return `<article class="card email-record">
+      <div class="email-record-head"><div class="email-record-main"><div class="row wrap" style="gap:7px"><span class="chip ${e.schoolRelated===true?'chip-green':e.schoolRelated===false?'chip-gray':'chip-amber'}">${escapeHtml(status)}</span><span class="chip chip-indigo">${escapeHtml(category)}</span>${e.importedAssignment?'<span class="chip chip-sky">Added to assignments</span>':''}</div><h2 class="email-record-title">${escapeHtml(e.subject||'(No subject)')}</h2><div class="email-record-meta">${escapeHtml(e.from||'Unknown sender')} · ${escapeHtml(emailDateLabel(e.date))}</div></div><a class="btn btn-ghost btn-sm" href="${escapeHtml(e.url||'#')}" target="_blank" rel="noopener noreferrer">Open in Gmail</a></div>
+      ${ai.summary?`<p class="email-record-summary">${escapeHtml(ai.summary)}</p>`:`<p class="email-record-summary muted">${escapeHtml(e.snippet||'No preview available.')}</p>`}
+      ${keyPoints.length?`<div class="email-record-extra"><strong>Key points</strong><ul>${keyPoints.slice(0,5).map(x=>`<li>${escapeHtml(String(x))}</li>`).join('')}</ul></div>`:''}
+      ${actions.length?`<div class="email-record-extra"><strong>Actions</strong><ul>${actions.slice(0,5).map(x=>`<li>${escapeHtml(String(x))}</li>`).join('')}</ul></div>`:''}
+      ${dates.length?`<div class="email-record-dates">${dates.slice(0,5).map(d=>`<span>${escapeHtml(String(d.event||'Date'))}: ${escapeHtml(String(d.date||''))}${d.deadline?' · Deadline':''}</span>`).join('')}</div>`:''}
+      ${e.aiError?`<div class="alert alert-warn" style="margin-top:10px">Scribble analysis failed: ${escapeHtml(e.aiError)}</div>`:''}
+      <div class="row-between wrap" style="margin-top:12px"><span class="hint">${ai.confidence!==null&&ai.confidence!==undefined?`AI confidence: ${Math.round(Number(ai.confidence)*100)}%`:e.aiStatus==='complete'?'AI summary received':'Not analysed'}</span><div class="row">${shouldRetry?`<button class="btn btn-ghost btn-sm" data-email-reanalyse="${escapeHtml(e.id)}">${e.aiStatus==='failed'?'Retry analysis':'Analyse again'}</button>`:''}<details class="email-original"><summary>Original email</summary><pre>${escapeHtml(e.body||'No body text was extracted.')}</pre></details></div></div>
+    </article>`;
+  }).join('');
+  const syncLabel=gmail.pendingCount>0?`Scan next batch · ${Number(gmail.pendingCount).toLocaleString('en-NZ')} remaining`:'Scan Gmail mailbox';
+  return `<div class="page-head"><div class="row-between wrap"><div><h1 class="page-title">School Email</h1><p class="page-sub">Scribe scans your Gmail mailbox and keeps messages available instead of silently discarding uncertain ones.</p></div><button class="btn btn-primary" data-sync-email-inbox>${escapeHtml(syncLabel)}</button></div></div>
+    <div class="email-scan-status card"><div class="email-scan-stat"><strong>${Number(gmail.mailboxMessages||0).toLocaleString('en-NZ')}</strong><span>Mailbox messages</span></div><div class="email-scan-stat"><strong>${Number(gmail.processedCount||0).toLocaleString('en-NZ')}</strong><span>Scanned by Scribe</span></div><div class="email-scan-stat"><strong>${schoolCount}</strong><span>School-related here</span></div><div class="email-scan-stat"><strong>${reviewCount}</strong><span>Needs review</span></div><div class="email-scan-stat"><strong>${personalCount}</strong><span>Not school-related</span></div></div>
+    <div class="alert alert-info" style="margin:14px 0">The current Scribe integration asks Scribble for a school-related decision. If the Scribble service only returns its older summary fields and does not provide <code>school_related</code>, Scribe keeps that email in <strong>Needs review</strong> rather than guessing or deleting it.</div>
+    <div class="email-filter-row"><label class="label" for="email-inbox-filter">Show</label><select class="select" id="email-inbox-filter"><option value="all" ${emailInboxFilter==='all'?'selected':''}>All scanned emails</option><option value="school" ${emailInboxFilter==='school'?'selected':''}>School-related</option><option value="review" ${emailInboxFilter==='review'?'selected':''}>Needs review</option><option value="personal" ${emailInboxFilter==='personal'?'selected':''}>Not school-related</option></select><span class="hint">Showing ${filtered.length} of ${all.length} loaded emails · up to 500 recent records are displayed here.</span></div>
+    ${cards?`<div class="email-record-list">${cards}</div>`:`<div class="empty"><div class="empty-ico">✉</div><div class="empty-title">${all.length?'No emails match this filter':'No emails scanned yet'}</div><div class="empty-sub">${all.length?'Choose another filter to see more messages.':'Select Scan Gmail mailbox to begin classifying emails from your account.'}</div></div>`}`;
+}
+
+async function reanalyseStoredEmail(id){
+  const email=Store.get('emailMessages',id);
+  if(!email)return;
+  email.aiStatus='pending';
+  email.aiError='';
+  await Store.put('emailMessages',email);
+  render();
+  try{
+    const ai=await summariseEmailWithScribble({subject:email.subject||'',from:email.from||'',body:email.body||'',date:email.date||now()});
+    email.ai=ai;email.aiStatus='complete';email.schoolRelated=ai.schoolRelated;
+    email.category=emailCategoryLabel(ai);email.importance=ai.importance;
+    email.subjectMatch=matchSelectedSubject(ai.subject)||'';
+    email.aiError='';
+    await Store.put('emailMessages',email);
+    const assignment=tryImportAiAssessment(email,{subject:email.subject,from:email.from,body:email.body,date:email.date},ai);
+    if(assignment){await importItems([assignment],'Email');email.importedAssignment=true;await Store.put('emailMessages',email);}
+    render();
+    toast(ai.schoolRelated===null?'Scribble returned a summary but no school-related decision. This email remains in Needs review.':'Email analysed successfully.','success');
+  }catch(err){
+    email.aiStatus='failed';email.aiError=sanitiseText(err?.message||err,240);email.category='Needs review';
+    await Store.put('emailMessages',email);render();toast(email.aiError,'error','Analysis failed');
+  }
+}
+
 function resultsStats(rows,weighted){
   const graded=rows.filter(r=>r.grade!==null&&r.grade!==undefined&&r.grade!==''&&Number.isFinite(Number(r.grade)));
   if(!graded.length)return {current:null,projected:null,count:0,pending:rows.length};
   let current;
   if(weighted){const total=graded.reduce((sum,r)=>sum+Math.max(0,Number(r.weight)||0),0);current=total>0?graded.reduce((sum,r)=>sum+Number(r.grade)*Math.max(0,Number(r.weight)||0),0)/total:null;}
   else current=graded.reduce((sum,r)=>sum+Number(r.grade),0)/graded.length;
-  // The projection assumes future, unmarked work is achieved at the current average.
+  // Future assessments are assumed to be achieved at the current average.
   return {current,projected:current,count:graded.length,pending:rows.length-graded.length};
 }
 
 function renderResultsView(){
-  const weighted=!!Store.cache.settings.resultsWeighted;
   const rows=[...Store.all('results')].sort((a,b)=>(b.date||b.createdAt||0)-(a.date||a.createdAt||0));
-  const subjects=[...new Set([...getEnrolledSubjects(),...rows.map(r=>normalizeSubject(r.subject)).filter(Boolean)])].filter(x=>DEFAULT_SUBJECT_LIST.includes(x)).sort((a,b)=>a.localeCompare(b));
-  const grouped=subjects.map(subject=>({subject,rows:rows.filter(r=>normalizeSubject(r.subject)===subject)})).filter(g=>g.rows.length);
-  const emptySubjects=subjects.filter(subject=>!rows.some(r=>normalizeSubject(r.subject)===subject));
-  const subjectCards=grouped.map(g=>{const stats=resultsStats(g.rows,weighted);return `<section class="card results-subject-card"><div class="card-head"><div><h2 class="card-title">${escapeHtml(g.subject)}</h2><div class="hint">${stats.count} marked · ${stats.pending} remaining</div></div><div class="results-average"><div><span class="results-average-label">Current ${weighted?'weighted ':''}average</span><strong>${stats.current===null?'—':stats.current.toFixed(1)+'%'}</strong></div><div><span class="results-average-label">On track for</span><strong>${stats.projected===null?'—':stats.projected.toFixed(1)+'%'}</strong></div></div></div><div class="results-table-wrap"><table class="results-table"><thead><tr><th>Assessment</th><th>Result</th>${weighted?'<th>Weight</th>':''}<th>Date</th><th></th></tr></thead><tbody>${g.rows.map(r=>`<tr><td><strong>${escapeHtml(r.title||'Assessment')}</strong>${r.notes?`<div class="hint">${escapeHtml(r.notes)}</div>`:''}</td><td>${r.grade===null||r.grade===undefined||r.grade===''?'<span class="muted">Not marked</span>':Number(r.grade).toFixed(1)+'%'}</td>${weighted?`<td>${Number(r.weight)||0}%</td>`:''}<td>${r.date?escapeHtml(fmtDate(r.date)): '—'}</td><td><div class="row"><button class="icon-btn" data-edit-result="${escapeHtml(r.id)}" aria-label="Edit result">${ICON.edit}</button><button class="icon-btn" data-del-result="${escapeHtml(r.id)}" aria-label="Delete result">${ICON.trash}</button></div></td></tr>`).join('')}</tbody></table></div><div class="results-projection-note">On track assumes future assessments are achieved at your current average. It is an estimate, not a predicted or guaranteed grade.</div></section>`;}).join('');
-  return `<div class="page-head"><div class="row-between wrap"><div><h1 class="page-title">Results</h1><p class="page-sub">Track your assessment results and see how you are progressing in each subject.</p></div><button class="btn btn-primary" data-add-result>Add result</button></div></div>
-    <section class="card results-controls"><div class="card-body row-between wrap"><label class="checkbox"><input id="results-weighted" type="checkbox" ${weighted?'checked':''}><span><strong>Use weighted results</strong><br><span class="hint">Show a weight column and calculate averages using each assessment’s weighting.</span></span></label><span class="hint">Weights do not need to add up to 100%.</span></div></section>
-    ${subjectCards||`<div class="empty"><div class="empty-title">No results entered yet</div><div class="empty-sub">Add your first assessment result to start tracking your subject average.</div></div>`}
-    ${emptySubjects.length&&rows.length?`<div class="hint" style="margin-top:14px">No results yet for: ${emptySubjects.map(escapeHtml).join(', ')}.</div>`:''}`;
+  const subjects=getEnrolledSubjects();
+  const subjectCards=subjects.map(subject=>{
+    const subjectRows=rows.filter(r=>normalizeSubject(r.subject)===subject);
+    const weighted=isSubjectWeighted(subject),stats=resultsStats(subjectRows,weighted);
+    const table=subjectRows.length?`<div class="results-table-wrap"><table class="results-table"><thead><tr><th>Assessment</th><th>Result</th>${weighted?'<th>Weight</th>':''}<th>Date</th><th></th></tr></thead><tbody>${subjectRows.map(r=>`<tr><td><strong>${escapeHtml(r.title||'Assessment')}</strong>${r.notes?`<div class="hint">${escapeHtml(r.notes)}</div>`:''}</td><td>${r.grade===null||r.grade===undefined||r.grade===''?'<span class="muted">Not marked</span>':Number(r.grade).toFixed(1)+'%'}</td>${weighted?`<td>${Number(r.weight)||0}%</td>`:''}<td>${r.date?escapeHtml(fmtDate(r.date)):'—'}</td><td><div class="row"><button class="icon-btn" data-edit-result="${escapeHtml(r.id)}" aria-label="Edit result">${ICON.edit}</button><button class="icon-btn" data-del-result="${escapeHtml(r.id)}" aria-label="Delete result">${ICON.trash}</button></div></td></tr>`).join('')}</tbody></table></div>`:`<div class="empty" style="padding:24px 18px"><div class="empty-title">No results for ${escapeHtml(subject)} yet</div><div class="empty-sub">Add assessments as you receive results or know their weighting.</div></div>`;
+    return `<section class="card results-subject-card"><div class="card-head"><div><h2 class="card-title">${escapeHtml(subject)}</h2><div class="hint">${stats.count} marked · ${stats.pending} remaining</div></div><div class="results-subject-tools"><label class="checkbox"><input type="checkbox" data-weight-subject="${escapeHtml(subject)}" ${weighted?'checked':''}><span>Weighted</span></label><div class="results-average"><div><span class="results-average-label">Current ${weighted?'weighted ':''}average</span><strong>${stats.current===null?'—':stats.current.toFixed(1)+'%'}</strong></div><div><span class="results-average-label">On track for</span><strong>${stats.projected===null?'—':stats.projected.toFixed(1)+'%'}</strong></div></div></div></div>${table}<div class="results-projection-note">On track assumes future assessments are achieved at your current average. It is an estimate, not a predicted or guaranteed grade. ${weighted?'Only completed results contribute to the current weighted average; outstanding assessments remain in the remaining course weighting.':'Every completed result contributes equally to the current average.'}</div></section>`;
+  }).join('');
+  const addDisabled=!subjects.length;
+  return `<div class="page-head"><div class="row-between wrap"><div><h1 class="page-title">Results</h1><p class="page-sub">Track your assessment results and see how you are progressing in each subject.</p></div><button class="btn btn-primary" data-add-result ${addDisabled?'disabled':''}>Add result</button></div></div>
+    ${subjects.length?subjectCards:`<div class="empty"><div class="empty-title">Select your subjects first</div><div class="empty-sub">Choose your current subjects in Settings. The Results page uses that list for every subject.</div><a class="btn btn-ghost btn-sm" href="#/settings" style="margin-top:14px">Open Settings</a></div>`}
+    ${getSubjectHint()}`;
 }
 
 function openResultModal(existing=null){
-  const isNew=!existing,r=existing||{id:uid(),title:'',subject:getEnrolledSubjects()[0]||DEFAULT_SUBJECT_LIST[0],grade:'',weight:100,date:now(),notes:''};
-  const subjects=getEnrolledSubjects().length?getEnrolledSubjects():DEFAULT_SUBJECT_LIST;
-  openModal({title:isNew?'Add result':'Edit result',subtitle:'Leave the result blank while the assessment is still to come.',body:`<div class="stack"><div class="field"><label class="label">Assessment name</label><input class="input" id="res-title" maxlength="160" value="${escapeHtml(r.title||'')}" placeholder="e.g. Algebra test"></div><div class="field"><label class="label">Subject</label><select class="select" id="res-subject">${subjects.map(x=>`<option value="${escapeHtml(x)}" ${normalizeSubject(r.subject)===x?'selected':''}>${escapeHtml(x)}</option>`).join('')}</select></div><div class="row wrap" style="align-items:flex-start"><div class="field" style="flex:1;min-width:140px"><label class="label">Result (%)</label><input class="input" id="res-grade" type="number" min="0" max="100" step="0.1" value="${r.grade??''}" placeholder="Not marked yet"></div>${Store.cache.settings.resultsWeighted?`<div class="field" style="flex:1;min-width:140px"><label class="label">Weight (%)</label><input class="input" id="res-weight" type="number" min="0" step="0.1" value="${Number(r.weight??100)}"><span class="hint">Weight this assessment contributes to the course result.</span></div>`:`<div class="field" style="flex:1;min-width:140px;justify-content:center"><span class="hint">Enable weighted results to set an assessment weighting. Results are equally weighted by default.</span></div>`}</div><div class="field"><label class="label">Assessment date</label><input class="input" id="res-date" type="date" value="${r.date?toDateInput(r.date):''}"></div><div class="field"><label class="label">Notes (optional)</label><textarea class="textarea" id="res-notes" rows="3">${escapeHtml(r.notes||'')}</textarea></div></div>`,footer:`<button class="btn btn-ghost" data-close>Cancel</button><button class="btn btn-primary" id="res-save">Save result</button>`,onMount(el,close){$('#res-save',el).addEventListener('click',async()=>{const title=sanitiseText($('#res-title',el).value,160);const gradeRaw=$('#res-grade',el).value.trim();const weightEl=$('#res-weight',el);const weightRaw=weightEl?weightEl.value.trim():String(r.weight??100);const grade=gradeRaw===''?null:Number(gradeRaw);const weight=weightRaw===''?0:Number(weightRaw);if(!title){toast('Add an assessment name first.','warn');return;}if(grade!==null&&(!Number.isFinite(grade)||grade<0||grade>100)){toast('Enter a result from 0 to 100, or leave it blank.','warn');return;}if(!Number.isFinite(weight)||weight<0){toast('Enter a weight of zero or more.','warn');return;}const dateValue=$('#res-date',el).value;const date=dateValue?new Date(`${dateValue}T12:00:00`).getTime():null;await Store.put('results',{...r,title,subject:normalizeSubject($('#res-subject',el).value),grade,weight,date,notes:sanitiseText($('#res-notes',el).value,1000)});close();render();toast('Result saved.','success');});}});
+  const subjects=getEnrolledSubjects();
+  if(!subjects.length){toast('Select your subjects in Settings before adding results.','warn');location.hash='#/settings';return;}
+  const isNew=!existing,r=existing||{id:uid(),title:'',subject:subjects[0],grade:'',weight:100,date:now(),notes:''};
+  const initialSubject=subjects.includes(normalizeSubject(r.subject))?normalizeSubject(r.subject):subjects[0];
+  const weightEnabled=isSubjectWeighted(initialSubject);
+  openModal({title:isNew?'Add result':'Edit result',subtitle:'Leave the result blank while the assessment is still to come.',body:`<div class="stack"><div class="field"><label class="label">Assessment name</label><input class="input" id="res-title" maxlength="160" value="${escapeHtml(r.title||'')}" placeholder="e.g. Algebra test"></div><div class="field"><label class="label">Subject</label><select class="select" id="res-subject">${subjects.map(x=>`<option value="${escapeHtml(x)}" ${initialSubject===x?'selected':''}>${escapeHtml(x)}</option>`).join('')}</select>${getSubjectHint()}</div><div class="row wrap" style="align-items:flex-start"><div class="field" style="flex:1;min-width:140px"><label class="label">Result (%)</label><input class="input" id="res-grade" type="number" min="0" max="100" step="0.1" value="${r.grade??''}" placeholder="Not marked yet"></div><div class="field" id="res-weight-wrap" ${weightEnabled?'':'hidden'} style="flex:1;min-width:140px"><label class="label">Weight (%)</label><input class="input" id="res-weight" type="number" min="0" step="0.1" value="${Number(r.weight??100)}"><span class="hint">Weight this assessment contributes to the course result.</span></div></div><div class="hint" id="res-weight-hint" ${weightEnabled?'hidden':''}>This subject currently uses equal weighting. Switch on Weighted in its Results card to enter assessment weights.</div><div class="field"><label class="label">Assessment date</label><input class="input" type="date" id="res-date" value="${r.date?toDateInput(r.date):''}"></div><div class="field"><label class="label">Notes (optional)</label><textarea class="textarea" id="res-notes" rows="3">${escapeHtml(r.notes||'')}</textarea></div></div>`,footer:`<button class="btn btn-ghost" data-close>Cancel</button><button class="btn btn-primary" id="res-save">Save result</button>`,onMount(el,close){
+    $('#res-subject',el).addEventListener('change',()=>{const weighted=isSubjectWeighted($('#res-subject',el).value);$('#res-weight-wrap',el).hidden=!weighted;$('#res-weight-hint',el).hidden=weighted;});
+    $('#res-save',el).addEventListener('click',async()=>{const title=sanitiseText($('#res-title',el).value,160);const gradeRaw=$('#res-grade',el).value.trim();const subject=normalizeSubject($('#res-subject',el).value);const weighted=isSubjectWeighted(subject);const weightRaw=$('#res-weight',el)?.value.trim()??String(r.weight??100);const grade=gradeRaw===''?null:Number(gradeRaw);const weight=weighted?(weightRaw===''?0:Number(weightRaw)):Number(r.weight??100);if(!title){toast('Add an assessment name first.','warn');return;}if(grade!==null&&(!Number.isFinite(grade)||grade<0||grade>100)){toast('Enter a result from 0 to 100, or leave it blank.','warn');return;}if(weighted&&(!Number.isFinite(weight)||weight<0)){toast('Enter a weight of zero or more.','warn');return;}const dateValue=$('#res-date',el).value;const date=dateValue?new Date(`${dateValue}T12:00:00`).getTime():null;await Store.put('results',{...r,title,subject,grade,weight,date,notes:sanitiseText($('#res-notes',el).value,1000)});close();render();toast('Result saved.','success');});
+  }});
 }
 
 function renderNotesView(){
@@ -3124,6 +3364,7 @@ function renderSettingsView(){
             return `<label class="checkbox"><input type="checkbox" data-enrolled-subject="${escapeHtml(sub)}" ${checked ? 'checked' : ''}> <span>${escapeHtml(sub)}</span></label>`;
           }).join('')}
         </div>
+        ${getSubjectHint()}
       </div>
     </section>
 
@@ -3132,26 +3373,30 @@ function renderSettingsView(){
       <div class="card-body" style="padding-top:4px;padding-bottom:4px">
         <div class="set-row">
           <div class="set-info">
-            <div class="set-name">Lookback window</div>
-            <div class="set-desc">How far back to search for school coursework emails. Unrelated notices and newsletters are filtered out.</div>
+            <div class="set-name">Gmail mailbox scan</div>
+            <div class="set-desc">Scribe scans the whole Gmail mailbox, including Inbox, archived mail, Sent, user labels, Spam and Trash. Scribble classifies each message in batches of 20 per sync.</div>
           </div>
           <div class="set-control">
-            <input class="input" type="number" min="1" max="365" id="set-lookback" value="${s.emailLookbackDays}" style="width:100px">
+            <span class="hint">Whole mailbox</span>
           </div>
         </div>
         <div class="set-row stacked">
           <div class="set-info">
             <div class="set-name">Trusted domains</div>
-            <div class="set-desc">Only scan mail from these domains. One per line.</div>
+            <div class="set-desc">Hints supplied to Scribble for classification. These do not restrict which Gmail messages are scanned.</div>
           </div>
           <div class="set-control">
             <textarea class="textarea" id="set-domains" placeholder="school.nz">${escapeHtml((s.trustedDomains || []).join('\n'))}</textarea>
           </div>
         </div>
         <div class="set-row stacked">
+          <div class="set-info"><div class="set-name">Trusted sender addresses</div><div class="set-desc">Optional teacher or school sender addresses to help Scribble recognise school emails. One per line.</div></div>
+          <div class="set-control"><textarea class="textarea" id="set-senders" placeholder="teacher@sacredheart.school.nz">${escapeHtml((s.trustedSenders || []).join('\n'))}</textarea></div>
+        </div>
+        <div class="set-row stacked">
           <div class="set-info">
             <div class="set-name">Extra keywords</div>
-            <div class="set-desc">Optional extra Gmail search terms. An email is still imported only when Scribe can identify a task, subject and explicit due date.</div>
+            <div class="set-desc">Optional context hints for Scribble. These do not filter Gmail search results.</div>
           </div>
           <div class="set-control">
             <input class="input" id="set-keywords" value="${escapeHtml(s.emailKeywords || '')}" placeholder="assignment, deadline, NCEA">
@@ -3400,7 +3645,7 @@ function renderNoticesView(){const n=noticeUI.items,active=n.filter(x=>!noticeAr
 /* ── Router ───────────────────────────────────────────────── */
 function currentRoute(){
   const raw = (location.hash || '#/dashboard').split('?')[0];
-  const known = ['#/dashboard','#/assignments','#/calendar','#/notices','#/planner','#/notes','#/quick-notes','#/results','#/settings'];
+  const known = ['#/dashboard','#/assignments','#/calendar','#/notices','#/emails','#/planner','#/notes','#/quick-notes','#/results','#/settings'];
   return known.includes(raw) ? raw : '#/dashboard';
 }
 
@@ -3427,7 +3672,7 @@ function updateNotifDot(){
 function updateChartAvg(){
   const el = $('#chart-avg');
   if (!el) return;
-  const vals = Store.all('effortReports').flatMap(r => Object.values(r.ratings || {})).map(Number).filter(n => n > 0);
+  const vals = Store.all('effortReports').flatMap(r => Object.values(selectedSubjectRatings(r.ratings))).map(Number).filter(n => n > 0);
   el.textContent = vals.length ? (vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(1) : '–';
 }
 
@@ -3435,13 +3680,14 @@ function render(){
   const view = $('#view');
   if (!view || $('#app').hidden) return;
   const route = currentRoute();
-  view.classList.toggle('page-wide', ['#/assignments','#/calendar','#/notices','#/planner','#/notes','#/quick-notes','#/results','#/settings'].includes(route));
+  view.classList.toggle('page-wide', ['#/assignments','#/calendar','#/notices','#/emails','#/planner','#/notes','#/quick-notes','#/results','#/settings'].includes(route));
   view.classList.toggle('page-planner', route === '#/planner');
 
   switch (route){
     case '#/assignments': view.innerHTML = renderAssignmentsView(); break;
     case '#/calendar':    view.innerHTML = renderCalendarView(); break;
     case '#/notices':     view.innerHTML = renderNoticesView(); if (!noticeUI.items.length || Date.now()-noticeUI.lastFetched>15*60000) fetchSchoolNotices(); break;
+    case '#/emails':      view.innerHTML = renderEmailsView(); break;
     case '#/planner':     view.innerHTML = renderPlannerView(); break;
     case '#/notes':       view.innerHTML = renderNotesView(); break;
     case '#/quick-notes': view.innerHTML = renderQuickNotesView(); break;
@@ -3473,13 +3719,12 @@ function render(){
 /* ── Modals: assignment / event / weekly note ─────────────── */
 function openAssignmentModal(existing){
   const isNew = !existing;
+  const enrolled = getEnrolledSubjects();
   const a = existing || {
-    id: uid(), title: '', description: '', subject: 'General',
+    id: uid(), title: '', description: '', subject: enrolled[0] || '',
     type: 'Assignment', dueDate: null, completed: false, manual: true, sources: []
   };
-
-  const enrolled = getEnrolledSubjects();
-  const subjectOptions = enrolled.length ? enrolled : DEFAULT_SUBJECT_LIST;
+  const subjectOptions = enrolled;
 
   openModal({
     title: isNew ? 'New assignment' : 'Edit assignment',
@@ -3498,8 +3743,9 @@ function openAssignmentModal(existing){
           <div class="field" style="flex:1">
             <label class="label">Subject</label>
             <select class="select" id="am-subject">
-              ${subjectOptions.map(s => `<option value="${escapeHtml(s)}" ${a.subject === s ? 'selected' : ''}>${escapeHtml(s)}</option>`).join('')}
+              ${subjectOptions.length?subjectOptions.map(s => `<option value="${escapeHtml(s)}" ${normalizeSubject(a.subject) === s ? 'selected' : ''}>${escapeHtml(s)}</option>`).join(''):'<option value="">Select a subject in Settings first</option>'}
             </select>
+            ${getSubjectHint()}
           </div>
           <div class="field" style="flex:1">
             <label class="label">Type</label>
@@ -3519,12 +3765,14 @@ function openAssignmentModal(existing){
       $('#am-save', el).addEventListener('click', async () => {
         const title = sanitiseText($('#am-title', el).value, 200);
         if (!title){ toast('Give it a title first.', 'warn'); return; }
+        const selectedSubject=normalizeSubject($('#am-subject',el).value);
+        if(!selectedSubject||!getEnrolledSubjects().includes(selectedSubject)){toast('Select this subject in Settings before using it.','warn');return;}
         const dueVal = $('#am-due', el).value;
         const rec = {
           ...a,
           title,
           description: sanitiseText($('#am-desc', el).value, 2000),
-          subject: $('#am-subject', el).value || 'General',
+          subject: selectedSubject,
           type: $('#am-type', el).value || 'Assignment',
           dueDate: dueVal ? new Date(`${dueVal}T23:59:00`).getTime() : null,
           manual: true
@@ -3988,6 +4236,8 @@ function initViewEvents(){
     const delQuick=e.target.closest('[data-del-quick-note]');
     if(delQuick){const id=delQuick.getAttribute('data-del-quick-note'),note=Store.get('quickNotes',id);if(!note)return;const ok=await confirmDialog('Delete note?',`“${note.title||'Untitled note'}” will be removed.`, 'Delete note', true);if(ok){await Store.remove('quickNotes',id);render();toast('Note deleted.','success');}return;}
     if(e.target.closest('[data-add-result]')){openResultModal(null);return;}
+    if(e.target.closest('[data-sync-email-inbox]')){const btn=e.target.closest('[data-sync-email-inbox]');btn.disabled=true;btn.textContent='Scanning…';try{const r=await syncGmail();render();toast(`Analysed ${r.processed} emails. ${r.pending.toLocaleString('en-NZ')} remain in the mailbox scan.`,'success','Gmail scan');}catch(err){render();toast(friendlyErr(err),'error','Gmail scan failed');}return;}
+    const reanalyse=e.target.closest('[data-email-reanalyse]');if(reanalyse){await reanalyseStoredEmail(reanalyse.getAttribute('data-email-reanalyse'));return;}
     const editResult=e.target.closest('[data-edit-result]');
     if(editResult){const result=Store.get('results',editResult.getAttribute('data-edit-result'));if(result)openResultModal(result);return;}
     const delResult=e.target.closest('[data-del-result]');
@@ -4102,7 +4352,7 @@ function initViewEvents(){
           toast(`Classroom: ${r.added} new, ${r.merged} updated.`, 'success');
         } else {
           const r = await syncGmail();
-          toast(`Email: ${r.added} new, ${r.merged} updated, ${r.aiSummarised||0} AI summaries.`, 'success');
+          toast(`Analysed ${r.processed} emails; ${r.pending} more remain in the mailbox scan.`, 'success');
         }
       } catch (err){
         toast(friendlyErr(err), 'error', 'Sync failed');
@@ -4161,10 +4411,12 @@ function initViewEvents(){
       render();
       return;
     }
+    if(id==='email-inbox-filter'){emailInboxFilter=e.target.value;render();return;}
 
     const s = Store.cache.settings;
 
-    if(id==='results-weighted'){s.resultsWeighted=e.target.checked;Store.persistNow();await Store.saveUserDoc();render();return;}
+    const subjectWeight=e.target.closest('[data-weight-subject]');
+    if(subjectWeight){const subject=subjectWeight.getAttribute('data-weight-subject');s.weightedSubjects=s.weightedSubjects||{};s.weightedSubjects[subject]=subjectWeight.checked;Store.persistNow();await Store.saveUserDoc();render();return;}
 
     if (id === 'set-theme'){
       s.theme = e.target.value;
@@ -4176,14 +4428,11 @@ function initViewEvents(){
     if (id === 'set-notify-assignment'){ s.notifyNewAssignment = e.target.checked; }
     if (id === 'set-notify-due'){ s.notifyDueSoon = e.target.checked; }
     if (id === 'set-notify-test'){ s.notifyNewTest = e.target.checked; }
-    if (id === 'set-lookback'){
-      let n = Number(e.target.value);
-      if (!Number.isFinite(n) || n <= 0) n = 30;
-      s.emailLookbackDays = Math.min(365, Math.max(1, Math.round(n)));
-      e.target.value = s.emailLookbackDays;
-    }
     if (id === 'set-domains'){
       s.trustedDomains = e.target.value.split(/\n+/).map(x => x.trim()).filter(Boolean);
+    }
+    if (id === 'set-senders'){
+      s.trustedSenders = e.target.value.split(/\n+/).map(x => x.trim()).filter(Boolean);
     }
     if (id === 'set-keywords'){
       s.emailKeywords = e.target.value.trim();
@@ -4196,7 +4445,7 @@ function initViewEvents(){
       s.enrolledSubjects = [...selected].sort((a,b) => a.localeCompare(b));
     }
 
-    if (['set-notify-assignment','set-notify-due','set-notify-test','set-lookback','set-domains','set-keywords'].includes(id) || e.target.matches('[data-enrolled-subject]')){
+    if (['set-notify-assignment','set-notify-due','set-notify-test','set-domains','set-senders','set-keywords'].includes(id) || e.target.matches('[data-enrolled-subject]')){
       Store.persistNow();
       await Store.saveUserDoc();
       updateNotifDot();
