@@ -725,6 +725,36 @@ code{font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;font-size:12.5p
 @media(max-width:760px){.email-scan-status{grid-template-columns:repeat(2,minmax(0,1fr))}.email-record-head{flex-direction:column}.email-filter-row .select{width:100%}}
 
 
+
+/* November polish: spacing, calendar height, all-day styling and aligned actions */
+.next-item{padding:14px 18px;}
+.wn-card-actions{display:flex;align-items:center;justify-content:flex-end;gap:6px;margin-left:auto;flex:none;}
+.results-row-actions{display:flex;align-items:center;justify-content:flex-end;gap:6px;margin-left:auto;}
+.results-table th:last-child,.results-table td:last-child{text-align:right;}
+#view.page-calendar{min-height:calc(100vh - var(--topbar-h) - 12px);display:flex;flex-direction:column;}
+#view.page-calendar>.cal-week-grid{flex:1;min-height:calc(100vh - 260px);grid-template-rows:minmax(0,1fr);align-items:stretch;}
+#view.page-calendar .cal-week-day{height:100%;min-height:calc(100vh - 280px);display:flex;flex-direction:column;}
+#view.page-calendar .cal-week-items{flex:1;}
+#view.page-calendar>.calendar-month-card{flex:1;min-height:calc(100vh - 265px);display:flex;flex-direction:column;}
+#view.page-calendar .calendar-month-card .cal-grid{flex:1;grid-template-rows:repeat(6,minmax(96px,1fr));}
+#view.page-calendar .calendar-month-card .cal-day{min-height:clamp(96px,calc((100vh - 390px)/6),158px);}
+.cal-ev.all-day{background:var(--surface-3);color:var(--text-2);border:1px dashed var(--border-strong);}
+.cal-week-item.all-day-item{background:var(--surface-2);border-left:3px dashed var(--gray-400);color:var(--text-2);}
+.cal-week-item.all-day-item .cal-week-time{font-weight:700;color:var(--text-3);}
+.planner-all-day-strip{padding:7px 10px;border-bottom:1px dashed var(--border-strong);background:var(--surface-2);font-size:10px;color:var(--text-2);line-height:1.5;}
+.planner-all-day-strip strong{color:var(--text-3);margin-right:4px;}
+.quick-note-assignment-link{display:inline-flex;align-items:center;gap:5px;margin-top:10px;font-size:11.5px;font-weight:650;color:var(--green-600);}
+.quick-note-create-assignment{margin:4px 0 10px;}
+.quick-note-assignment-subject{margin:0 0 12px;max-width:360px;}
+body.nasa-background{background-repeat:no-repeat;background-size:cover;background-position:center center;background-attachment:fixed;}
+@media(max-width:900px){
+ #view.page-calendar>.cal-week-grid{min-height:0;grid-template-rows:none;}
+ #view.page-calendar .cal-week-day{min-height:220px;height:auto;}
+ #view.page-calendar>.calendar-month-card{min-height:0;}
+ #view.page-calendar .calendar-month-card .cal-grid{grid-template-rows:repeat(6,minmax(82px,1fr));}
+ #view.page-calendar .calendar-month-card .cal-day{min-height:82px;}
+}
+
 /* Daily content, NASA background and responsive calendar/planner additions */
 body.nasa-background{background-repeat:no-repeat;background-size:cover;background-position:center center;background-attachment:fixed;}
 .daily-content-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:18px;}
@@ -1978,13 +2008,14 @@ function parseICS(text){
   for (const block of blocks){
     const ev = {};
     for (const line of block.split(/\r?\n/)){
-      const m = line.match(/^([A-Z-]+)(?:;[^:]*)?:(.*)$/);
+      const m = line.match(/^([A-Z-]+)((?:;[^:]*)?):(.*)$/);
       if (!m) continue;
-      const [, key, value] = m;
+      const [, key, params, value] = m;
+      const dateOnly = /(?:^|;)VALUE=DATE(?:;|$)/i.test(params || '') || /^\d{8}$/.test(value);
       if (key === 'SUMMARY') ev.title = value;
       else if (key === 'DESCRIPTION') ev.description = value;
-      else if (key === 'DTSTART') ev.start = parseICSDate(value);
-      else if (key === 'DTEND') ev.end = parseICSDate(value);
+      else if (key === 'DTSTART') { ev.start = parseICSDate(value); if(dateOnly)ev.allDay=true; }
+      else if (key === 'DTEND') { ev.end = parseICSDate(value); if(dateOnly)ev.allDay=true; }
       else if (key === 'URL') ev.url = value;
       else if (key === 'UID') ev.uid = value;
       else if (key === 'LOCATION') ev.location = value;
@@ -1999,6 +2030,16 @@ function parseICSDate(v){
   if (!m) return null;
   const [, y, mo, d, h='00', mi='00', s='00', z] = m;
   return (z ? new Date(Date.UTC(+y, +mo-1, +d, +h, +mi, +s)) : new Date(+y, +mo-1, +d, +h, +mi, +s)).getTime();
+}
+
+function isAllDayCalendarEvent(event){
+  if(event?.allDay===true)return true;
+  if(!event?.start)return false;
+  const start=new Date(event.start);
+  if(start.getHours()!==0||start.getMinutes()!==0||start.getSeconds()!==0)return false;
+  if(!event.end)return false;
+  const end=new Date(event.end);
+  return end.getHours()===0&&end.getMinutes()===0&&end.getSeconds()===0&&(event.end-event.start)>=20*60*60*1000;
 }
 
 function eventExists(title, start, excludeId = null){
@@ -2051,7 +2092,7 @@ async function syncCalendarSubscriptions(){
           id: existing ? existing.id : `ics-${uid()}`,
           title: sanitiseText(ev.title, 200),
           description: sanitiseText(ev.description || '', 2000),
-          start: ev.start, end: ev.end || null,
+          start: ev.start, end: ev.end || null, allDay: !!ev.allDay,
           location: sanitiseText(ev.location || '', 200),
           source: sub.name || 'Calendar', url: ev.url || '',
           icsUid: ev.uid, icsSource: sub.url, manual: false,
@@ -2226,7 +2267,7 @@ async function summariseEmailWithScribble(parsed){
       selected_subjects:subjects,
       trusted_school_domains:Store.cache.settings.trustedDomains||[],
       trusted_school_senders:Store.cache.settings.trustedSenders||[],
-      requested_fields:['school_related','category','subject','assessment_title','assessment_type','confidence','summary','importance','key_points','dates','actions'],
+      requested_fields:['school_related','category','subject','task_title','assessment_title','assessment_type','confidence','summary','importance','key_points','dates','actions'],
       instructions:'Decide whether this message is genuinely related to this student’s school life. Use the selected subjects as the authoritative subject list. Do not infer a subject that is not selected. Return school_related as true or false, category, matched subject if any, confidence, and summary/action/date fields. Personal or unrelated mail must be school_related=false. If unsure, return school_related=null.'
     }),
     signal:AbortSignal.timeout(180000)
@@ -2252,7 +2293,8 @@ async function summariseEmailWithScribble(parsed){
     schoolRelated:relevance,
     category,
     subject:sanitiseText(result.subject||result.school_subject||result.matched_subject||result.course||'',100),
-    assessmentTitle:sanitiseText(result.assessment_title||result.assignment_title||'',180),
+    taskTitle:sanitiseText(result.task_title||result.assignment_title||result.assessment_title||'',180),
+    assessmentTitle:sanitiseText(result.task_title||result.assessment_title||result.assignment_title||'',180),
     assessmentType:sanitiseText(result.assessment_type||result.task_type||(result.assessment===true?'assessment':category),60),
     assessment:result.assessment===true,
     confidence
@@ -2412,6 +2454,30 @@ function getAiAssessmentDueDate(ai,parsed){
   return extractEmailDueDate(parsed);
 }
 
+function emailHasLinkedAssignment(emailRecord){
+  if(!emailRecord?.url)return false;
+  return Store.all('assignments').some(a=>(a.sources||[]).some(s=>s.source==='Email'&&s.url===emailRecord.url));
+}
+
+async function backfillStoredEmailAssignments(limit=20){
+  const candidates=Store.all('emailMessages').filter(email=>{
+    const ai=email.ai||{},category=String(ai.category||email.category||'').toLowerCase();
+    return !email.done&&email.aiStatus==='complete'&&email.schoolRelated===true&&/assignment|assessment|homework|test|exam|project|coursework|quiz/.test(category)&&!emailHasLinkedAssignment(email);
+  }).slice(0,Math.max(1,limit));
+  let added=0,merged=0;
+  for(const email of candidates){
+    const ai=email.ai||{schoolRelated:email.schoolRelated,category:String(email.category||'').toLowerCase()};
+    const parsed={subject:email.subject||'',from:email.from||'',body:email.body||'',date:email.date||now()};
+    const candidate=tryImportAiAssessment(email,parsed,ai);
+    if(!candidate)continue;
+    const result=await importItems([candidate],'Email');
+    if(result.added||result.merged||emailHasLinkedAssignment(email)){
+      email.importedAssignment=true;await Store.put('emailMessages',email);added+=result.added;merged+=result.merged;
+    }
+  }
+  return {added,merged,checked:candidates.length};
+}
+
 function tryImportAiAssessment(emailRecord,parsed,ai){
   if(ai?.schoolRelated!==true)return null;
 
@@ -2419,11 +2485,12 @@ function tryImportAiAssessment(emailRecord,parsed,ai){
   const taskKind=ai.assessment===true||/\b(assignment|homework|assessment|test|exam|project|coursework|quiz)\b/.test(kind);
   if(!taskKind)return null;
 
-  const title=ai.assessmentTitle||extractEmailAssignmentName(parsed);
+  const title=ai.taskTitle||ai.assessmentTitle||extractEmailAssignmentName(parsed);
   if(!title)return null;
 
   const candidate=ai.subject||detectEmailSubject(parsed,title);
-  const subject=matchSelectedSubject(candidate)||detectEmailSubject(parsed,title);
+  const selectedSubjects=getEnrolledSubjects();
+  const subject=matchSelectedSubject(candidate)||detectEmailSubject(parsed,title)||(selectedSubjects.length===1?selectedSubjects[0]:'');
   if(!subject)return null;
 
   const dueDate=getAiAssessmentDueDate(ai,parsed);
@@ -2470,7 +2537,7 @@ async function syncGmail(){
           else if(ai.schoolRelated===false)notSchool++;
           else needsReview++;
           const assignment=tryImportAiAssessment(emailRecord,parsed,ai);
-          if(assignment){imported.push(assignment);emailRecord.importedAssignment=true;}
+          if(assignment)imported.push(assignment);
         }catch(err){
           emailRecord.aiStatus='failed';emailRecord.aiError=sanitiseText(err?.message||err,240);
           emailRecord.category='Needs review';aiFailed++;needsReview++;
@@ -2485,6 +2552,8 @@ async function syncGmail(){
     }
 
     const r=await importItems(imported,'Email');
+    for(const assignment of imported){const saved=Store.get('emailMessages',assignment.id);if(saved){saved.importedAssignment=emailHasLinkedAssignment(saved);await Store.put('emailMessages',saved);}}
+    const backfill=await backfillStoredEmailAssignments(20);
     const processedIds=[...processed].slice(-30000);
     const pendingAfter=ids.filter(id=>!processed.has(id)).length;
     Store.cache.integrations.gmail={
@@ -2496,13 +2565,13 @@ async function syncGmail(){
       schoolRelated:(gmailState.schoolRelated||0)+schoolRelated,
       notSchool:(gmailState.notSchool||0)+notSchool,
       needsReview:(gmailState.needsReview||0)+needsReview,
-      imported:(gmailState.imported||0)+r.added+r.merged
+      imported:(gmailState.imported||0)+r.added+r.merged+backfill.added+backfill.merged
     };
 
     Store.cache.emailMessages.sort((a,b)=>(b.date||0)-(a.date||0));
     Store.cache.emailMessages=Store.cache.emailMessages.slice(0,500);
     await Store.saveUserDoc();
-    return {added:r.added,merged:r.merged,processed:processedThisBatch,mailboxMessages:ids.length,pending:pendingAfter,aiSummarised,aiFailed,schoolRelated,notSchool,needsReview};
+    return {added:r.added+backfill.added,merged:r.merged+backfill.merged,processed:processedThisBatch,mailboxMessages:ids.length,pending:pendingAfter,aiSummarised,aiFailed,schoolRelated,notSchool,needsReview,backfilled:backfill.checked};
   })();
 
   gmailSyncInFlight=run;
@@ -2892,8 +2961,8 @@ function weeklyNoteCard(report){
         <div class="wn-week">${escapeHtml(formatSchoolWeek(report.date))}</div>
         <div class="wn-week-sub tiny muted">${escapeHtml(relativeTime(report.createdAt || report.date))}</div>
       </div>
-      <div class="row" style="gap:6px">
-        <span class="chip chip-${avgTone}">Avg ${avg.toFixed(1)} / 5</span>
+      <span class="chip chip-${avgTone}">Avg ${avg.toFixed(1)} / 5</span>
+      <div class="wn-card-actions">
         <button type="button" class="icon-btn" data-edit-weekly-note="${escapeHtml(report.id)}" aria-label="Edit weekly note" title="Edit weekly note">${ICON.edit}</button>
         <button type="button" class="icon-btn" data-delete-weekly-note="${escapeHtml(report.id)}" aria-label="Delete weekly note" title="Delete weekly note" style="color:var(--red-600)">${ICON.trash}</button>
       </div>
@@ -2954,8 +3023,34 @@ const DAILY_CONTENT_KEY='scribe.daily-content.v1';
 function localDateKey(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
 async function loadDailyDashboardContent(){const q=$('#daily-quote-content'),f=$('#daily-fact-content');if(!q||!f)return;let cache=null;try{cache=JSON.parse(localStorage.getItem(DAILY_CONTENT_KEY)||'null');}catch{}if(cache?.date===localDateKey()){if(cache.quote)q.innerHTML=`<blockquote>${escapeHtml(cache.quote.quote)}</blockquote><div class="daily-attribution">— ${escapeHtml(cache.quote.author)}</div>`;else q.textContent='Today’s quote is unavailable. Try again tomorrow.';if(cache.fact)f.innerHTML=`<strong>${escapeHtml(cache.fact.title)}</strong><p>${escapeHtml(cache.fact.fact)}</p>`;else f.textContent='Today’s fact is unavailable. Try again tomorrow.';return;}const next={date:localDateKey(),quote:null,fact:null};try{const r=await fetch('https://dummyjson.com/quotes/random');if(!r.ok)throw new Error('Quote API unavailable');const x=await r.json();if(x.quote)next.quote={quote:x.quote,author:x.author||'Unknown author'};}catch(e){console.warn('Daily quote unavailable',e);}try{const r=await fetch('https://www.drivebird.com/api/random-facts/today');if(!r.ok)throw new Error('Facts API unavailable');const x=await r.json(),item=Array.isArray(x.data)?x.data[0]:x.data;if(item?.fact)next.fact={title:item.title||'Did you know?',fact:item.fact};}catch(e){console.warn('Daily fact unavailable',e);}try{localStorage.setItem(DAILY_CONTENT_KEY,JSON.stringify(next));}catch{}if(next.quote&&$('#daily-quote-content'))$('#daily-quote-content').innerHTML=`<blockquote>${escapeHtml(next.quote.quote)}</blockquote><div class="daily-attribution">— ${escapeHtml(next.quote.author)}</div>`;else if($('#daily-quote-content'))$('#daily-quote-content').textContent='Today’s quote is unavailable. Try refreshing.';if(next.fact&&$('#daily-fact-content'))$('#daily-fact-content').innerHTML=`<strong>${escapeHtml(next.fact.title)}</strong><p>${escapeHtml(next.fact.fact)}</p>`;else if($('#daily-fact-content'))$('#daily-fact-content').textContent='Today’s fact is unavailable. Try refreshing.';}
 let nasaLoading=false;
-function setNasaBackgroundImage(image){if(!/^https:\/\//i.test(String(image||'')))return;const overlay=document.documentElement.getAttribute('data-theme')==='dark'?'rgba(7,12,28,.78)':'rgba(248,250,252,.82)';document.body.classList.add('nasa-background');document.body.style.backgroundImage=`linear-gradient(${overlay},${overlay}),url("${String(image).replace(/["\\\\]/g,'')}")`;document.body.style.backgroundPosition='center center';document.body.style.backgroundSize='cover';document.body.style.backgroundAttachment='fixed';}
-async function applyNasaBackground(enabled){if(!enabled){document.body.classList.remove('nasa-background');document.body.style.backgroundImage='';document.body.style.backgroundAttachment='';return;}if(nasaLoading)return;let cache=null;try{cache=JSON.parse(localStorage.getItem('scribe.nasa-apod.v1')||'null');}catch{}if(cache?.date===localDateKey()&&cache.image){setNasaBackgroundImage(cache.image);return;}nasaLoading=true;try{const r=await fetch('https://science.nasa.gov/wp-json/wp/v2/apod-basic');if(!r.ok)throw new Error(`NASA API ${r.status}`);const raw=await r.json(),data=Array.isArray(raw)?raw[0]:raw;const image=data?.media_type==='image'?(data.hdurl||data.image_url||''):'';if(!image||!/^https:\/\//i.test(image))throw new Error('No astronomy image available today');const item={date:localDateKey(),image,title:data.title||'',credit:data.credit||data.copyright||''};try{localStorage.setItem('scribe.nasa-apod.v1',JSON.stringify(item));}catch{}setNasaBackgroundImage(image);}catch(err){console.warn('NASA background unavailable:',err.message);if(cache?.image)setNasaBackgroundImage(cache.image);}finally{nasaLoading=false;}}
+function setNasaBackgroundImage(image){
+  if(!/^https:\/\//i.test(String(image||'')))return;
+  const img=new Image();
+  img.onload=()=>{
+    const overlay=document.documentElement.getAttribute('data-theme')==='dark'?'rgba(7,12,28,.34)':'rgba(248,250,252,.46)';
+    document.body.classList.add('nasa-background');
+    document.body.style.backgroundImage=`linear-gradient(${overlay},${overlay}),url("${String(image).replace(/["\\]/g,'')}")`;
+    document.body.style.backgroundPosition='center center';document.body.style.backgroundSize='cover';document.body.style.backgroundAttachment='fixed';
+  };
+  img.onerror=()=>console.warn('NASA background image could not be loaded.');
+  img.src=image;
+}
+async function applyNasaBackground(enabled){
+  if(!enabled){document.body.classList.remove('nasa-background');document.body.style.backgroundImage='';document.body.style.backgroundAttachment='';return;}
+  if(nasaLoading)return;
+  let cache=null;try{cache=JSON.parse(localStorage.getItem('scribe.nasa-apod.v2')||'null');}catch{}
+  if(cache?.date===localDateKey()&&cache.image){setNasaBackgroundImage(cache.image);return;}
+  nasaLoading=true;
+  try{
+    const r=await fetch('https://scribble.coeus1.tech/api/nasa/apod',{headers:{'Accept':'application/json'},cache:'no-store'});
+    const data=await r.json().catch(()=>null);
+    if(!r.ok||!data?.success||!/^https:\/\//i.test(String(data.image||'')))throw new Error(data?.error||`Scribble NASA proxy returned HTTP ${r.status}`);
+    const item={date:localDateKey(),image:data.image,title:data.title||'',credit:data.credit||'',url:data.url||''};
+    try{localStorage.setItem('scribe.nasa-apod.v2',JSON.stringify(item));}catch{}
+    setNasaBackgroundImage(item.image);
+  }catch(err){console.warn('NASA background unavailable:',err.message);if(cache?.image)setNasaBackgroundImage(cache.image);}
+  finally{nasaLoading=false;}
+}
 function renderDashboardView(){
   const selectedSubjects = new Set(getEnrolledSubjects());
   const assignments = Store.all('assignments').filter(a => selectedSubjects.has(matchSelectedSubject(a.subject)));
@@ -3058,7 +3153,7 @@ function renderDashboardView(){
           <div class="card-head"><div class="card-title">${ICON.calendar}Upcoming events</div></div>
           ${upcomingEvents.length
             ? `<div class="card-body" style="padding-top:6px;padding-bottom:6px">
-                ${upcomingEvents.map(e => `<div class="next-item" style="padding:10px 0">
+                ${upcomingEvents.map(e => `<div class="next-item" style="padding:10px 18px">
                   <div class="next-rank" style="background:var(--violet-500)">${escapeHtml(fmtDate(e.start).split(' ')[0])}</div>
                   <div class="item-main">
                     <div class="item-title" style="font-size:13.5px">${escapeHtml(e.title)}</div>
@@ -3136,18 +3231,18 @@ function renderCalendarView(){
   const dueItems=Store.all('assignments').filter(a=>a.dueDate&&!a.completed);
   const byDay=new Map(),seen=new Set();
   const push=(key,item)=>{const k=`${key}|${normalizeTitle(item.title||'')}|${item.kind}`;if(seen.has(k))return;seen.add(k);if(!byDay.has(key))byDay.set(key,[]);byDay.get(key).push(item);};
-  for(const e of events)push(startOfDay(new Date(e.start)),{kind:'event',title:e.title||'Calendar event',start:e.start,end:e.end||null,source:e.source||'Calendar',test:false});
+  for(const e of events)push(startOfDay(new Date(e.start)),{kind:'event',title:e.title||'Calendar event',start:e.start,end:e.end||null,source:e.source||'Calendar',test:false,allDay:isAllDayCalendarEvent(e)});
   for(const a of dueItems)push(startOfDay(new Date(a.dueDate)),{kind:'due',title:a.title,start:a.dueDate,end:null,source:a.subject||'Assignment',test:a.type==='Test'||a.type==='Exam'});
   for(const items of byDay.values())items.sort((a,b)=>(a.start||0)-(b.start||0));
   const nav=`<div class="page-head"><div class="row-between wrap"><div><h1 class="page-title">Calendar</h1><p class="page-sub">${mode==='week'?`Week of ${escapeHtml(fmtDate(mondayOf(calFocusDate.getTime())))}`:new Date(calYear,calMonth,1).toLocaleDateString(undefined,{month:'long',year:'numeric'})}</p></div><div class="row wrap"><div class="seg"><button type="button" data-cal-view="week" class="${mode==='week'?'on':''}">Week</button><button type="button" data-cal-view="month" class="${mode==='month'?'on':''}">Month</button></div><button class="btn btn-ghost btn-sm" data-cal-prev>‹ Prev</button><button class="btn btn-ghost btn-sm" data-cal-today>Today</button><button class="btn btn-ghost btn-sm" data-cal-next>Next ›</button><button class="btn btn-primary btn-sm" data-add-event>Add event</button></div></div></div>`;
   if(mode==='week'){
     const monday=new Date(calFocusDate);monday.setHours(0,0,0,0);monday.setDate(monday.getDate()-((monday.getDay()+6)%7));
-    const cards=Array.from({length:7},(_,i)=>{const d=new Date(monday);d.setDate(d.getDate()+i);const key=startOfDay(d),items=byDay.get(key)||[];return `<section class="cal-week-day ${key===todayKey?'today':''}"><div class="cal-week-head"><strong>${d.toLocaleDateString(undefined,{weekday:'short'})}</strong><span>${d.getDate()} ${d.toLocaleDateString(undefined,{month:'short'})}</span></div><div class="cal-week-items">${items.length?items.map(it=>`<div class="cal-week-item ${it.test?'test':''} ${it.kind==='due'?'due-item':''}"><span class="cal-week-time">${it.kind==='due'?'Due':new Date(it.start).toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'})}</span><span class="cal-week-title">${escapeHtml(it.title)}</span><span class="cal-week-source">${escapeHtml(it.source)}</span></div>`).join(''):'<div class="cal-week-empty">No events</div>'}</div></section>`;}).join('');
+    const cards=Array.from({length:7},(_,i)=>{const d=new Date(monday);d.setDate(d.getDate()+i);const key=startOfDay(d),items=byDay.get(key)||[];return `<section class="cal-week-day ${key===todayKey?'today':''}"><div class="cal-week-head"><strong>${d.toLocaleDateString(undefined,{weekday:'short'})}</strong><span>${d.getDate()} ${d.toLocaleDateString(undefined,{month:'short'})}</span></div><div class="cal-week-items">${items.length?items.map(it=>`<div class="cal-week-item ${it.test?'test':''} ${it.kind==='due'?'due-item':''} ${it.allDay?'all-day-item':''}"><span class="cal-week-time">${it.kind==='due'?'Due':it.allDay?'All day':new Date(it.start).toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'})}</span><span class="cal-week-title">${escapeHtml(it.title)}</span><span class="cal-week-source">${escapeHtml(it.source)}</span></div>`).join(''):'<div class="cal-week-empty">No events</div>'}</div></section>`;}).join('');
     return `${nav}<div class="cal-week-grid">${cards}</div>`;
   }
   const cells=monthMatrix(calYear,calMonth),dow=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-  const grid=cells.map(d=>{const key=startOfDay(d),items=byDay.get(key)||[],out=d.getMonth()!==calMonth,today=key===todayKey,shown=items.slice(0,2),more=items.length-shown.length;return `<div class="cal-day ${out?'out':''} ${today?'today':''}"><div class="cal-num">${d.getDate()}</div>${shown.map(it=>`<span class="cal-ev ${it.test?'test':''}" title="${escapeHtml(it.title)}">${escapeHtml(it.title)}</span>`).join('')}${more>0?`<span class="cal-more">+${more} more</span>`:''}</div>`;}).join('');
-  return `${nav}<div class="card card-body"><div class="cal-head">${dow.map(d=>`<div class="cal-dow">${d}</div>`).join('')}</div><div class="cal-grid">${grid}</div></div>`;
+  const grid=cells.map(d=>{const key=startOfDay(d),items=byDay.get(key)||[],out=d.getMonth()!==calMonth,today=key===todayKey,shown=items.slice(0,2),more=items.length-shown.length;return `<div class="cal-day ${out?'out':''} ${today?'today':''}"><div class="cal-num">${d.getDate()}</div>${shown.map(it=>`<span class="cal-ev ${it.test?'test':''} ${it.allDay?'all-day':''}" title="${escapeHtml(it.title)}${it.allDay?' · All day':''}">${escapeHtml(it.title)}</span>`).join('')}${more>0?`<span class="cal-more">+${more} more</span>`:''}</div>`;}).join('');
+  return `${nav}<div class="card card-body calendar-month-card"><div class="cal-head">${dow.map(d=>`<div class="cal-dow">${d}</div>`).join('')}</div><div class="cal-grid">${grid}</div></div>`;
 }
 
 function plannerDayKey(d){return ['sun','mon','tue','wed','thu','fri','sat'][d.getDay()];}
@@ -3156,7 +3251,7 @@ function plannerTimeToMin(t){const m=String(t||'').match(/^(\d{1,2}):(\d{2})$/);
 function plannerMinToTime(n){const h=Math.floor(n/60),m=n%60;return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;}
 function plannerFmtTime(t){const n=plannerTimeToMin(t);if(n===null)return t;const h=Math.floor(n/60),m=n%60,ap=h>=12?'PM':'AM',hh=h%12||12;return `${hh}:${String(m).padStart(2,'0')} ${ap}`;}
 function plannerActivityBlocks(day){const p=Store.cache.settings.studyPlanner||DEFAULT_SETTINGS.studyPlanner;const key=plannerDayKey(day);return (p.activities||[]).filter(a=>(a.days||[]).includes(key)).map(a=>({name:a.name||'Activity',start:a.start||'16:00',end:a.end||'17:00'})).sort((a,b)=>String(a.start).localeCompare(String(b.start)));}
-function plannerCalendarBlocks(day){const key=startOfDay(day);return Store.all('events').filter(e=>e.start&&startOfDay(new Date(e.start))===key&&!e.plannerActivityId&&!isTimetableCalendarEvent(e)).map(e=>{const st=new Date(e.start),en=e.end?new Date(e.end):new Date(e.start+60*60000),allDay=st.getHours()===0&&st.getMinutes()===0&&en.getHours()===0&&en.getMinutes()===0;return {name:e.title||'Calendar event',start:allDay?'07:00':plannerMinToTime(st.getHours()*60+st.getMinutes()),end:allDay?'21:30':plannerMinToTime(Math.max(st.getHours()*60+st.getMinutes()+20,en.getHours()*60+en.getMinutes()))};});}
+function plannerCalendarBlocks(day){const key=startOfDay(day);return Store.all('events').filter(e=>e.start&&startOfDay(new Date(e.start))===key&&!e.plannerActivityId&&!isTimetableCalendarEvent(e)&&!isAllDayCalendarEvent(e)).map(e=>{const st=new Date(e.start),en=e.end?new Date(e.end):new Date(e.start+60*60000);return {name:e.title||'Calendar event',start:plannerMinToTime(st.getHours()*60+st.getMinutes()),end:plannerMinToTime(Math.max(st.getHours()*60+st.getMinutes()+20,en.getHours()*60+en.getMinutes()))};});}
 function plannerFreeWindows(day,occupied){const weekday=day.getDay()>=1&&day.getDay()<=5,start=weekday?915:600,end=1290,wins=[];const blocks=[...occupied.map(b=>({start:plannerTimeToMin(b.start),end:plannerTimeToMin(b.end)}))];const sorted=blocks.filter(x=>x.start!==null&&x.end>x.start).sort((a,b)=>a.start-b.start);let cursor=start;for(const b of sorted){const gapEnd=b.start-10;if(gapEnd-cursor>=20)wins.push({start:cursor,end:gapEnd});cursor=Math.max(cursor,b.end+10);}if(end-cursor>=20)wins.push({start:cursor,end});return wins;}
 function plannerIsNoticeRecord(record){
   if(!record)return false;
@@ -3261,8 +3356,8 @@ function plannerTipData(){
 }
 function plannerTimelinePreview(sessions){
   const days=Array.from({length:3},(_,i)=>{const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()+i);return d;}),startMinute=420,scale=.72,height=(1320-startMinute)*scale;
-  const blocksFor=day=>{const key=startOfDay(day),items=[];if(day.getDay()>=1&&day.getDay()<=5)items.push({title:'School',start:510,end:915,type:'school'});for(const a of plannerActivityBlocks(day)){const sm=plannerTimeToMin(a.start),em=plannerTimeToMin(a.end);if(sm!==null&&em>sm)items.push({title:a.name,start:sm,end:em,type:'activity'});}for(const e of Store.all('events').filter(e=>e.start&&startOfDay(new Date(e.start))===key&&!isTimetableCalendarEvent(e))){if(e.plannerActivityId)continue;const st=new Date(e.start),en=e.end?new Date(e.end):new Date(e.start+60*60000),allDay=st.getHours()===0&&st.getMinutes()===0&&en.getHours()===0&&en.getMinutes()===0;items.push({title:e.title||'Calendar event',start:allDay?420:st.getHours()*60+st.getMinutes(),end:allDay?1320:Math.max(st.getHours()*60+st.getMinutes()+20,en.getHours()*60+en.getMinutes()),type:'event',allDay});}for(const x of sessions.filter(x=>x.day===key))items.push({title:`${x.subject}: ${x.topic}`,start:x.start,end:x.end,type:'study'});return items;};
-  return `<section class="card planner-preview-card"><div class="card-head"><div class="card-title">${ICON.calendar}Next three days</div><span class="hint">School 8:30 am–3:15 pm · Calendar and study plan</span></div><div class="planner-timeline-grid">${days.map(day=>{const blocks=blocksFor(day),hours=Array.from({length:16},(_,i)=>`<div class="planner-time-marker" style="top:${i*60*scale}px">${plannerFmtTime(plannerMinToTime(startMinute+i*60))}</div>`).join(''),shown=blocks.map(b=>`<div class="planner-timeline-block ${b.type}" style="top:${Math.max(0,(b.start-startMinute)*scale)}px;height:${Math.max(22,(b.end-b.start)*scale)}px" title="${escapeHtml(b.title)}"><strong>${escapeHtml(b.title)}</strong>${b.allDay?'<small>All day</small>':''}</div>`).join('');return `<div class="planner-timeline-day"><div class="planner-timeline-day-head"><strong>${escapeHtml(day.toLocaleDateString(undefined,{weekday:'long'}))}</strong><span>${escapeHtml(day.toLocaleDateString(undefined,{day:'numeric',month:'short'}))}</span></div><div class="planner-timeline-body" style="height:${height}px"><div class="planner-timeline-times">${hours}</div><div class="planner-timeline-track" style="height:${height}px">${shown}</div></div></div>`;}).join('')}</div></section>`;
+  const blocksFor=day=>{const key=startOfDay(day),items=[],allDay=[];if(day.getDay()>=1&&day.getDay()<=5)items.push({title:'School',start:510,end:915,type:'school'});for(const a of plannerActivityBlocks(day)){const sm=plannerTimeToMin(a.start),em=plannerTimeToMin(a.end);if(sm!==null&&em>sm)items.push({title:a.name,start:sm,end:em,type:'activity'});}for(const e of Store.all('events').filter(e=>e.start&&startOfDay(new Date(e.start))===key&&!isTimetableCalendarEvent(e))){if(e.plannerActivityId)continue;if(isAllDayCalendarEvent(e)){allDay.push(e.title||'All-day event');continue;}const st=new Date(e.start),en=e.end?new Date(e.end):new Date(e.start+60*60000);items.push({title:e.title||'Calendar event',start:st.getHours()*60+st.getMinutes(),end:Math.max(st.getHours()*60+st.getMinutes()+20,en.getHours()*60+en.getMinutes()),type:'event'});}for(const x of sessions.filter(x=>x.day===key))items.push({title:`${x.subject}: ${x.topic}`,start:x.start,end:x.end,type:'study'});return {items,allDay};};
+  return `<section class="card planner-preview-card"><div class="card-head"><div class="card-title">${ICON.calendar}Next three days</div><span class="hint">School 8:30 am–3:15 pm · Calendar and study plan</span></div><div class="planner-timeline-grid">${days.map(day=>{const data=blocksFor(day),blocks=data.items,hours=Array.from({length:16},(_,i)=>`<div class="planner-time-marker" style="top:${i*60*scale}px">${plannerFmtTime(plannerMinToTime(startMinute+i*60))}</div>`).join(''),shown=blocks.map(b=>`<div class="planner-timeline-block ${b.type}" style="top:${Math.max(0,(b.start-startMinute)*scale)}px;height:${Math.max(22,(b.end-b.start)*scale)}px" title="${escapeHtml(b.title)}"><strong>${escapeHtml(b.title)}</strong></div>`).join(''),allDayLabel=data.allDay.length?`<div class="planner-all-day-strip"><strong>All day:</strong>${data.allDay.map(escapeHtml).join(' · ')}</div>`:'';return `<div class="planner-timeline-day"><div class="planner-timeline-day-head"><strong>${escapeHtml(day.toLocaleDateString(undefined,{weekday:'long'}))}</strong><span>${escapeHtml(day.toLocaleDateString(undefined,{day:'numeric',month:'short'}))}</span></div>${allDayLabel}<div class="planner-timeline-body" style="height:${height}px"><div class="planner-timeline-times">${hours}</div><div class="planner-timeline-track" style="height:${height}px">${shown}</div></div></div>`;}).join('')}</div></section>`;
 }
 
 function renderPlannerView(){
@@ -3283,19 +3378,40 @@ function renderPlannerView(){
 }
 
 const QUICK_NOTE_COLORS={default:'var(--surface)',yellow:'#fff7cc',blue:'#dbeafe',green:'#dcfce7',pink:'#fce7f3',purple:'#ede9fe'};
+function quickNoteSubjectOptions(selected=''){
+  const subjects=getEnrolledSubjects();
+  const options=subjects.length?subjects:['General'];
+  return options.map(subject=>`<option value="${escapeHtml(subject)}" ${subject===selected?'selected':''}>${escapeHtml(subject)}</option>`).join('');
+}
+async function saveQuickNoteWithAssignment(note,createAssignment=false,subject=''){
+  await Store.put('quickNotes',note);
+  if(!createAssignment)return {created:false};
+  const firstLine=String(note.body||'').split(/\r?\n/).map(x=>x.trim()).find(Boolean)||'Note assignment';
+  const title=sanitiseText(note.title||firstLine,160)||'Note assignment';
+  const selected=getEnrolledSubjects();
+  const matched=matchSelectedSubject(subject)||(selected.length===1?selected[0]:'');
+  const assignmentSubject=matched||'General';
+  const assignment={id:uid(),title,description:sanitiseText(note.body||'',2000),subject:assignmentSubject,type:'Assignment',dueDate:null,completed:false,manual:true,quickNoteId:note.id,sources:[{source:'Note-Taker',url:`#quick-note-${note.id}`,addedAt:now()}],createdAt:now()};
+  assignment.priority=computePriority(assignment);
+  await Store.put('assignments',assignment);
+  note.assignmentId=assignment.id;note.assignmentSubject=assignmentSubject;
+  await Store.put('quickNotes',note);
+  return {created:true,assignment};
+}
+
 function quickNoteColor(value){return QUICK_NOTE_COLORS[value]||QUICK_NOTE_COLORS.default;}
 function renderQuickNotesView(){
   const notes=[...Store.all('quickNotes')].sort((a,b)=>(b.updatedAt||b.createdAt||0)-(a.updatedAt||a.createdAt||0)),colors=[['default','Default'],['yellow','Yellow'],['blue','Blue'],['green','Green'],['pink','Pink'],['purple','Purple']];
   const options=value=>colors.map(([k,n])=>`<option value="${k}" ${value===k?'selected':''}>${n}</option>`).join('');
   return `<div class="page-head"><div class="row-between wrap"><div><h1 class="page-title">Note-Taker</h1><p class="page-sub">A quick place to catch an idea before it disappears.</p></div></div></div>
-  <section class="card quick-note-compose"><div class="card-body"><div class="field"><label class="label" for="quick-note-title">Title <span class="muted">(optional)</span></label><input class="input" id="quick-note-title" maxlength="120" placeholder="Give this note a title"></div><div class="field"><label class="label" for="quick-note-body">Your note</label><textarea class="textarea" id="quick-note-body" rows="4" placeholder="Write down your idea…"></textarea></div><div class="row-between wrap"><div class="field" style="margin:0;min-width:150px"><label class="label" for="quick-note-color">Note colour</label><select class="select" id="quick-note-color">${options('default')}</select></div><button class="btn btn-primary" type="button" data-add-quick-note>Save note</button></div></div></section>
-  ${notes.length?`<div class="quick-notes-grid">${notes.map(n=>`<article class="card quick-note-card" style="background:${quickNoteColor(n.color)};color:${n.color&&n.color!=='default'?'#1e293b':'var(--text)'}"><div class="card-body"><div class="row-between" style="gap:8px"><h2>${escapeHtml(n.title||'Untitled note')}</h2><span class="hint">${escapeHtml(relativeTime(n.updatedAt||n.createdAt))}</span></div><div class="quick-note-content">${escapeHtml(n.body||'').replace(/\n/g,'<br>')}</div><div class="row" style="justify-content:flex-end;margin-top:14px"><button class="btn btn-ghost btn-sm" data-edit-quick-note="${escapeHtml(n.id)}">Edit</button><button class="btn btn-danger-soft btn-sm" data-del-quick-note="${escapeHtml(n.id)}">Delete</button></div></div></article>`).join('')}</div>`:`<div class="empty"><div class="empty-ico">✎</div><div class="empty-title">No notes yet</div><div class="empty-sub">Use the box above to save a thought, reminder or idea.</div></div>`}`;
+  <section class="card quick-note-compose"><div class="card-body"><div class="field"><label class="label" for="quick-note-title">Title <span class="muted">(optional)</span></label><input class="input" id="quick-note-title" maxlength="120" placeholder="Give this note a title"></div><div class="field"><label class="label" for="quick-note-body">Your note</label><textarea class="textarea" id="quick-note-body" rows="4" placeholder="Write down your idea…"></textarea></div><label class="checkbox quick-note-create-assignment"><input type="checkbox" id="quick-note-create-assignment"><span>Create assignment as well</span></label><div class="field quick-note-assignment-subject" id="quick-note-assignment-wrap" hidden><label class="label" for="quick-note-assignment-subject">Assignment subject</label><select class="select" id="quick-note-assignment-subject">${quickNoteSubjectOptions(getEnrolledSubjects()[0]||'General')}</select></div><div class="row-between wrap"><div class="field" style="margin:0;min-width:150px"><label class="label" for="quick-note-color">Note colour</label><select class="select" id="quick-note-color">${options('default')}</select></div><button class="btn btn-primary" type="button" data-add-quick-note>Save note</button></div></div></section>
+  ${notes.length?`<div class="quick-notes-grid">${notes.map(n=>`<article class="card quick-note-card" style="background:${quickNoteColor(n.color)};color:${n.color&&n.color!=='default'?'#1e293b':'var(--text)'}"><div class="card-body"><div class="row-between" style="gap:8px"><h2>${escapeHtml(n.title||'Untitled note')}</h2><span class="hint">${escapeHtml(relativeTime(n.updatedAt||n.createdAt))}</span></div><div class="quick-note-content">${escapeHtml(n.body||'').replace(/\n/g,'<br>')}</div>${n.assignmentId?`<a class="quick-note-assignment-link" href="#/assignments">✓ Assignment created${n.assignmentSubject?` · ${escapeHtml(n.assignmentSubject)}`:''}</a>`:''}<div class="row" style="justify-content:flex-end;margin-top:14px"><button class="btn btn-ghost btn-sm" data-edit-quick-note="${escapeHtml(n.id)}">Edit</button><button class="btn btn-danger-soft btn-sm" data-del-quick-note="${escapeHtml(n.id)}">Delete</button></div></div></article>`).join('')}</div>`:`<div class="empty"><div class="empty-ico">✎</div><div class="empty-title">No notes yet</div><div class="empty-sub">Use the box above to save a thought, reminder or idea.</div></div>`}`;
 }
 
 function openQuickNoteModal(existing=null){
   const isNew=!existing,n=existing||{id:uid(),title:'',body:'',color:'default'};
   const colours=[['default','Default'],['yellow','Yellow'],['blue','Blue'],['green','Green'],['pink','Pink'],['purple','Purple']];
-  openModal({title:isNew?'New note':'Edit note',subtitle:'Your changes are saved to your Scribe account.',body:`<div class="stack"><div class="field"><label class="label">Title</label><input class="input" id="qn-title" maxlength="120" value="${escapeHtml(n.title||'')}" placeholder="Optional title"></div><div class="field"><label class="label">Note</label><textarea class="textarea" id="qn-body" rows="8" placeholder="Write your note…">${escapeHtml(n.body||'')}</textarea></div><div class="field"><label class="label">Note colour</label><select class="select" id="qn-color">${colours.map(([k,v])=>`<option value="${k}" ${n.color===k?'selected':''}>${v}</option>`).join('')}</select></div></div>`,footer:`<button class="btn btn-ghost" data-close>Cancel</button><button class="btn btn-primary" id="qn-save">Save note</button>`,onMount(el,close){$('#qn-save',el).addEventListener('click',async()=>{const body=sanitiseText($('#qn-body',el).value,12000);if(!body){toast('Write something before saving.','warn');return;}await Store.put('quickNotes',{...n,title:sanitiseText($('#qn-title',el).value,120)||'',body,color:$('#qn-color',el).value||'default'});close();render();toast('Note saved.','success');});}});
+  openModal({title:isNew?'New note':'Edit note',subtitle:'Your changes are saved to your Scribe account.',body:`<div class="stack"><div class="field"><label class="label">Title</label><input class="input" id="qn-title" maxlength="120" value="${escapeHtml(n.title||'')}" placeholder="Optional title"></div><div class="field"><label class="label">Note</label><textarea class="textarea" id="qn-body" rows="8" placeholder="Write your note…">${escapeHtml(n.body||'')}</textarea></div><div class="field"><label class="label">Note colour</label><select class="select" id="qn-color">${colours.map(([k,v])=>`<option value="${k}" ${n.color===k?'selected':''}>${v}</option>`).join('')}</select></div>${isNew?`<label class="checkbox"><input type="checkbox" id="qn-create-assignment"><span>Create assignment as well</span></label><div class="field" id="qn-assignment-wrap" hidden><label class="label">Assignment subject</label><select class="select" id="qn-assignment-subject">${quickNoteSubjectOptions(getEnrolledSubjects()[0]||'General')}</select></div>`:''}</div>`,footer:`<button class="btn btn-ghost" data-close>Cancel</button><button class="btn btn-primary" id="qn-save">Save note</button>`,onMount(el,close){if(isNew){$('#qn-create-assignment',el)?.addEventListener('change',e=>{$('#qn-assignment-wrap',el).hidden=!e.target.checked;});}$('#qn-save',el).addEventListener('click',async()=>{const body=sanitiseText($('#qn-body',el).value,12000);if(!body){toast('Write something before saving.','warn');return;}const note={...n,title:sanitiseText($('#qn-title',el).value,120)||'',body,color:$('#qn-color',el).value||'default'};const result=await saveQuickNoteWithAssignment(note,!!$('#qn-create-assignment',el)?.checked,$('#qn-assignment-subject',el)?.value||'');close();render();toast(result.created?'Note saved and assignment created.':'Note saved.','success');});}});
 }
 
 function emailDateLabel(value){
@@ -3334,7 +3450,7 @@ async function reanalyseStoredEmail(id){
     email.aiError='';
     await Store.put('emailMessages',email);
     const assignment=tryImportAiAssessment(email,{subject:email.subject,from:email.from,body:email.body,date:email.date},ai);
-    if(assignment){await importItems([assignment],'Email');email.importedAssignment=true;await Store.put('emailMessages',email);}
+    if(assignment){await importItems([assignment],'Email');email.importedAssignment=emailHasLinkedAssignment(email);await Store.put('emailMessages',email);}
     render();
     toast(ai.schoolRelated===null?'Scribble returned a summary but no school-related decision. This email remains in Needs review.':'Email analysed successfully.','success');
   }catch(err){
@@ -3343,8 +3459,14 @@ async function reanalyseStoredEmail(id){
   }
 }
 
+function resultIsMarked(r){
+  const status=String(r?.status||r?.markingStatus||'').trim().toLowerCase().replace(/[ -]+/g,'_');
+  if(r?.marked===false||r?.isMarked===false||['pending','not_marked','unmarked','awaiting_marking','not_returned'].includes(status))return false;
+  return r?.grade!==null&&r?.grade!==undefined&&r?.grade!==''&&Number.isFinite(Number(r.grade));
+}
+
 function resultsStats(rows,weighted){
-  const graded=rows.filter(r=>r.grade!==null&&r.grade!==undefined&&r.grade!==''&&Number.isFinite(Number(r.grade)));
+  const graded=rows.filter(resultIsMarked);
   if(!graded.length)return {current:null,contribution:0,completedWeight:0,count:0,pending:rows.length};
   if(!weighted)return {current:graded.reduce((sum,r)=>sum+Number(r.grade),0)/graded.length,contribution:null,completedWeight:null,count:graded.length,pending:rows.length-graded.length};
   const completedWeight=graded.reduce((sum,r)=>sum+Math.max(0,Number(r.weight)||0),0);
@@ -3358,7 +3480,7 @@ function renderResultsView(){
   const rows=[...Store.all('results')].sort((a,b)=>(b.date||b.createdAt||0)-(a.date||a.createdAt||0)),subjects=getEnrolledSubjects();
   const subjectCards=subjects.map(subject=>{
     const subjectRows=rows.filter(r=>normalizeSubject(r.subject)===subject),weighted=isSubjectWeighted(subject),stats=resultsStats(subjectRows,weighted);
-    const table=subjectRows.length?`<div class="results-table-wrap"><table class="results-table"><thead><tr><th>Assessment</th><th>Result</th>${weighted?'<th>Weight</th>':''}<th>Date</th><th></th></tr></thead><tbody>${subjectRows.map(r=>`<tr><td><strong>${escapeHtml(r.title||'Assessment')}</strong>${r.notes?`<div class="hint">${escapeHtml(r.notes)}</div>`:''}</td><td>${r.grade===null||r.grade===undefined||r.grade===''?'<span class="muted">Not marked</span>':Number(r.grade).toFixed(1)+'%'}</td>${weighted?`<td>${Number(r.weight)||0}%</td>`:''}<td>${r.date?escapeHtml(fmtDate(r.date)):'—'}</td><td><div class="row"><button class="icon-btn" data-edit-result="${escapeHtml(r.id)}" aria-label="Edit result">${ICON.edit}</button><button class="icon-btn" data-del-result="${escapeHtml(r.id)}" aria-label="Delete result">${ICON.trash}</button></div></td></tr>`).join('')}</tbody></table></div>`:`<div class="empty" style="padding:24px 18px"><div class="empty-title">No results for ${escapeHtml(subject)} yet</div><div class="empty-sub">Add assessments as you receive results or know their weighting.</div></div>`;
+    const table=subjectRows.length?`<div class="results-table-wrap"><table class="results-table"><thead><tr><th>Assessment</th><th>Result</th>${weighted?'<th>Weight</th>':''}<th>Date</th><th></th></tr></thead><tbody>${subjectRows.map(r=>`<tr><td><strong>${escapeHtml(r.title||'Assessment')}</strong>${r.notes?`<div class="hint">${escapeHtml(r.notes)}</div>`:''}</td><td>${!resultIsMarked(r)?'<span class="muted">Not marked</span>':Number(r.grade).toFixed(1)+'%'}</td>${weighted?`<td>${Number(r.weight)||0}%</td>`:''}<td>${r.date?escapeHtml(fmtDate(r.date)):'—'}</td><td><div class="results-row-actions"><button class="icon-btn" data-edit-result="${escapeHtml(r.id)}" aria-label="Edit result">${ICON.edit}</button><button class="icon-btn" data-del-result="${escapeHtml(r.id)}" aria-label="Delete result">${ICON.trash}</button></div></td></tr>`).join('')}</tbody></table></div>`:`<div class="empty" style="padding:24px 18px"><div class="empty-title">No results for ${escapeHtml(subject)} yet</div><div class="empty-sub">Add assessments as you receive results or know their weighting.</div></div>`;
     const metric=weighted?`<div class="results-average"><div><span class="results-average-label">Weighted contribution</span><strong>${stats.current===null?'—':`${stats.contribution.toFixed(1)}% out of ${stats.completedWeight.toFixed(1)}%`}</strong></div><div><span class="results-average-label">On track for</span><strong>${stats.projected===null?'—':stats.projected.toFixed(1)+'%'}</strong></div></div>`:`<div class="results-average"><div><span class="results-average-label">Current average</span><strong>${stats.current===null?'—':stats.current.toFixed(1)+'%'}</strong></div></div>`;
     return `<section class="card results-subject-card"><div class="card-head"><div><h2 class="card-title">${escapeHtml(subject)}</h2><div class="hint">${stats.count} marked · ${stats.pending} remaining</div></div><div class="results-subject-tools"><label class="checkbox"><input type="checkbox" data-weight-subject="${escapeHtml(subject)}" ${weighted?'checked':''}><span>Weighted</span></label>${metric}</div></div>${table}</section>`;
   }).join('');
@@ -3824,6 +3946,7 @@ function render(){
   const route = currentRoute();
   view.classList.toggle('page-wide', ['#/assignments','#/calendar','#/notices','#/emails','#/planner','#/notes','#/quick-notes','#/results','#/settings'].includes(route));
   view.classList.toggle('page-planner', route === '#/planner');
+  view.classList.toggle('page-calendar', route === '#/calendar');
 
   switch (route){
     case '#/assignments': view.innerHTML = renderAssignmentsView(); break;
@@ -3950,6 +4073,7 @@ function openEventModal(existing){
           <label class="label">Date</label>
           <input class="input" type="date" id="em-date" value="${toDateInput(e.start)}">
         </div>
+        <label class="checkbox"><input type="checkbox" id="em-all-day" ${e.allDay?'checked':''}><span>All-day event</span></label>
       </div>`,
     footer: `<button class="btn btn-ghost" data-close>Cancel</button>
       <button class="btn btn-primary" id="em-save">${isNew ? 'Add event' : 'Save changes'}</button>`,
@@ -3958,12 +4082,12 @@ function openEventModal(existing){
         const title = sanitiseText($('#em-title', el).value, 200);
         if (!title){ toast('Give it a title first.', 'warn'); return; }
         const dateVal = $('#em-date', el).value;
-        const start = dateVal ? new Date(`${dateVal}T09:00:00`).getTime() : Date.now();
+        const allDay=$('#em-all-day',el).checked;const start = dateVal ? new Date(`${dateVal}T${allDay?'00:00':'09:00'}:00`).getTime() : Date.now();const end=allDay?start+86400000:(e.end||null);
         await Store.put('events', {
           ...e,
           title,
           description: sanitiseText($('#em-desc', el).value, 2000),
-          start,
+          start, end, allDay,
           source: e.source || 'Manual',
           manual: true
         });
@@ -4372,7 +4496,9 @@ function initViewEvents(){
     if(e.target.closest('[data-add-quick-note]')){
       const title=sanitiseText($('#quick-note-title')?.value||'',120),body=sanitiseText($('#quick-note-body')?.value||'',12000);
       if(!body){toast('Write a note first.','warn');return;}
-      await Store.put('quickNotes',{id:uid(),title,body,color:$('#quick-note-color')?.value||'default'});render();toast('Note saved.','success');return;
+      const note={id:uid(),title,body,color:$('#quick-note-color')?.value||'default'};
+      const result=await saveQuickNoteWithAssignment(note,$('#quick-note-create-assignment')?.checked,$('#quick-note-assignment-subject')?.value||'');
+      render();toast(result.created?'Note saved and assignment created.':'Note saved.','success');return;
     }
     const editQuick=e.target.closest('[data-edit-quick-note]');
     if(editQuick){const note=Store.get('quickNotes',editQuick.getAttribute('data-edit-quick-note'));if(note)openQuickNoteModal(note);return;}
@@ -4542,6 +4668,7 @@ function initViewEvents(){
       return;
     }
     if(id==='email-inbox-filter'){emailInboxFilter=e.target.value;render();return;}
+    if(id==='quick-note-create-assignment'){const wrap=$('#quick-note-assignment-wrap');if(wrap)wrap.hidden=!e.target.checked;return;}
     if(e.target.matches('[data-planner-horizon]')){Store.cache.settings.studyPlanner.horizonDays=Number(e.target.value)||7;Store.persistNow();await Store.saveUserDoc();render();return;}
 
     const s = Store.cache.settings;
@@ -4622,7 +4749,7 @@ function initQuickAdd(){
 /* ── Theme / profile ──────────────────────────────────────── */
 function applyTheme(t){
   document.documentElement.setAttribute('data-theme', t === 'dark' ? 'dark' : 'light');
-  if(Store.cache?.settings?.nasaBackground){let cache=null;try{cache=JSON.parse(localStorage.getItem('scribe.nasa-apod.v1')||'null');}catch{}if(cache?.image)setNasaBackgroundImage(cache.image);else applyNasaBackground(true);}else applyNasaBackground(false);
+  if(Store.cache?.settings?.nasaBackground){let cache=null;try{cache=JSON.parse(localStorage.getItem('scribe.nasa-apod.v2')||'null');}catch{}if(cache?.image)setNasaBackgroundImage(cache.image);else applyNasaBackground(true);}else applyNasaBackground(false);
 }
 
 function renderProfile(user){
