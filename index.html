@@ -724,6 +724,52 @@ code{font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;font-size:12.5p
 .email-original pre{white-space:pre-wrap;overflow-wrap:anywhere;max-height:320px;overflow:auto;background:var(--surface-2);padding:12px;border-radius:8px;font:12px/1.5 var(--font);margin-top:8px}
 @media(max-width:760px){.email-scan-status{grid-template-columns:repeat(2,minmax(0,1fr))}.email-record-head{flex-direction:column}.email-filter-row .select{width:100%}}
 
+
+/* Daily content, NASA background and responsive calendar/planner additions */
+body.nasa-background{background-repeat:no-repeat;background-size:cover;background-position:center center;background-attachment:fixed;}
+.daily-content-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:18px;}
+.daily-content-body{min-height:125px;display:flex;flex-direction:column;justify-content:center;gap:9px;color:var(--text-2);}
+.daily-content-body blockquote{margin:0;font-size:clamp(16px,1.6vw,21px);font-weight:650;line-height:1.5;color:var(--text);}
+.daily-content-body p{line-height:1.6;margin:0;}
+.daily-attribution{text-align:right;font-size:12px;color:var(--text-3);}
+.extra-activity-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;width:100%;}
+.extra-activity-input{min-width:0;}
+.cal-week-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:9px;align-items:stretch;}
+.cal-week-day{min-width:0;min-height:170px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+.cal-week-day.today{border-color:var(--primary);box-shadow:inset 0 0 0 1px var(--primary);}
+.cal-week-head{display:flex;justify-content:space-between;gap:5px;padding:9px;background:var(--surface-2);border-bottom:1px solid var(--border);font-size:12px;}
+.cal-week-head span{color:var(--text-3);}
+.cal-week-items{display:flex;flex-direction:column;gap:6px;padding:7px;}
+.cal-week-item{padding:7px;border-left:3px solid var(--primary);border-radius:6px;background:var(--primary-soft);min-width:0;}
+.cal-week-item.test,.cal-week-item.due-item{border-left-color:var(--amber-500);background:var(--amber-50);}
+.cal-week-time,.cal-week-source{display:block;font-size:10px;color:var(--text-3);}
+.cal-week-title{display:block;font-size:11px;line-height:1.35;font-weight:650;overflow-wrap:anywhere;}
+.cal-week-empty{padding:12px 3px;color:var(--text-3);font-size:11px;text-align:center;}
+/* Study planner now follows the document scroll; no fixed-height nested cards. */
+#view.page-planner .planner-grid{display:flex!important;flex-direction:column!important;align-items:stretch!important;height:auto!important;min-height:0!important;max-height:none!important;overflow:visible!important;}
+#view.page-planner .planner-main-card,#view.page-planner .planner-right-column>.card{height:auto!important;min-height:0!important;max-height:none!important;overflow:visible!important;}
+#view.page-planner .planner-plan-scroll,#view.page-planner .planner-right-column>.card>.card-body{height:auto!important;max-height:none!important;min-height:0!important;overflow:visible!important;}
+#view.page-planner .planner-right-column{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:none!important;height:auto!important;overflow:visible!important;align-content:start!important;}
+.planner-preview-card{margin-top:20px;}
+.planner-timeline-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:14px;overflow:visible;}
+.planner-timeline-day{min-width:0;border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.planner-timeline-day-head{display:flex;justify-content:space-between;gap:6px;padding:10px 12px;background:var(--surface-2);font-size:12px;}
+.planner-timeline-day-head span{color:var(--text-3);}
+.planner-timeline-body{display:grid;grid-template-columns:58px 1fr;position:relative;}
+.planner-timeline-times{position:relative;border-right:1px solid var(--border);}
+.planner-time-marker{position:absolute;right:7px;transform:translateY(-7px);font-size:9px;color:var(--text-3);white-space:nowrap;}
+.planner-timeline-track{position:relative;background:repeating-linear-gradient(to bottom,transparent 0,transparent 42.5px,var(--border) 43px,var(--border) 44px);}
+.planner-timeline-block{position:absolute;left:4px;right:4px;border-radius:6px;padding:4px 6px;overflow:hidden;font-size:10px;line-height:1.3;border-left:3px solid var(--primary);background:var(--primary-soft);color:var(--text);}
+.planner-timeline-block strong{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere;}
+.planner-timeline-block.school{background:var(--surface-3);border-left-color:var(--gray-400);}
+.planner-timeline-block.event{background:var(--sky-50);border-left-color:var(--sky-500);}
+.planner-timeline-block.activity{background:var(--violet-50);border-left-color:var(--violet-500);}
+.planner-timeline-block.study{background:var(--green-50);border-left-color:var(--green-500);}
+.results-projection-note{font-size:12px;line-height:1.6;color:var(--text-3);margin-top:16px;}
+@media(max-width:1100px){.cal-week-grid{grid-template-columns:repeat(4,minmax(0,1fr));}}
+@media(max-width:900px){.planner-timeline-grid{grid-template-columns:1fr;}}
+@media(max-width:760px){.daily-content-grid{grid-template-columns:1fr;}.cal-week-grid{grid-template-columns:repeat(2,minmax(0,1fr));}.extra-activity-fields{grid-template-columns:1fr;}#view.page-planner .planner-right-column{grid-template-columns:1fr!important;}}
+
 </style>
 </head>
 
@@ -906,7 +952,7 @@ const GOOGLE_SCOPES = [
   'https://www.googleapis.com/auth/classroom.courses.readonly',
   'https://www.googleapis.com/auth/classroom.coursework.me.readonly',
   'https://www.googleapis.com/auth/classroom.announcements.readonly',
-  'https://www.googleapis.com/auth/gmail.readonly'
+  'https://www.googleapis.com/auth/gmail.modify'
 ];
 
 const DEFAULT_CONFIG = {
@@ -935,6 +981,10 @@ const BRIDGE_CALENDAR_FEEDS = [
 
 const DEFAULT_SETTINGS = {
   theme: 'light',
+  nasaBackground: false,
+  yearLevel: '',
+  extraCurriculars: [],
+  calendarView: 'week',
   notifyNewAssignment: true,
   notifyDueSoon: true,
   notifyNewTest: true,
@@ -948,6 +998,7 @@ const DEFAULT_SETTINGS = {
   resultsWeighted: false,
   weightedSubjects: {},
   studyPlanner: {
+    horizonDays: 7,
     dailyMinutes: { mon:60, tue:60, wed:60, thu:60, fri:45, sat:90, sun:90 },
     activities: []
   }
@@ -1555,6 +1606,37 @@ async function gfetchJson(url, token){
   return r.json();
 }
 
+
+async function gmailPostJson(url, token, body){
+  const r = await fetch(url, {method:'POST',headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify(body)});
+  if (r.status === 401) throw new Error('TOKEN_EXPIRED');
+  if (r.status === 403){const txt=await r.text().catch(()=> '');if(/insufficient|scope|permission/i.test(txt))throw new Error('INSUFFICIENT_SCOPE');throw new Error(`Google API 403: ${txt.slice(0,160)}`);}
+  if (!r.ok){const txt=await r.text().catch(()=> '');throw new Error(`Google API ${r.status}: ${txt.slice(0,160)}`);}
+  return r.json();
+}
+
+async function ensureScribeDoneLabel(token){
+  const saved=Store.cache.integrations.gmail?.doneLabelId;
+  if(saved)return saved;
+  const data=await gfetchJson('https://gmail.googleapis.com/gmail/v1/users/me/labels',token);
+  let label=(data.labels||[]).find(x=>String(x.name||'').toLowerCase()==='scribe done');
+  if(!label)label=await gmailPostJson('https://gmail.googleapis.com/gmail/v1/users/me/labels',token,{name:'Scribe Done',labelListVisibility:'labelShow',messageListVisibility:'show'});
+  Store.cache.integrations.gmail={...(Store.cache.integrations.gmail||{}),doneLabelId:label.id};
+  Store.persistNow();await Store.saveUserDoc();
+  return label.id;
+}
+
+async function markEmailDone(id){
+  const email=Store.get('emailMessages',id);
+  if(!email||!email.gmailId)throw new Error('This email has no Gmail message ID.');
+  if(!GoogleServices.has([GMAIL_SCOPE]))throw new Error('Please sign out and sign in with Google again to grant permission to archive and label emails.');
+  const token=GoogleServices.accessToken,labelId=await ensureScribeDoneLabel(token);
+  await gmailPostJson(`https://gmail.googleapis.com/gmail/v1/users/me/messages/${encodeURIComponent(email.gmailId)}/modify`,token,{addLabelIds:[labelId],removeLabelIds:['INBOX']});
+  email.done=true;email.doneAt=now();email.doneLabelId=labelId;
+  await Store.put('emailMessages',email);
+  render();toast('Email archived and moved to Scribe Done.','success');
+}
+
 /* ── Store ────────────────────────────────────────────────── */
 const Store = {
   uid: null, mode: 'local', cache: null, _saveTimer: null,
@@ -1588,6 +1670,12 @@ const Store = {
     if (!d.integrations || typeof d.integrations !== 'object') d.integrations = {};
     if (!d.settings) d.settings = { ...DEFAULT_SETTINGS };
     d.settings = { ...DEFAULT_SETTINGS, ...d.settings };
+    d.settings.nasaBackground = !!d.settings.nasaBackground;
+    d.settings.yearLevel = ['7','8','9','10','11','12','13'].includes(String(d.settings.yearLevel || '')) ? String(d.settings.yearLevel) : '';
+    if (!Array.isArray(d.settings.extraCurriculars)) d.settings.extraCurriculars = [];
+    d.settings.extraCurriculars = [...new Set(d.settings.extraCurriculars.map(x => sanitiseText(x, 80).trim()).filter(Boolean))].slice(0, 30);
+    d.settings.calendarView = d.settings.calendarView === 'month' ? 'month' : 'week';
+    if (!d.settings.noticeAiCache || typeof d.settings.noticeAiCache !== 'object' || Array.isArray(d.settings.noticeAiCache)) d.settings.noticeAiCache = {};
     let lb = Number(d.settings.emailLookbackDays);
     if (!Number.isFinite(lb) || lb <= 0) lb = 30;
     d.settings.emailLookbackDays = Math.min(365, Math.max(1, Math.round(lb)));
@@ -1606,6 +1694,8 @@ const Store = {
     d.settings.calendarSubscriptions = [...new Map(d.settings.calendarSubscriptions.filter(x => x && x.url).map(x => [x.url, x])).values()];
     if (!d.settings.studyPlanner || typeof d.settings.studyPlanner !== 'object') d.settings.studyPlanner = { ...DEFAULT_SETTINGS.studyPlanner };
     d.settings.studyPlanner = { ...DEFAULT_SETTINGS.studyPlanner, ...d.settings.studyPlanner };
+    const plannerHorizon = Number(d.settings.studyPlanner.horizonDays);
+    d.settings.studyPlanner.horizonDays = [3, 7, 14, 21, 30].includes(plannerHorizon) ? plannerHorizon : 7;
     d.settings.studyPlanner.dailyMinutes = { ...DEFAULT_SETTINGS.studyPlanner.dailyMinutes, ...(d.settings.studyPlanner.dailyMinutes || {}) };
     if (!Array.isArray(d.settings.studyPlanner.activities)) d.settings.studyPlanner.activities = [];
     const oldCalendarUrl = 'https://kamar.sacredheart.school.kiwi/index.php/ics/school.ics';
@@ -2046,7 +2136,7 @@ function mapWorkType(w){
 const GMAIL_LOOKBACK_DAYS = 7;
 const GMAIL_BATCH_SIZE = 5;
 const GMAIL_AUTO_SYNC_INTERVAL_MS = 5 * 60 * 1000;
-const GMAIL_SCOPE = 'https://www.googleapis.com/auth/gmail.readonly';
+const GMAIL_SCOPE = 'https://www.googleapis.com/auth/gmail.modify';
 let gmailSyncInFlight = null;
 let gmailAutoSyncTimer = null;
 let gmailAutoSyncRunning = false;
@@ -2816,6 +2906,7 @@ function weeklyNoteCard(report){
 /* ── Views ────────────────────────────────────────────────── */
 let calYear = new Date().getFullYear();
 let calMonth = new Date().getMonth();
+let calFocusDate = new Date();
 let assignFilter = { status: 'open', subject: '', sort: 'due' };
 let emailInboxFilter = 'all';
 
@@ -2859,6 +2950,12 @@ function assignmentItemHTML(a){
   </div>`;
 }
 
+const DAILY_CONTENT_KEY='scribe.daily-content.v1';
+function localDateKey(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+async function loadDailyDashboardContent(){const q=$('#daily-quote-content'),f=$('#daily-fact-content');if(!q||!f)return;let cache=null;try{cache=JSON.parse(localStorage.getItem(DAILY_CONTENT_KEY)||'null');}catch{}if(cache?.date===localDateKey()){if(cache.quote)q.innerHTML=`<blockquote>${escapeHtml(cache.quote.quote)}</blockquote><div class="daily-attribution">— ${escapeHtml(cache.quote.author)}</div>`;else q.textContent='Today’s quote is unavailable. Try again tomorrow.';if(cache.fact)f.innerHTML=`<strong>${escapeHtml(cache.fact.title)}</strong><p>${escapeHtml(cache.fact.fact)}</p>`;else f.textContent='Today’s fact is unavailable. Try again tomorrow.';return;}const next={date:localDateKey(),quote:null,fact:null};try{const r=await fetch('https://dummyjson.com/quotes/random');if(!r.ok)throw new Error('Quote API unavailable');const x=await r.json();if(x.quote)next.quote={quote:x.quote,author:x.author||'Unknown author'};}catch(e){console.warn('Daily quote unavailable',e);}try{const r=await fetch('https://www.drivebird.com/api/random-facts/today');if(!r.ok)throw new Error('Facts API unavailable');const x=await r.json(),item=Array.isArray(x.data)?x.data[0]:x.data;if(item?.fact)next.fact={title:item.title||'Did you know?',fact:item.fact};}catch(e){console.warn('Daily fact unavailable',e);}try{localStorage.setItem(DAILY_CONTENT_KEY,JSON.stringify(next));}catch{}if(next.quote&&$('#daily-quote-content'))$('#daily-quote-content').innerHTML=`<blockquote>${escapeHtml(next.quote.quote)}</blockquote><div class="daily-attribution">— ${escapeHtml(next.quote.author)}</div>`;else if($('#daily-quote-content'))$('#daily-quote-content').textContent='Today’s quote is unavailable. Try refreshing.';if(next.fact&&$('#daily-fact-content'))$('#daily-fact-content').innerHTML=`<strong>${escapeHtml(next.fact.title)}</strong><p>${escapeHtml(next.fact.fact)}</p>`;else if($('#daily-fact-content'))$('#daily-fact-content').textContent='Today’s fact is unavailable. Try refreshing.';}
+let nasaLoading=false;
+function setNasaBackgroundImage(image){if(!/^https:\/\//i.test(String(image||'')))return;const overlay=document.documentElement.getAttribute('data-theme')==='dark'?'rgba(7,12,28,.78)':'rgba(248,250,252,.82)';document.body.classList.add('nasa-background');document.body.style.backgroundImage=`linear-gradient(${overlay},${overlay}),url("${String(image).replace(/["\\\\]/g,'')}")`;document.body.style.backgroundPosition='center center';document.body.style.backgroundSize='cover';document.body.style.backgroundAttachment='fixed';}
+async function applyNasaBackground(enabled){if(!enabled){document.body.classList.remove('nasa-background');document.body.style.backgroundImage='';document.body.style.backgroundAttachment='';return;}if(nasaLoading)return;let cache=null;try{cache=JSON.parse(localStorage.getItem('scribe.nasa-apod.v1')||'null');}catch{}if(cache?.date===localDateKey()&&cache.image){setNasaBackgroundImage(cache.image);return;}nasaLoading=true;try{const r=await fetch('https://science.nasa.gov/wp-json/wp/v2/apod-basic');if(!r.ok)throw new Error(`NASA API ${r.status}`);const raw=await r.json(),data=Array.isArray(raw)?raw[0]:raw;const image=data?.media_type==='image'?(data.hdurl||data.image_url||''):'';if(!image||!/^https:\/\//i.test(image))throw new Error('No astronomy image available today');const item={date:localDateKey(),image,title:data.title||'',credit:data.credit||data.copyright||''};try{localStorage.setItem('scribe.nasa-apod.v1',JSON.stringify(item));}catch{}setNasaBackgroundImage(image);}catch(err){console.warn('NASA background unavailable:',err.message);if(cache?.image)setNasaBackgroundImage(cache.image);}finally{nasaLoading=false;}}
 function renderDashboardView(){
   const selectedSubjects = new Set(getEnrolledSubjects());
   const assignments = Store.all('assignments').filter(a => selectedSubjects.has(matchSelectedSubject(a.subject)));
@@ -2976,6 +3073,7 @@ function renderDashboardView(){
         </section>
       </div>
     </div>
+    <div class="daily-content-grid"><section class="card daily-content-card"><div class="card-head"><div class="card-title">✦ Daily Quote</div><span class="hint">DummyJSON</span></div><div class="card-body daily-content-body" id="daily-quote-content">Loading today’s quote…</div></section><section class="card daily-content-card"><div class="card-head"><div class="card-title">Did you know?</div><span class="hint">DriveBird Facts</span></div><div class="card-body daily-content-body" id="daily-fact-content">Finding an interesting fact…</div></section></div>
   </div>`;
 }
 
@@ -3032,57 +3130,24 @@ function renderAssignmentsView(){
 }
 
 function renderCalendarView(){
-  const cells = monthMatrix(calYear, calMonth);
-  const todayKey = startOfDay();
-  const monthLabel = new Date(calYear, calMonth, 1).toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
-
-  const events = Store.all('events').filter(e => e.start && !isTimetableCalendarEvent(e));
-  const dueItems = Store.all('assignments').filter(a => a.dueDate && !a.completed);
-
-  const byDay = new Map();
-  const seenCalendarItems = new Set();
-  const push = (key, item) => {
-    const dedupeKey = `${key}|${normalizeTitle(item.title || '')}|${item.kind}`;
-    if (seenCalendarItems.has(dedupeKey)) return;
-    seenCalendarItems.add(dedupeKey);
-    if (!byDay.has(key)) byDay.set(key, []);
-    byDay.get(key).push(item);
-  };
-  for (const e of events) push(startOfDay(new Date(e.start)), { kind: 'event', title: e.title, test: false });
-  for (const a of dueItems) push(startOfDay(new Date(a.dueDate)), { kind: 'due', title: a.title, test: a.type === 'Test' || a.type === 'Exam' });
-
-  const dow = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-
-  const grid = cells.map(d => {
-    const key = startOfDay(d);
-    const items = byDay.get(key) || [];
-    const out = d.getMonth() !== calMonth;
-    const isToday = key === todayKey;
-    const shown = items.slice(0, 2);
-    const more = items.length - shown.length;
-    return `<div class="cal-day ${out ? 'out' : ''} ${isToday ? 'today' : ''}">
-      <div class="cal-num">${d.getDate()}</div>
-      ${shown.map(it => `<span class="cal-ev ${it.test ? 'test' : ''}" title="${escapeHtml(it.title)}">${escapeHtml(it.title)}</span>`).join('')}
-      ${more > 0 ? `<span class="cal-more">+${more} more</span>` : ''}
-    </div>`;
-  }).join('');
-
-  return `<div class="page-head">
-      <div class="row-between wrap">
-        <div><h1 class="page-title">Calendar</h1><p class="page-sub">${escapeHtml(monthLabel)}</p></div>
-        <div class="row">
-          <button class="btn btn-ghost btn-sm" data-cal-prev>‹ Prev</button>
-          <button class="btn btn-ghost btn-sm" data-cal-today>Today</button>
-          <button class="btn btn-ghost btn-sm" data-cal-next>Next ›</button>
-          <button class="btn btn-primary btn-sm" data-add-event>Add event</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="card card-body">
-      <div class="cal-head">${dow.map(d => `<div class="cal-dow">${d}</div>`).join('')}</div>
-      <div class="cal-grid">${grid}</div>
-    </div>`;
+  const mode=Store.cache.settings.calendarView==='month'?'month':'week';
+  const todayKey=startOfDay();
+  const events=Store.all('events').filter(e=>e.start&&!isTimetableCalendarEvent(e));
+  const dueItems=Store.all('assignments').filter(a=>a.dueDate&&!a.completed);
+  const byDay=new Map(),seen=new Set();
+  const push=(key,item)=>{const k=`${key}|${normalizeTitle(item.title||'')}|${item.kind}`;if(seen.has(k))return;seen.add(k);if(!byDay.has(key))byDay.set(key,[]);byDay.get(key).push(item);};
+  for(const e of events)push(startOfDay(new Date(e.start)),{kind:'event',title:e.title||'Calendar event',start:e.start,end:e.end||null,source:e.source||'Calendar',test:false});
+  for(const a of dueItems)push(startOfDay(new Date(a.dueDate)),{kind:'due',title:a.title,start:a.dueDate,end:null,source:a.subject||'Assignment',test:a.type==='Test'||a.type==='Exam'});
+  for(const items of byDay.values())items.sort((a,b)=>(a.start||0)-(b.start||0));
+  const nav=`<div class="page-head"><div class="row-between wrap"><div><h1 class="page-title">Calendar</h1><p class="page-sub">${mode==='week'?`Week of ${escapeHtml(fmtDate(mondayOf(calFocusDate.getTime())))}`:new Date(calYear,calMonth,1).toLocaleDateString(undefined,{month:'long',year:'numeric'})}</p></div><div class="row wrap"><div class="seg"><button type="button" data-cal-view="week" class="${mode==='week'?'on':''}">Week</button><button type="button" data-cal-view="month" class="${mode==='month'?'on':''}">Month</button></div><button class="btn btn-ghost btn-sm" data-cal-prev>‹ Prev</button><button class="btn btn-ghost btn-sm" data-cal-today>Today</button><button class="btn btn-ghost btn-sm" data-cal-next>Next ›</button><button class="btn btn-primary btn-sm" data-add-event>Add event</button></div></div></div>`;
+  if(mode==='week'){
+    const monday=new Date(calFocusDate);monday.setHours(0,0,0,0);monday.setDate(monday.getDate()-((monday.getDay()+6)%7));
+    const cards=Array.from({length:7},(_,i)=>{const d=new Date(monday);d.setDate(d.getDate()+i);const key=startOfDay(d),items=byDay.get(key)||[];return `<section class="cal-week-day ${key===todayKey?'today':''}"><div class="cal-week-head"><strong>${d.toLocaleDateString(undefined,{weekday:'short'})}</strong><span>${d.getDate()} ${d.toLocaleDateString(undefined,{month:'short'})}</span></div><div class="cal-week-items">${items.length?items.map(it=>`<div class="cal-week-item ${it.test?'test':''} ${it.kind==='due'?'due-item':''}"><span class="cal-week-time">${it.kind==='due'?'Due':new Date(it.start).toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'})}</span><span class="cal-week-title">${escapeHtml(it.title)}</span><span class="cal-week-source">${escapeHtml(it.source)}</span></div>`).join(''):'<div class="cal-week-empty">No events</div>'}</div></section>`;}).join('');
+    return `${nav}<div class="cal-week-grid">${cards}</div>`;
+  }
+  const cells=monthMatrix(calYear,calMonth),dow=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const grid=cells.map(d=>{const key=startOfDay(d),items=byDay.get(key)||[],out=d.getMonth()!==calMonth,today=key===todayKey,shown=items.slice(0,2),more=items.length-shown.length;return `<div class="cal-day ${out?'out':''} ${today?'today':''}"><div class="cal-num">${d.getDate()}</div>${shown.map(it=>`<span class="cal-ev ${it.test?'test':''}" title="${escapeHtml(it.title)}">${escapeHtml(it.title)}</span>`).join('')}${more>0?`<span class="cal-more">+${more} more</span>`:''}</div>`;}).join('');
+  return `${nav}<div class="card card-body"><div class="cal-head">${dow.map(d=>`<div class="cal-dow">${d}</div>`).join('')}</div><div class="cal-grid">${grid}</div></div>`;
 }
 
 function plannerDayKey(d){return ['sun','mon','tue','wed','thu','fri','sat'][d.getDay()];}
@@ -3091,7 +3156,8 @@ function plannerTimeToMin(t){const m=String(t||'').match(/^(\d{1,2}):(\d{2})$/);
 function plannerMinToTime(n){const h=Math.floor(n/60),m=n%60;return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;}
 function plannerFmtTime(t){const n=plannerTimeToMin(t);if(n===null)return t;const h=Math.floor(n/60),m=n%60,ap=h>=12?'PM':'AM',hh=h%12||12;return `${hh}:${String(m).padStart(2,'0')} ${ap}`;}
 function plannerActivityBlocks(day){const p=Store.cache.settings.studyPlanner||DEFAULT_SETTINGS.studyPlanner;const key=plannerDayKey(day);return (p.activities||[]).filter(a=>(a.days||[]).includes(key)).map(a=>({name:a.name||'Activity',start:a.start||'16:00',end:a.end||'17:00'})).sort((a,b)=>String(a.start).localeCompare(String(b.start)));}
-function plannerFreeWindows(day,occupied){const weekend=day.getDay()===0||day.getDay()===6;const start=weekend?600:930,end=weekend?1200:1290;const wins=[];let cursor=start;for(const b of occupied.sort((a,b)=>a.start-b.start)){const gapEnd=b.start-10;if(gapEnd-cursor>=20)wins.push({start:cursor,end:gapEnd});cursor=Math.max(cursor,b.end+10);}if(end-cursor>=20)wins.push({start:cursor,end});return wins;}
+function plannerCalendarBlocks(day){const key=startOfDay(day);return Store.all('events').filter(e=>e.start&&startOfDay(new Date(e.start))===key&&!e.plannerActivityId&&!isTimetableCalendarEvent(e)).map(e=>{const st=new Date(e.start),en=e.end?new Date(e.end):new Date(e.start+60*60000),allDay=st.getHours()===0&&st.getMinutes()===0&&en.getHours()===0&&en.getMinutes()===0;return {name:e.title||'Calendar event',start:allDay?'07:00':plannerMinToTime(st.getHours()*60+st.getMinutes()),end:allDay?'21:30':plannerMinToTime(Math.max(st.getHours()*60+st.getMinutes()+20,en.getHours()*60+en.getMinutes()))};});}
+function plannerFreeWindows(day,occupied){const weekday=day.getDay()>=1&&day.getDay()<=5,start=weekday?915:600,end=1290,wins=[];const blocks=[...occupied.map(b=>({start:plannerTimeToMin(b.start),end:plannerTimeToMin(b.end)}))];const sorted=blocks.filter(x=>x.start!==null&&x.end>x.start).sort((a,b)=>a.start-b.start);let cursor=start;for(const b of sorted){const gapEnd=b.start-10;if(gapEnd-cursor>=20)wins.push({start:cursor,end:gapEnd});cursor=Math.max(cursor,b.end+10);}if(end-cursor>=20)wins.push({start:cursor,end});return wins;}
 function plannerIsNoticeRecord(record){
   if(!record)return false;
   if(record.noticeId||record.notice_id||record.noticeUuid||record.notice_uuid)return true;
@@ -3129,7 +3195,21 @@ function plannerAcademicItems(){
 function plannerWeaknessMap(){const map={},selected=new Set(getEnrolledSubjects());for(const r of Store.all('effortReports'))for(const [subject,val] of Object.entries(r.ratings||{})){const s=normalizeSubject(subject),n=Number(val);if(!selected.has(s)||!Number.isFinite(n)||n<=0)continue;(map[s]??=[]).push(n);}const out={};for(const [s,v] of Object.entries(map))out[s]=v.slice(-4).reduce((a,b)=>a+b,0)/Math.min(4,v.length);return out;}
 function plannerBuildWork(){const weak=plannerWeaknessMap(),items=plannerAcademicItems(),map=new Map();for(const item of items){const k=`${item.subject}|${item.topic}|${item.type}`;if(map.has(k)){const x=map.get(k);if(item.dueDate&&(!x.dueDate||item.dueDate<x.dueDate))x.dueDate=item.dueDate;}else map.set(k,{...item});}const work=[...map.values()].map(item=>{const d=daysUntil(item.dueDate),rating=weak[item.subject];const urgency=d===null?0:d<0?100:d===0?95:d===1?85:d<=3?70:d<=7?50:d<=14?25:10;const typeBoost={Exam:30,Test:24,Project:16,Assignment:12,Homework:6}[item.type]||0;const weakness=rating?Math.max(0,5-rating)*11:0;return {...item,rating,score:urgency+typeBoost+weakness};}).sort((a,b)=>b.score-a.score);return {work,weak};}
 function plannerReasons(item){const r=[],d=daysUntil(item.dueDate);if(d!==null){if(d<0)r.push('This work is overdue.');else if(d===0)r.push('It is due today.');else if(d===1)r.push('It is due tomorrow.');else if(d<=5)r.push(`It is due in ${d} days.`);}if(item.type==='Exam'||item.type==='Test')r.push(`Upcoming ${item.type.toLowerCase()} preparation is prioritised.`);if(item.rating&&item.rating<3)r.push(`Your recent effort rating for ${item.subject} is ${item.rating.toFixed(1)}/5.`);else if(item.rating&&item.rating<4)r.push(`Your recent effort rating for ${item.subject} is ${item.rating.toFixed(1)}/5, so it gets extra practice.`);return r.join(' ')||'This is useful preparation for upcoming school work.';}
-function plannerGenerateSessions(){const {work}=plannerBuildWork(),sessions=[],days=[];for(let i=0;i<7;i++){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()+i);days.push(d);}const rem=new Map(work.map(w=>[w.id,{...w,remaining:{Exam:180,Test:100,Project:150,Assignment:70,Homework:40}[w.type]||30}]));for(const day of days){let budget=plannerMinutesForDay(day);if(!budget)continue;const occupied=plannerActivityBlocks(day).map(b=>({start:plannerTimeToMin(b.start),end:plannerTimeToMin(b.end)})).filter(x=>x.start!==null&&x.end>x.start);for(const win of plannerFreeWindows(day,occupied)){let cursor=win.start;while(cursor+20<=win.end&&budget>=20){const c=[...rem.values()].filter(w=>w.remaining>0&&(!w.dueDate||daysUntil(w.dueDate)>=-1)).sort((a,b)=>b.score-a.score);if(!c.length)break;const w=c[0],mins=Math.min(w.remaining,budget,win.end-cursor,50),rounded=Math.floor(mins/5)*5;if(rounded<20)break;const end=cursor+rounded;sessions.push({day:day.getTime(),start:cursor,end,minutes:rounded,subject:w.subject,topic:w.topic,type:w.type,reason:plannerReasons(w),workId:w.id});w.remaining-=rounded;budget-=rounded;cursor=end+10;}}}return {days,sessions,work};}
+function plannerGenerateSessions(){
+  const {work}=plannerBuildWork(),sessions=[],days=[],horizon=Number(Store.cache.settings.studyPlanner?.horizonDays)||7;
+  for(let i=0;i<horizon;i++){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()+i);days.push(d);}
+  const rem=new Map(work.map(w=>[w.id,{...w,remaining:{Exam:180,Test:100,Project:150,Assignment:70,Homework:40}[w.type]||30}]));
+  for(const day of days){let budget=plannerMinutesForDay(day);if(!budget)continue;const occupied=[...plannerActivityBlocks(day),...plannerCalendarBlocks(day)];for(const win of plannerFreeWindows(day,occupied)){let cursor=win.start;while(cursor+20<=win.end&&budget>=20){const c=[...rem.values()].filter(w=>w.remaining>0&&(!w.dueDate||daysUntil(w.dueDate)>=-1)).sort((a,b)=>b.score-a.score);if(!c.length)break;const w=c[0],mins=Math.min(w.remaining,budget,win.end-cursor,50),rounded=Math.floor(mins/5)*5;if(rounded<20)break;const finish=cursor+rounded;sessions.push({day:day.getTime(),start:cursor,end:finish,minutes:rounded,subject:w.subject,topic:w.topic,type:w.type,reason:plannerReasons(w),workId:w.id});w.remaining-=rounded;budget-=rounded;cursor=finish+10;}}}
+  return {days,sessions,work};
+}
+
+
+async function syncPlannerActivitiesToCalendar(){
+  const p=Store.cache.settings.studyPlanner||DEFAULT_SETTINGS.studyPlanner,base=new Date();base.setHours(0,0,0,0);const existing=(Store.cache.events||[]).filter(e=>!e.plannerActivityId),generated=[];
+  for(const a of p.activities||[]){if(!a.id||!Array.isArray(a.days))continue;const sm=plannerTimeToMin(a.start||'16:00'),em=plannerTimeToMin(a.end||'17:00');if(sm===null||em<=sm)continue;for(let i=0;i<90;i++){const d=new Date(base);d.setDate(d.getDate()+i);if(!a.days.includes(plannerDayKey(d)))continue;const st=new Date(d),en=new Date(d);st.setHours(Math.floor(sm/60),sm%60,0,0);en.setHours(Math.floor(em/60),em%60,0,0);const k=`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;generated.push({id:`planner-${a.id}-${k}`,title:sanitiseText(a.name||'Activity',120),start:st.getTime(),end:en.getTime(),source:'Study Planner',manual:true,plannerActivityId:a.id,createdAt:now()});}}
+  const prior=Store.cache.events||[];const changed=prior.filter(e=>e.plannerActivityId).length!==generated.length||generated.some(g=>!prior.some(e=>e.id===g.id&&e.start===g.start&&e.end===g.end&&e.title===g.title));if(changed){Store.cache.events=[...existing,...generated];Store.persistNow();await Store.saveUserDoc();}
+}
+
 function plannerTipData(){
   const {work}=plannerBuildWork();
   const general=[
@@ -3179,54 +3259,43 @@ function plannerTipData(){
   const offset=day%pool.length;
   return [0,1,2].map(i=>pool[(offset+i)%pool.length]);
 }
+function plannerTimelinePreview(sessions){
+  const days=Array.from({length:3},(_,i)=>{const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()+i);return d;}),startMinute=420,scale=.72,height=(1320-startMinute)*scale;
+  const blocksFor=day=>{const key=startOfDay(day),items=[];if(day.getDay()>=1&&day.getDay()<=5)items.push({title:'School',start:510,end:915,type:'school'});for(const a of plannerActivityBlocks(day)){const sm=plannerTimeToMin(a.start),em=plannerTimeToMin(a.end);if(sm!==null&&em>sm)items.push({title:a.name,start:sm,end:em,type:'activity'});}for(const e of Store.all('events').filter(e=>e.start&&startOfDay(new Date(e.start))===key&&!isTimetableCalendarEvent(e))){if(e.plannerActivityId)continue;const st=new Date(e.start),en=e.end?new Date(e.end):new Date(e.start+60*60000),allDay=st.getHours()===0&&st.getMinutes()===0&&en.getHours()===0&&en.getMinutes()===0;items.push({title:e.title||'Calendar event',start:allDay?420:st.getHours()*60+st.getMinutes(),end:allDay?1320:Math.max(st.getHours()*60+st.getMinutes()+20,en.getHours()*60+en.getMinutes()),type:'event',allDay});}for(const x of sessions.filter(x=>x.day===key))items.push({title:`${x.subject}: ${x.topic}`,start:x.start,end:x.end,type:'study'});return items;};
+  return `<section class="card planner-preview-card"><div class="card-head"><div class="card-title">${ICON.calendar}Next three days</div><span class="hint">School 8:30 am–3:15 pm · Calendar and study plan</span></div><div class="planner-timeline-grid">${days.map(day=>{const blocks=blocksFor(day),hours=Array.from({length:16},(_,i)=>`<div class="planner-time-marker" style="top:${i*60*scale}px">${plannerFmtTime(plannerMinToTime(startMinute+i*60))}</div>`).join(''),shown=blocks.map(b=>`<div class="planner-timeline-block ${b.type}" style="top:${Math.max(0,(b.start-startMinute)*scale)}px;height:${Math.max(22,(b.end-b.start)*scale)}px" title="${escapeHtml(b.title)}"><strong>${escapeHtml(b.title)}</strong>${b.allDay?'<small>All day</small>':''}</div>`).join('');return `<div class="planner-timeline-day"><div class="planner-timeline-day-head"><strong>${escapeHtml(day.toLocaleDateString(undefined,{weekday:'long'}))}</strong><span>${escapeHtml(day.toLocaleDateString(undefined,{day:'numeric',month:'short'}))}</span></div><div class="planner-timeline-body" style="height:${height}px"><div class="planner-timeline-times">${hours}</div><div class="planner-timeline-track" style="height:${height}px">${shown}</div></div></div>`;}).join('')}</div></section>`;
+}
+
 function renderPlannerView(){
-  const p=Store.cache.settings.studyPlanner||DEFAULT_SETTINGS.studyPlanner,
-    {days,sessions,work}=plannerGenerateSessions(),tips=plannerTipData(),
-    dayNames=[['mon','Mon'],['tue','Tue'],['wed','Wed'],['thu','Thu'],['fri','Fri'],['sat','Sat'],['sun','Sun']],
-    activities=p.activities||[];
-  const completed=new Set((Store.all('studySessions')||[]).filter(x=>x.completed).map(x=>x.key));
-  const activeSessions=sessions.filter(x=>{x.key=`${x.workId}|${x.day}|${x.start}`;return !completed.has(x.key);});
-  const byDay=new Map();
-  activeSessions.forEach(x=>{if(!byDay.has(x.day))byDay.set(x.day,[]);byDay.get(x.day).push(x);});
-  const today=new Date();today.setHours(0,0,0,0);
-  const totalMinutes=activeSessions.reduce((n,x)=>n+x.minutes,0);
-  const dayCards=days.map(d=>{
-    const list=byDay.get(d.getTime())||[],total=list.reduce((n,x)=>n+x.minutes,0),
-      label=d.toDateString()===today.toDateString()?'Today':d.toLocaleDateString(undefined,{weekday:'short',day:'numeric',month:'short'});
-    return `<section class="planner-day">
-      <div class="planner-day-head"><div class="planner-day-title">${escapeHtml(label)}</div><span class="planner-day-total">${total?total+' min':''}</span></div>
-      ${list.length?list.map(x=>`<div class="planner-session">
-        <div class="planner-time">${plannerFmtTime(plannerMinToTime(x.start))}–${plannerFmtTime(plannerMinToTime(x.end))}</div>
-        <div class="planner-session-main"><div class="planner-session-title">${escapeHtml(x.subject)} <span>${x.minutes} min</span></div><div class="planner-session-topic">${escapeHtml(x.topic)}</div><div class="planner-reason">${escapeHtml(x.reason)}</div></div>
-        <button class="btn btn-ghost btn-sm planner-done" data-planner-complete="${escapeHtml(x.key)}">${ICON.check}Done</button>
-      </div>`).join(''):`<div class="planner-empty">Nothing scheduled.</div>`}
-    </section>`;
-  }).join('');
+  const p=Store.cache.settings.studyPlanner||DEFAULT_SETTINGS.studyPlanner,{days,sessions,work}=plannerGenerateSessions(),tips=plannerTipData(),dayNames=[['mon','Mon'],['tue','Tue'],['wed','Wed'],['thu','Thu'],['fri','Fri'],['sat','Sat'],['sun','Sun']],activities=p.activities||[];
+  const completed=new Set((Store.all('studySessions')||[]).filter(x=>x.completed).map(x=>x.key)),active=sessions.filter(x=>{x.key=`${x.workId}|${x.day}|${x.start}`;return !completed.has(x.key);}),byDay=new Map();active.forEach(x=>{if(!byDay.has(x.day))byDay.set(x.day,[]);byDay.get(x.day).push(x);});
+  const total=active.reduce((n,x)=>n+x.minutes,0),dayCards=days.map(d=>{const list=byDay.get(d.getTime())||[],mins=list.reduce((n,x)=>n+x.minutes,0),label=d.toDateString()===new Date().toDateString()?'Today':d.toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'short'});return `<section class="planner-day"><div class="planner-day-head"><div class="planner-day-title">${escapeHtml(label)}</div><span class="planner-day-total">${mins?mins+' min':''}</span></div>${list.length?list.map(x=>`<div class="planner-session"><div class="planner-time">${plannerFmtTime(plannerMinToTime(x.start))}–${plannerFmtTime(plannerMinToTime(x.end))}</div><div class="planner-session-main"><div class="planner-session-title">${escapeHtml(x.subject)} <span>${x.minutes} min</span></div><div class="planner-session-topic">${escapeHtml(x.topic)}</div><div class="planner-reason">${escapeHtml(x.reason)}</div></div><button class="btn btn-ghost btn-sm planner-done" data-planner-complete="${escapeHtml(x.key)}">${ICON.check}Done</button></div>`).join(''):'<div class="planner-empty">No recommended study sessions.</div>'}</section>`;}).join('');
   const upcoming=work.filter(x=>x.dueDate).slice(0,5).map(x=>`<div class="planner-upcoming-item"><div><div class="strong small">${escapeHtml(x.subject)} — ${escapeHtml(x.topic)}</div><div class="tiny muted">${escapeHtml(x.type)} · ${escapeHtml(dueLabel(x.dueDate).text)}</div></div><span class="chip ${x.score>=70?'chip-red':x.score>=40?'chip-amber':'chip-indigo'}">${x.score>=70?'High':x.score>=40?'Priority':'Planned'}</span></div>`).join('');
   const activityRows=activities.map((a,i)=>`<div class="planner-activity"><input class="input" data-planner-act-name="${i}" value="${escapeHtml(a.name||'')}" placeholder="Football"><div class="planner-days">${dayNames.map(([k,n])=>`<label class="planner-day-toggle"><input type="checkbox" data-planner-act-day="${i}" data-day="${k}" ${(a.days||[]).includes(k)?'checked':''}><span>${n}</span></label>`).join('')}</div><input class="input" type="time" data-planner-act-start="${i}" value="${escapeHtml(a.start||'16:00')}"><input class="input" type="time" data-planner-act-end="${i}" value="${escapeHtml(a.end||'17:00')}"><button class="btn btn-danger-soft btn-sm" data-planner-remove-act="${i}">${ICON.trash}</button></div>`).join('');
-  const tipsHtml=tips.slice(0,3).map(t=>`<div class="planner-tip"><div class="planner-tip-title">${escapeHtml(t.title)}</div><div class="planner-tip-body">${escapeHtml(t.body)}</div></div>`).join('');
-  return `<div class="page-head"><div class="row-between wrap"><div><h1 class="page-title">Study planner</h1><p class="page-sub">A focused plan built from your schoolwork, assessments and preferences.</p></div><button class="btn btn-primary" data-planner-save>${ICON.check}Save preferences</button></div></div>
-  <div class="planner-summary"><div><span class="planner-summary-value">${activeSessions.length}</span><span class="planner-summary-label">sessions</span></div><div><span class="planner-summary-value">${totalMinutes}</span><span class="planner-summary-label">min planned</span></div><div><span class="planner-summary-value">${work.length}</span><span class="planner-summary-label">upcoming items</span></div><div class="planner-summary-note">Recalculates automatically as your work and preferences change.</div></div>
-  <div class="planner-grid">
-    <section class="card planner-main-card"><div class="card-head"><div class="card-title">${ICON.calendar}Your plan</div><span class="chip chip-gray">10 min gaps</span></div><div class="card-body planner-plan-scroll">${dayCards}</div></section>
-    <div class="planner-right-column">
-      <section class="card"><div class="card-head"><div class="card-title">${ICON.alert}Upcoming work</div></div><div class="card-body planner-compact-body">${upcoming||'<div class="planner-empty">No upcoming assessed work has been detected.</div>'}</div></section>
-      <section class="card"><div class="card-head"><div class="card-title">${ICON.calendar}Activities</div><button class="btn btn-ghost btn-sm" data-planner-add-act>Add</button></div><div class="card-body planner-activity-body">${activityRows||'<div class="planner-empty" style="padding:12px 0">No recurring activities added.</div>'}<div class="hint" style="margin-top:8px">Add sport, music, clubs, work or other commitments.</div></div></section>
-      <section class="card"><div class="card-head"><div class="card-title">${ICON.info}Study tips</div></div><div class="card-body planner-tips-body"><div class="planner-tips">${tipsHtml}</div></div></section>
-      <section class="card"><div class="card-head"><div class="card-title">${ICON.calendar}Study time</div></div><div class="card-body"><div class="planner-setting-grid">${dayNames.map(([k,n])=>`<div class="field"><label class="label">${n}</label><select class="select" data-planner-min="${k}"><option value="0" ${Number(p.dailyMinutes?.[k]||0)===0?'selected':''}>No study</option>${[30,45,60,75,90,120,150,180,240].map(v=>`<option value="${v}" ${Number(p.dailyMinutes?.[k]||0)===v?'selected':''}>${v<60?v+' min':v===60?'1 hr':v/60+' hrs'}</option>`).join('')}</select></div>`).join('')}</div><div class="hint" style="margin-top:8px">Sessions avoid your activities and keep a 10-minute transition gap.</div></div></section>
-    </div>
-  </div>`;
+  const tipsHtml=tips.map(t=>`<div class="planner-tip"><div class="planner-tip-title">${escapeHtml(t.title)}</div><div class="planner-tip-body">${escapeHtml(t.body)}</div></div>`).join('');
+  return `<div class="page-head"><div class="row-between wrap"><div><h1 class="page-title">Study planner</h1><p class="page-sub">A focused plan built around your schoolwork and calendar.</p></div><div class="row wrap"><label class="hint" for="planner-horizon">Plan ahead</label><select class="select" id="planner-horizon" data-planner-horizon style="width:auto">${[3,7,14,21,30].map(v=>`<option value="${v}" ${Number(p.horizonDays||7)===v?'selected':''}>${v} days</option>`).join('')}</select><button class="btn btn-primary" data-planner-save>${ICON.check}Save preferences</button></div></div></div>
+  <div class="planner-summary"><div><span class="planner-summary-value">${active.length}</span><span class="planner-summary-label">sessions</span></div><div><span class="planner-summary-value">${total}</span><span class="planner-summary-label">min planned</span></div><div><span class="planner-summary-value">${work.length}</span><span class="planner-summary-label">upcoming items</span></div><div class="planner-summary-note">Calendar events and activities block out unavailable time.</div></div>
+  <div class="planner-grid"><section class="card planner-main-card"><div class="card-head"><div class="card-title">${ICON.calendar}Your plan</div><span class="chip chip-gray">10 min gaps</span></div><div class="card-body planner-plan-scroll">${dayCards}</div></section>
+  <div class="planner-right-column"><section class="card"><div class="card-head"><div class="card-title">${ICON.alert}Upcoming work</div></div><div class="card-body">${upcoming||'<div class="planner-empty">No upcoming assessed work has been detected.</div>'}</div></section>
+  <section class="card"><div class="card-head"><div class="card-title">${ICON.calendar}Activities</div><button class="btn btn-ghost btn-sm" data-planner-add-act>Add</button></div><div class="card-body">${activityRows||'<div class="planner-empty">No recurring activities added.</div>'}<div class="hint" style="margin-top:8px">Recurring activities also appear in Calendar.</div></div></section>
+  <section class="card"><div class="card-head"><div class="card-title">${ICON.info}Study tips</div></div><div class="card-body"><div class="planner-tips">${tipsHtml}</div></div></section>
+  <section class="card"><div class="card-head"><div class="card-title">${ICON.calendar}Study time</div></div><div class="card-body"><div class="planner-setting-grid">${dayNames.map(([k,n])=>`<div class="field"><label class="label">${n}</label><select class="select" data-planner-min="${k}"><option value="0" ${Number(p.dailyMinutes?.[k]||0)===0?'selected':''}>No study</option>${[30,45,60,75,90,120,150,180,240].map(v=>`<option value="${v}" ${Number(p.dailyMinutes?.[k]||0)===v?'selected':''}>${v<60?v+' min':v===60?'1 hr':v/60+' hrs'}</option>`).join('')}</select></div>`).join('')}</div></div></section></div></div>
+  ${plannerTimelinePreview(active)}`;
 }
+
+const QUICK_NOTE_COLORS={default:'var(--surface)',yellow:'#fff7cc',blue:'#dbeafe',green:'#dcfce7',pink:'#fce7f3',purple:'#ede9fe'};
+function quickNoteColor(value){return QUICK_NOTE_COLORS[value]||QUICK_NOTE_COLORS.default;}
 function renderQuickNotesView(){
-  const notes=[...Store.all('quickNotes')].sort((a,b)=>(b.updatedAt||b.createdAt||0)-(a.updatedAt||a.createdAt||0));
+  const notes=[...Store.all('quickNotes')].sort((a,b)=>(b.updatedAt||b.createdAt||0)-(a.updatedAt||a.createdAt||0)),colors=[['default','Default'],['yellow','Yellow'],['blue','Blue'],['green','Green'],['pink','Pink'],['purple','Purple']];
+  const options=value=>colors.map(([k,n])=>`<option value="${k}" ${value===k?'selected':''}>${n}</option>`).join('');
   return `<div class="page-head"><div class="row-between wrap"><div><h1 class="page-title">Note-Taker</h1><p class="page-sub">A quick place to catch an idea before it disappears.</p></div></div></div>
-    <section class="card quick-note-compose"><div class="card-body"><div class="field"><label class="label" for="quick-note-title">Title <span class="muted">(optional)</span></label><input class="input" id="quick-note-title" maxlength="120" placeholder="Give this note a title"></div><div class="field"><label class="label" for="quick-note-body">Your note</label><textarea class="textarea" id="quick-note-body" rows="4" placeholder="Write down your idea…"></textarea></div><div class="row-between wrap"><span class="hint">Notes save to your Scribe account.</span><button class="btn btn-primary" type="button" data-add-quick-note>Save note</button></div></div></section>
-    ${notes.length?`<div class="quick-notes-grid">${notes.map(n=>`<article class="card quick-note-card"><div class="card-body"><div class="row-between" style="gap:8px"><h2>${escapeHtml(n.title||'Untitled note')}</h2><span class="hint">${escapeHtml(relativeTime(n.updatedAt||n.createdAt))}</span></div><div class="quick-note-content">${escapeHtml(n.body||'').replace(/\n/g,'<br>')}</div><div class="row" style="justify-content:flex-end;margin-top:14px"><button class="btn btn-ghost btn-sm" data-edit-quick-note="${escapeHtml(n.id)}">Edit</button><button class="btn btn-danger-soft btn-sm" data-del-quick-note="${escapeHtml(n.id)}">Delete</button></div></div></article>`).join('')}</div>`:`<div class="empty"><div class="empty-ico">✎</div><div class="empty-title">No notes yet</div><div class="empty-sub">Use the box above to save a thought, reminder or idea.</div></div>`}`;
+  <section class="card quick-note-compose"><div class="card-body"><div class="field"><label class="label" for="quick-note-title">Title <span class="muted">(optional)</span></label><input class="input" id="quick-note-title" maxlength="120" placeholder="Give this note a title"></div><div class="field"><label class="label" for="quick-note-body">Your note</label><textarea class="textarea" id="quick-note-body" rows="4" placeholder="Write down your idea…"></textarea></div><div class="row-between wrap"><div class="field" style="margin:0;min-width:150px"><label class="label" for="quick-note-color">Note colour</label><select class="select" id="quick-note-color">${options('default')}</select></div><button class="btn btn-primary" type="button" data-add-quick-note>Save note</button></div></div></section>
+  ${notes.length?`<div class="quick-notes-grid">${notes.map(n=>`<article class="card quick-note-card" style="background:${quickNoteColor(n.color)};color:${n.color&&n.color!=='default'?'#1e293b':'var(--text)'}"><div class="card-body"><div class="row-between" style="gap:8px"><h2>${escapeHtml(n.title||'Untitled note')}</h2><span class="hint">${escapeHtml(relativeTime(n.updatedAt||n.createdAt))}</span></div><div class="quick-note-content">${escapeHtml(n.body||'').replace(/\n/g,'<br>')}</div><div class="row" style="justify-content:flex-end;margin-top:14px"><button class="btn btn-ghost btn-sm" data-edit-quick-note="${escapeHtml(n.id)}">Edit</button><button class="btn btn-danger-soft btn-sm" data-del-quick-note="${escapeHtml(n.id)}">Delete</button></div></div></article>`).join('')}</div>`:`<div class="empty"><div class="empty-ico">✎</div><div class="empty-title">No notes yet</div><div class="empty-sub">Use the box above to save a thought, reminder or idea.</div></div>`}`;
 }
 
 function openQuickNoteModal(existing=null){
-  const isNew=!existing,n=existing||{id:uid(),title:'',body:''};
-  openModal({title:isNew?'New note':'Edit note',subtitle:'Your changes are saved to your Scribe account.',body:`<div class="stack"><div class="field"><label class="label">Title</label><input class="input" id="qn-title" maxlength="120" value="${escapeHtml(n.title||'')}" placeholder="Optional title"></div><div class="field"><label class="label">Note</label><textarea class="textarea" id="qn-body" rows="8" placeholder="Write your note…">${escapeHtml(n.body||'')}</textarea></div></div>`,footer:`<button class="btn btn-ghost" data-close>Cancel</button><button class="btn btn-primary" id="qn-save">Save note</button>`,onMount(el,close){$('#qn-save',el).addEventListener('click',async()=>{const body=sanitiseText($('#qn-body',el).value,12000);if(!body){toast('Write something before saving.','warn');return;}await Store.put('quickNotes',{...n,title:sanitiseText($('#qn-title',el).value,120)||'',body});close();render();toast('Note saved.','success');});}});
+  const isNew=!existing,n=existing||{id:uid(),title:'',body:'',color:'default'};
+  const colours=[['default','Default'],['yellow','Yellow'],['blue','Blue'],['green','Green'],['pink','Pink'],['purple','Purple']];
+  openModal({title:isNew?'New note':'Edit note',subtitle:'Your changes are saved to your Scribe account.',body:`<div class="stack"><div class="field"><label class="label">Title</label><input class="input" id="qn-title" maxlength="120" value="${escapeHtml(n.title||'')}" placeholder="Optional title"></div><div class="field"><label class="label">Note</label><textarea class="textarea" id="qn-body" rows="8" placeholder="Write your note…">${escapeHtml(n.body||'')}</textarea></div><div class="field"><label class="label">Note colour</label><select class="select" id="qn-color">${colours.map(([k,v])=>`<option value="${k}" ${n.color===k?'selected':''}>${v}</option>`).join('')}</select></div></div>`,footer:`<button class="btn btn-ghost" data-close>Cancel</button><button class="btn btn-primary" id="qn-save">Save note</button>`,onMount(el,close){$('#qn-save',el).addEventListener('click',async()=>{const body=sanitiseText($('#qn-body',el).value,12000);if(!body){toast('Write something before saving.','warn');return;}await Store.put('quickNotes',{...n,title:sanitiseText($('#qn-title',el).value,120)||'',body,color:$('#qn-color',el).value||'default'});close();render();toast('Note saved.','success');});}});
 }
 
 function emailDateLabel(value){
@@ -3235,41 +3304,19 @@ function emailDateLabel(value){
 }
 
 function renderEmailsView(){
-  const all=[...Store.all('emailMessages')].sort((a,b)=>(b.date||0)-(a.date||0));
-  const gmail=Store.cache.integrations.gmail||{};
-  const schoolCount=all.filter(x=>x.schoolRelated===true).length;
-  const reviewCount=all.filter(x=>x.schoolRelated!==true&&x.schoolRelated!==false).length;
-  const personalCount=all.filter(x=>x.schoolRelated===false).length;
-  const filtered=all.filter(x=>{
-    if(emailInboxFilter==='school')return x.schoolRelated===true;
-    if(emailInboxFilter==='review')return x.schoolRelated!==true&&x.schoolRelated!==false;
-    if(emailInboxFilter==='personal')return x.schoolRelated===false;
-    return true;
-  });
-  const cards=filtered.map(e=>{
-    const ai=e.ai||{};
-    const status=e.schoolRelated===true?'School-related':e.schoolRelated===false?'Not school-related':'Needs review';
-    const category=e.category||status;
-    const actions=Array.isArray(ai.actions)?ai.actions:[];
-    const keyPoints=Array.isArray(ai.key_points)?ai.key_points:[];
-    const dates=Array.isArray(ai.dates)?ai.dates:[];
-    const shouldRetry=e.schoolRelated==null||e.aiStatus==='failed';
-    return `<article class="card email-record">
-      <div class="email-record-head"><div class="email-record-main"><div class="row wrap" style="gap:7px"><span class="chip ${e.schoolRelated===true?'chip-green':e.schoolRelated===false?'chip-gray':'chip-amber'}">${escapeHtml(status)}</span><span class="chip chip-indigo">${escapeHtml(category)}</span>${e.importedAssignment?'<span class="chip chip-sky">Added to assignments</span>':''}</div><h2 class="email-record-title">${escapeHtml(e.subject||'(No subject)')}</h2><div class="email-record-meta">${escapeHtml(e.from||'Unknown sender')} · ${escapeHtml(emailDateLabel(e.date))}</div></div><a class="btn btn-ghost btn-sm" href="${escapeHtml(e.url||'#')}" target="_blank" rel="noopener noreferrer">Open in Gmail</a></div>
-      ${ai.summary?`<p class="email-record-summary">${escapeHtml(ai.summary)}</p>`:`<p class="email-record-summary muted">${escapeHtml(e.snippet||'No preview available.')}</p>`}
-      ${keyPoints.length?`<div class="email-record-extra"><strong>Key points</strong><ul>${keyPoints.slice(0,5).map(x=>`<li>${escapeHtml(String(x))}</li>`).join('')}</ul></div>`:''}
-      ${actions.length?`<div class="email-record-extra"><strong>Actions</strong><ul>${actions.slice(0,5).map(x=>`<li>${escapeHtml(String(x))}</li>`).join('')}</ul></div>`:''}
-      ${dates.length?`<div class="email-record-dates">${dates.slice(0,5).map(d=>`<span>${escapeHtml(String(d.event||'Date'))}: ${escapeHtml(String(d.date||''))}${d.deadline?' · Deadline':''}</span>`).join('')}</div>`:''}
-      ${e.aiError?`<div class="alert alert-warn" style="margin-top:10px">Scribble analysis failed: ${escapeHtml(e.aiError)}</div>`:''}
-      <div class="row-between wrap" style="margin-top:12px"><span class="hint">${ai.confidence!==null&&ai.confidence!==undefined?`AI confidence: ${Math.round(Number(ai.confidence)*100)}%`:e.aiStatus==='complete'?'AI summary received':'Not analysed'}</span><div class="row">${shouldRetry?`<button class="btn btn-ghost btn-sm" data-email-reanalyse="${escapeHtml(e.id)}">${e.aiStatus==='failed'?'Retry analysis':'Analyse again'}</button>`:''}<details class="email-original"><summary>Original email</summary><pre>${escapeHtml(e.body||'No body text was extracted.')}</pre></details></div></div>
-    </article>`;
-  }).join('');
+  const all=[...Store.all('emailMessages')].sort((a,b)=>(b.date||0)-(a.date||0)),gmail=Store.cache.integrations.gmail||{};
+  const schoolCount=all.filter(x=>x.schoolRelated===true&&!x.done).length,reviewCount=all.filter(x=>x.schoolRelated!==true&&x.schoolRelated!==false&&!x.done).length,personalCount=all.filter(x=>x.schoolRelated===false&&!x.done).length,doneCount=all.filter(x=>x.done).length;
+  const filtered=all.filter(x=>emailInboxFilter==='done'?!!x.done:!x.done&&(emailInboxFilter==='school'?x.schoolRelated===true:emailInboxFilter==='review'?x.schoolRelated!==true&&x.schoolRelated!==false:emailInboxFilter==='personal'?x.schoolRelated===false:true));
+  const cards=filtered.map(e=>{const ai=e.ai||{},status=e.schoolRelated===true?'School-related':e.schoolRelated===false?'Not school-related':'Needs review',category=e.category||status,actions=Array.isArray(ai.actions)?ai.actions:[],points=Array.isArray(ai.key_points)?ai.key_points:[],dates=Array.isArray(ai.dates)?ai.dates:[],shouldRetry=e.schoolRelated==null||e.aiStatus==='failed';return `<article class="card email-record"><div class="email-record-head"><div class="email-record-main"><div class="row wrap" style="gap:7px"><span class="chip ${e.schoolRelated===true?'chip-green':e.schoolRelated===false?'chip-gray':'chip-amber'}">${escapeHtml(status)}</span>${category!==status?`<span class="chip chip-indigo">${escapeHtml(category)}</span>`:''}${e.importedAssignment?'<span class="chip chip-sky">Added to assignments</span>':''}</div><h2 class="email-record-title">${escapeHtml(e.subject||'(No subject)')}</h2><div class="email-record-meta">${escapeHtml(e.from||'Unknown sender')} · ${escapeHtml(emailDateLabel(e.date))}</div></div><a class="btn btn-ghost btn-sm" href="${escapeHtml(e.url||'#')}" target="_blank" rel="noopener noreferrer">Open in Gmail</a></div>
+  ${ai.summary?`<p class="email-record-summary">${escapeHtml(ai.summary)}</p>`:`<p class="email-record-summary muted">${escapeHtml(e.snippet||'No preview available.')}</p>`}
+  ${points.length?`<div class="email-record-extra"><strong>Key points</strong><ul>${points.slice(0,5).map(x=>`<li>${escapeHtml(String(x))}</li>`).join('')}</ul></div>`:''}${actions.length?`<div class="email-record-extra"><strong>Actions</strong><ul>${actions.slice(0,5).map(x=>`<li>${escapeHtml(String(x))}</li>`).join('')}</ul></div>`:''}${dates.length?`<div class="email-record-dates">${dates.slice(0,5).map(d=>`<span>${escapeHtml(String(d.event||'Date'))}: ${escapeHtml(String(d.date||''))}${d.deadline?' · Deadline':''}</span>`).join('')}</div>`:''}
+  ${e.aiError?`<div class="alert alert-warn" style="margin-top:10px">Scribble analysis failed: ${escapeHtml(e.aiError)}</div>`:''}<div class="row-between wrap" style="margin-top:12px"><span class="hint">${ai.confidence!==null&&ai.confidence!==undefined?`AI confidence: ${Math.round(Number(ai.confidence)*100)}%`:e.aiStatus==='complete'?'AI summary received':'Not analysed'}</span><div class="row wrap">${shouldRetry?`<button class="btn btn-ghost btn-sm" data-email-reanalyse="${escapeHtml(e.id)}">${e.aiStatus==='failed'?'Retry analysis':'Analyse again'}</button>`:''}${!e.done&&e.gmailId?`<button class="btn btn-primary btn-sm" data-email-done="${escapeHtml(e.id)}">Mark as done</button>`:''}<details class="email-original"><summary>Original email</summary><pre>${escapeHtml(e.body||'No body text was extracted.')}</pre></details></div></div></article>`;}).join('');
   const syncLabel=gmail.pendingCount>0?`Scan next 5 · ${Number(gmail.pendingCount).toLocaleString('en-NZ')} waiting`:'Scan last 7 days';
   return `<div class="page-head"><div class="row-between wrap"><div><h1 class="page-title">School Email</h1><p class="page-sub">Scribe classifies recent Gmail messages and keeps uncertain ones in Needs review.</p></div><button class="btn btn-primary" data-sync-email-inbox>${escapeHtml(syncLabel)}</button></div></div>
-    <div class="email-scan-status card"><div class="email-scan-stat"><strong>${Number(gmail.mailboxMessages||0).toLocaleString('en-NZ')}</strong><span>Messages in last 7 days</span></div><div class="email-scan-stat"><strong>${Number(gmail.processedCount||0).toLocaleString('en-NZ')}</strong><span>Scanned by Scribe</span></div><div class="email-scan-stat"><strong>${schoolCount}</strong><span>School-related here</span></div><div class="email-scan-stat"><strong>${reviewCount}</strong><span>Needs review</span></div><div class="email-scan-stat"><strong>${personalCount}</strong><span>Not school-related</span></div></div>
-    <div class="alert alert-info" style="margin:14px 0">Scribe checks the last 7 days of Gmail and automatically checks for new messages about every 5 minutes while this page is open. Each pass analyses up to 5 emails to keep the workload manageable. Actual assignment and assessment emails can create tasks; general announcements and events stay in School Email.</div>
-    <div class="email-filter-row"><label class="label" for="email-inbox-filter">Show</label><select class="select" id="email-inbox-filter"><option value="all" ${emailInboxFilter==='all'?'selected':''}>All scanned emails</option><option value="school" ${emailInboxFilter==='school'?'selected':''}>School-related</option><option value="review" ${emailInboxFilter==='review'?'selected':''}>Needs review</option><option value="personal" ${emailInboxFilter==='personal'?'selected':''}>Not school-related</option></select><span class="hint">Showing ${filtered.length} of ${all.length} loaded emails · up to 500 recent records are displayed here.</span></div>
-    ${cards?`<div class="email-record-list">${cards}</div>`:`<div class="empty"><div class="empty-ico">✉</div><div class="empty-title">${all.length?'No emails match this filter':'No emails scanned yet'}</div><div class="empty-sub">${all.length?'Choose another filter to see more messages.':'Select Scan last 7 days or keep Scribe open to check for new emails automatically.'}</div></div>`}`;
+  <div class="email-scan-status card"><div class="email-scan-stat"><strong>${Number(gmail.mailboxMessages||0).toLocaleString('en-NZ')}</strong><span>Messages in last 7 days</span></div><div class="email-scan-stat"><strong>${Number(gmail.processedCount||0).toLocaleString('en-NZ')}</strong><span>Scanned by Scribe</span></div><div class="email-scan-stat"><strong>${schoolCount}</strong><span>School-related here</span></div><div class="email-scan-stat"><strong>${reviewCount}</strong><span>Needs review</span></div><div class="email-scan-stat"><strong>${personalCount}</strong><span>Not school-related</span></div><div class="email-scan-stat"><strong>${doneCount}</strong><span>Done</span></div></div>
+  <div class="alert alert-info" style="margin:14px 0">Scribe checks the last 7 days of Gmail and automatically checks for new messages about every 5 minutes while this page is open. Each pass analyses up to 5 emails. Assignments and assessments can create tasks; announcements and events stay here.</div>
+  <div class="email-filter-row"><label class="label" for="email-inbox-filter">Show</label><select class="select" id="email-inbox-filter"><option value="all" ${emailInboxFilter==='all'?'selected':''}>All scanned emails</option><option value="school" ${emailInboxFilter==='school'?'selected':''}>School-related</option><option value="review" ${emailInboxFilter==='review'?'selected':''}>Needs review</option><option value="personal" ${emailInboxFilter==='personal'?'selected':''}>Not school-related</option><option value="done" ${emailInboxFilter==='done'?'selected':''}>Done</option></select><span class="hint">Showing ${filtered.length} of ${all.length} loaded emails</span></div>
+  ${cards?`<div class="email-record-list">${cards}</div>`:`<div class="empty"><div class="empty-ico">✉</div><div class="empty-title">${all.length?'No emails match this filter':'No emails scanned yet'}</div><div class="empty-sub">${emailInboxFilter==='done'?'Emails marked as done will appear here.':all.length?'Choose another filter to see more messages.':'Select Scan last 7 days or keep Scribe open to check for new emails automatically.'}</div></div>`}`;
 }
 
 async function reanalyseStoredEmail(id){
@@ -3298,27 +3345,27 @@ async function reanalyseStoredEmail(id){
 
 function resultsStats(rows,weighted){
   const graded=rows.filter(r=>r.grade!==null&&r.grade!==undefined&&r.grade!==''&&Number.isFinite(Number(r.grade)));
-  if(!graded.length)return {current:null,projected:null,count:0,pending:rows.length};
-  let current;
-  if(weighted){const total=graded.reduce((sum,r)=>sum+Math.max(0,Number(r.weight)||0),0);current=total>0?graded.reduce((sum,r)=>sum+Number(r.grade)*Math.max(0,Number(r.weight)||0),0)/total:null;}
-  else current=graded.reduce((sum,r)=>sum+Number(r.grade),0)/graded.length;
-  // Future assessments are assumed to be achieved at the current average.
-  return {current,projected:current,count:graded.length,pending:rows.length-graded.length};
+  if(!graded.length)return {current:null,contribution:0,completedWeight:0,count:0,pending:rows.length};
+  if(!weighted)return {current:graded.reduce((sum,r)=>sum+Number(r.grade),0)/graded.length,contribution:null,completedWeight:null,count:graded.length,pending:rows.length-graded.length};
+  const completedWeight=graded.reduce((sum,r)=>sum+Math.max(0,Number(r.weight)||0),0);
+  const contribution=graded.reduce((sum,r)=>sum+Number(r.grade)*Math.max(0,Number(r.weight)||0)/100,0);
+  const current=completedWeight>0?contribution/completedWeight*100:null;
+  const projected=current===null?null:contribution+(current*Math.max(0,100-completedWeight)/100);
+  return {current,contribution,completedWeight,projected,count:graded.length,pending:rows.length-graded.length};
 }
 
 function renderResultsView(){
-  const rows=[...Store.all('results')].sort((a,b)=>(b.date||b.createdAt||0)-(a.date||a.createdAt||0));
-  const subjects=getEnrolledSubjects();
+  const rows=[...Store.all('results')].sort((a,b)=>(b.date||b.createdAt||0)-(a.date||a.createdAt||0)),subjects=getEnrolledSubjects();
   const subjectCards=subjects.map(subject=>{
-    const subjectRows=rows.filter(r=>normalizeSubject(r.subject)===subject);
-    const weighted=isSubjectWeighted(subject),stats=resultsStats(subjectRows,weighted);
+    const subjectRows=rows.filter(r=>normalizeSubject(r.subject)===subject),weighted=isSubjectWeighted(subject),stats=resultsStats(subjectRows,weighted);
     const table=subjectRows.length?`<div class="results-table-wrap"><table class="results-table"><thead><tr><th>Assessment</th><th>Result</th>${weighted?'<th>Weight</th>':''}<th>Date</th><th></th></tr></thead><tbody>${subjectRows.map(r=>`<tr><td><strong>${escapeHtml(r.title||'Assessment')}</strong>${r.notes?`<div class="hint">${escapeHtml(r.notes)}</div>`:''}</td><td>${r.grade===null||r.grade===undefined||r.grade===''?'<span class="muted">Not marked</span>':Number(r.grade).toFixed(1)+'%'}</td>${weighted?`<td>${Number(r.weight)||0}%</td>`:''}<td>${r.date?escapeHtml(fmtDate(r.date)):'—'}</td><td><div class="row"><button class="icon-btn" data-edit-result="${escapeHtml(r.id)}" aria-label="Edit result">${ICON.edit}</button><button class="icon-btn" data-del-result="${escapeHtml(r.id)}" aria-label="Delete result">${ICON.trash}</button></div></td></tr>`).join('')}</tbody></table></div>`:`<div class="empty" style="padding:24px 18px"><div class="empty-title">No results for ${escapeHtml(subject)} yet</div><div class="empty-sub">Add assessments as you receive results or know their weighting.</div></div>`;
-    return `<section class="card results-subject-card"><div class="card-head"><div><h2 class="card-title">${escapeHtml(subject)}</h2><div class="hint">${stats.count} marked · ${stats.pending} remaining</div></div><div class="results-subject-tools"><label class="checkbox"><input type="checkbox" data-weight-subject="${escapeHtml(subject)}" ${weighted?'checked':''}><span>Weighted</span></label><div class="results-average"><div><span class="results-average-label">Current ${weighted?'weighted ':''}average</span><strong>${stats.current===null?'—':stats.current.toFixed(1)+'%'}</strong></div><div><span class="results-average-label">On track for</span><strong>${stats.projected===null?'—':stats.projected.toFixed(1)+'%'}</strong></div></div></div></div>${table}<div class="results-projection-note">On track assumes future assessments are achieved at your current average. It is an estimate, not a predicted or guaranteed grade. ${weighted?'Only completed results contribute to the current weighted average; outstanding assessments remain in the remaining course weighting.':'Every completed result contributes equally to the current average.'}</div></section>`;
+    const metric=weighted?`<div class="results-average"><div><span class="results-average-label">Weighted contribution</span><strong>${stats.current===null?'—':`${stats.contribution.toFixed(1)}% out of ${stats.completedWeight.toFixed(1)}%`}</strong></div><div><span class="results-average-label">On track for</span><strong>${stats.projected===null?'—':stats.projected.toFixed(1)+'%'}</strong></div></div>`:`<div class="results-average"><div><span class="results-average-label">Current average</span><strong>${stats.current===null?'—':stats.current.toFixed(1)+'%'}</strong></div></div>`;
+    return `<section class="card results-subject-card"><div class="card-head"><div><h2 class="card-title">${escapeHtml(subject)}</h2><div class="hint">${stats.count} marked · ${stats.pending} remaining</div></div><div class="results-subject-tools"><label class="checkbox"><input type="checkbox" data-weight-subject="${escapeHtml(subject)}" ${weighted?'checked':''}><span>Weighted</span></label>${metric}</div></div>${table}</section>`;
   }).join('');
   const addDisabled=!subjects.length;
   return `<div class="page-head"><div class="row-between wrap"><div><h1 class="page-title">Results</h1><p class="page-sub">Track your assessment results and see how you are progressing in each subject.</p></div><button class="btn btn-primary" data-add-result ${addDisabled?'disabled':''}>Add result</button></div></div>
-    ${subjects.length?subjectCards:`<div class="empty"><div class="empty-title">Select your subjects first</div><div class="empty-sub">Choose your current subjects in Settings. The Results page uses that list for every subject.</div><a class="btn btn-ghost btn-sm" href="#/settings" style="margin-top:14px">Open Settings</a></div>`}
-    ${getSubjectHint()}`;
+  ${subjects.length?subjectCards:`<div class="empty"><div class="empty-title">Select your subjects first</div><div class="empty-sub">Choose your current subjects in Settings. The Results page uses that list for every subject.</div><a class="btn btn-ghost btn-sm" href="#/settings" style="margin-top:14px">Open Settings</a></div>`}
+  ${subjects.length?'<p class="results-projection-note">On-track figures are estimates, not your final grade. They assume future assessments are achieved at your current average. Weighted contribution shows the course percentage earned from assessments that have been marked so far.</p>':''}${getSubjectHint()}`;
 }
 
 function openResultModal(existing=null){
@@ -3390,6 +3437,7 @@ function renderSettingsView(){
             </select>
           </div>
         </div>
+        <div class="set-row"><div class="set-info"><div class="set-name">NASA image of the day background</div><div class="set-desc">Use NASA’s daily astronomy image behind Scribe. This is off by default.</div></div><div class="set-control"><label class="checkbox"><input type="checkbox" id="set-nasa-background" ${s.nasaBackground?'checked':''}></label></div></div>
       </div>
     </section>
 
@@ -3423,6 +3471,14 @@ function renderSettingsView(){
             <label class="checkbox"><input type="checkbox" id="set-notify-test" ${s.notifyNewTest ? 'checked' : ''}></label>
           </div>
         </div>
+      </div>
+    </section>
+
+    <section class="card" style="margin-bottom:18px">
+      <div class="card-head"><div class="card-title">Student profile</div></div>
+      <div class="card-body">
+        <div class="set-row stacked"><div class="set-info"><div class="set-name">Year level</div><div class="set-desc">Used to identify notices intended for your year. Leave unset to show notices for every year.</div></div><div class="set-control"><select class="select" id="set-year-level"><option value="">Not set</option>${[7,8,9,10,11,12,13].map(y=>`<option value="${y}" ${String(s.yearLevel||'')===String(y)?'selected':''}>Year ${y}</option>`).join('')}</select></div></div>
+        <div class="set-row stacked"><div class="set-info"><div class="set-name">Extra-curricular activities</div><div class="set-desc">Add one activity in each box. Start typing in the last box to create another.</div></div><div class="set-control"><div id="set-extra-activities" class="extra-activity-fields">${[...(s.extraCurriculars||[]),''].map((v,i)=>`<input class="input extra-activity-input" data-extra-activity-index="${i}" maxlength="80" value="${escapeHtml(v)}" placeholder="${i===0?'e.g. Football':'Another activity'}">`).join('')}</div></div></div>
       </div>
     </section>
 
@@ -3561,7 +3617,7 @@ function noticeDateFmt(v,opts={day:'numeric',month:'short',year:'numeric'}){cons
 function noticeTimeAgo(v){const d=noticeDate(v);if(!d)return 'Not yet updated';const m=Math.max(0,Math.floor((Date.now()-d.getTime())/60000));return m<1?'just now':m<60?`${m} min ago`:m<1440?`${Math.floor(m/60)} hr ago`:noticeDateFmt(d);}
 function noticeId(n){const primary=noticeField(n,'id');if(primary!==''&&primary!==null)return String(primary);const secondary=noticeField(n,'uuid');if(secondary)return String(secondary);const raw=JSON.stringify(n||{});let h=2166136261;for(let i=0;i<raw.length;i++){h^=raw.charCodeAt(i);h=Math.imul(h,16777619);}return 'fallback-'+(h>>>0).toString(36);}
 function noticeText(n){return [noticeField(n,'notice_title','title'),noticeField(n,'notice_body','body'),noticeField(n,'notice_level'),noticeField(n,'categories'),noticeField(n,'teacher'),noticeField(n,'notice_location')].join(' ');}
-function noticeAudience(n){const raw=[noticeField(n,'notice_level'),noticeField(n,'categories'),noticeField(n,'permissions')].flat().join(' ').toLowerCase();const matches=[...raw.matchAll(/(?:years?|yr|y)\s*(9|10|11|12|13)(?:\s*(?:&|and|to|-|–)\s*(9|10|11|12|13))?/g)];const years=new Set();matches.forEach(m=>{const a=+m[1],b=m[2]?+m[2]:a;for(let y=Math.min(a,b);y<=Math.max(a,b);y++)years.add(y);});const all=/\ball\b|whole school|all students|years? 9\s*[-–to& ]\s*13/.test(raw);return {label:noticeField(n,'notice_level')|| (Array.isArray(n.categories)?n.categories.join(', '):n.categories)||'Audience not specified',years:[...years],all,known:!!raw.trim()};}
+function noticeAudience(n){const raw=[noticeField(n,'notice_level'),noticeField(n,'categories'),noticeField(n,'permissions')].flat().join(' ').toLowerCase();const matches=[...raw.matchAll(/(?:years?|yr|y)\s*(7|8|9|10|11|12|13)(?:\s*(?:&|and|to|-|–)\s*(7|8|9|10|11|12|13))?/g)];const years=new Set();matches.forEach(m=>{const a=+m[1],b=m[2]?+m[2]:a;for(let y=Math.min(a,b);y<=Math.max(a,b);y++)years.add(y);});const all=/\ball\b|whole school|all students|years? 7\s*[-–to& ]\s*13/.test(raw);return {label:noticeField(n,'notice_level')|| (Array.isArray(n.categories)?n.categories.join(', '):n.categories)||'Audience not specified',years:[...years],all,known:!!raw.trim()};}
 function classifyNotice(n){
  const title=String(noticeField(n,'notice_title','title')||'').toLowerCase();
  const body=String(noticeField(n,'notice_body','body')||'').replace(/<[^>]*>/g,' ').toLowerCase();
@@ -3609,10 +3665,20 @@ function noticePriority(n){
  else if(action&&deadline&&days!==null&&days>=0&&days<=7){score=7;level='Important';reason='Action with an imminent deadline';}
  else if(action&&days!==null&&days>=0&&days<=2){score=6;level='Action Required';reason='Action needed very soon';}
  else if(deadline&&days!==null&&days>=0&&days<=3){score=6;level='Action Required';reason='Deadline approaching';}
+ const cachedAI=Store.cache.settings.noticeAiCache?.[noticeId(n)],ai=cachedAI?.contextKey===noticeAIContextKey(n)?cachedAI:null;
+ if(ai&&ai.relevant===true&&ai.yearRelevant!==false&&ai.priority==='high'&&score<7){score=7;level='Important';reason=ai.reason||'Scribble identified this as relevant to your activities or year level';}
+ if(ai&&ai.relevant===true&&ai.yearRelevant!==false&&ai.priority==='urgent'&&score<10){score=10;level='Urgent';reason=ai.reason||'Scribble identified an urgent personal relevance';}
  return {score,level,reason};
 }
+let noticeAIQueueRunning=false;
+let noticeAIBatchUsed=false;
+let noticeAIHold=false;
+const noticeAIAnalysedThisRun=new Set();
+function noticeAIContextKey(n){const s=Store.cache.settings,title=String(noticeField(n,'notice_title','title')||'').trim(),body=String(noticeField(n,'notice_body','body')||'').replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim();return `${s.yearLevel||''}|${(s.extraCurriculars||[]).join(',')}|${noticeId(n)}|${String(noticeField(n,'updated_at','date_updated')||'')}|${title}|${body.slice(0,300)}`;}
+async function analyseNoticeWithScribble(n){const s=Store.cache.settings,title=sanitiseText(noticeField(n,'notice_title','title')||'',240),body=String(noticeField(n,'notice_body','body')||'').replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim().slice(0,1800);const response=await fetch('https://scribble.coeus1.tech/api/ai/notice-priority',{method:'POST',headers:{'Content-Type':'application/json','X-API-Key':SCRIBBLE_API_KEY},body:JSON.stringify({title,body,year_level:s.yearLevel||'',activities:s.extraCurriculars||[]}),signal:AbortSignal.timeout(120000)});const data=await response.json().catch(()=>null);if(!response.ok)throw new Error(data?.error||`Scribble HTTP ${response.status}`);return data?.result||null;}
+async function queueNoticePriorityAnalysis(){const s=Store.cache.settings;if(noticeAIQueueRunning||noticeAIBatchUsed||noticeAIHold||(!s.yearLevel&&!(s.extraCurriculars||[]).length))return;const cache=s.noticeAiCache||(s.noticeAiCache={}),latest=[...noticeUI.items].sort((a,b)=>(noticeDate(noticeField(b,'created_at_iso','created_at'))?.getTime()||0)-(noticeDate(noticeField(a,'created_at_iso','created_at'))?.getTime()||0)),pending=latest.filter(n=>{const key=noticeAIContextKey(n);return cache[noticeId(n)]?.contextKey!==key&&!noticeAIAnalysedThisRun.has(key);}).filter(noticeIsRelevant).slice(0,5);if(!pending.length){noticeAIBatchUsed=true;return;}noticeAIQueueRunning=true;noticeAIBatchUsed=true;let changed=false;try{for(const n of pending){const key=noticeAIContextKey(n);noticeAIAnalysedThisRun.add(key);try{const r=await analyseNoticeWithScribble(n);if(r&&typeof r==='object'){cache[noticeId(n)]={contextKey:key,relevant:typeof r.relevant==='boolean'?r.relevant:null,yearRelevant:typeof r.year_relevant==='boolean'?r.year_relevant:null,priority:['low','normal','high','urgent'].includes(String(r.priority||'').toLowerCase())?String(r.priority).toLowerCase():'normal',reason:sanitiseText(r.reason||'',120),matchedActivity:sanitiseText(r.matched_activity||'',60),checkedAt:now()};Store.persistNow();changed=true;}}catch(err){console.warn('Scribble notice check failed:',err.message);}}}finally{if(changed){try{await Store.saveUserDoc();}catch(err){console.warn('Could not save notice analysis:',err.message);}}noticeAIQueueRunning=false;if(currentRoute()==='#/notices')render();}}
 function noticeArchived(n){const hide=noticeDate(noticeField(n,'date_hide_iso','date_hide'));if(hide)return hide.getTime()<Date.now();const created=noticeDate(noticeField(n,'created_at_iso','created_at'));return created?((Date.now()-created.getTime())>180*86400000):false;}
-function noticeIsRelevant(n){const start=noticeDate(noticeField(n,'date_start_iso','date_start'));if(start&&start.getTime()>Date.now()+90*86400000)return false;return true;}
+function noticeIsRelevant(n){const start=noticeDate(noticeField(n,'date_start_iso','date_start'));if(start&&start.getTime()>Date.now()+90*86400000)return false;const year=String(Store.cache.settings.yearLevel||'');if(year){const audience=noticeAudience(n);if(audience.years.length&&!audience.years.includes(Number(year)))return false;const cachedAI=Store.cache.settings.noticeAiCache?.[noticeId(n)],ai=cachedAI?.contextKey===noticeAIContextKey(n)?cachedAI:null;if(ai?.yearRelevant===false)return false;}return true;}
 function noticeSafeHtml(html){if(!html)return '<p class="notice-muted">No notice body was supplied.</p>';let source=String(html);const probe=new DOMParser().parseFromString(source,'text/html');if(!probe.body.querySelector('*')&&/&lt;\/?(?:p|div|br|ul|ol|li|strong|b|a|img)\b/i.test(source))source=probe.body.textContent||source;const doc=new DOMParser().parseFromString(source,'text/html');const allowed=new Set(['P','BR','B','STRONG','I','EM','U','UL','OL','LI','A','IMG','H1','H2','H3','H4','BLOCKQUOTE','HR','TABLE','THEAD','TBODY','TR','TH','TD','DIV','SPAN','SUB','SUP']);
  const clean=(node)=>{for(const child of [...node.childNodes]){if(child.nodeType===Node.COMMENT_NODE){child.remove();continue;}if(child.nodeType!==Node.ELEMENT_NODE)continue;const tag=child.tagName;if(!allowed.has(tag)){if(['SCRIPT','STYLE','IFRAME','OBJECT','EMBED','FORM','INPUT','BUTTON','SVG','MATH'].includes(tag)){child.remove();continue;}clean(child);child.replaceWith(...child.childNodes);continue;}for(const a of [...child.attributes]){const name=a.name.toLowerCase(),val=a.value.trim();if(tag==='A'&&name==='href'){try{const u=new URL(val,location.origin);if(!['http:','https:','mailto:'].includes(u.protocol))child.removeAttribute(a.name);else child.setAttribute('href',u.href);}catch{child.removeAttribute(a.name);}}else if(tag==='IMG'&&name==='src'){try{const u=new URL(val,location.origin);if(!['http:','https:'].includes(u.protocol))child.removeAttribute(a.name);else child.setAttribute('src',u.href);}catch{child.removeAttribute(a.name);}}else if(tag==='A'&&name==='title'){}else if(tag==='IMG'&&['alt','width','height'].includes(name)){}else child.removeAttribute(a.name);}if(tag==='A'){child.setAttribute('target','_blank');child.setAttribute('rel','noopener noreferrer');}if(tag==='IMG'){child.setAttribute('loading','lazy');child.setAttribute('referrerpolicy','no-referrer');}clean(child);}};clean(doc.body);return doc.body.innerHTML;}
 function noticeReadIds(){return Store.cache?.settings?.noticeReadIds||[];}
@@ -3621,6 +3687,7 @@ async function noticeSetRead(n,read=true){if(!Store.cache?.settings)return;const
 function noticeNormalizePayload(payload){const arr=Array.isArray(payload)?payload:(Array.isArray(payload?.notices)?payload.notices:Array.isArray(payload?.data?.notices)?payload.data.notices:[]);return {items:arr.filter(x=>x&&typeof x==='object'&&noticeId(x)),meta:{count:Number(payload?.count??payload?.data?.count??arr.length)||0,date_start:payload?.date_start??payload?.data?.date_start??null,last_updated:payload?.last_updated??payload?.data?.last_updated??null}};}
 async function fetchSchoolNotices(force=false){
   if(noticeUI.loading)return;
+  if(force){noticeAIBatchUsed=false;noticeAIAnalysedThisRun.clear();noticeAIHold=true;}
   if(!force&&noticeUI.lastAttemptAt&&Date.now()-noticeUI.lastAttemptAt<60000)return;
   if(!force&&noticeUI.items.length&&Date.now()-noticeUI.lastFetched<5*60000)return;
   const cached=(()=>{try{return JSON.parse(localStorage.getItem(NOTICE_CACHE_KEY)||'null')}catch{return null}})();
@@ -3642,12 +3709,12 @@ async function fetchSchoolNotices(force=false){
     const payload=await response.json();
     const parsed=noticeNormalizePayload(payload);
     if(!parsed.items.length&&parsed.meta.count)throw new Error('The API response did not contain a readable notices array.');
-    noticeUI.items=parsed.items;noticeUI.meta=parsed.meta;noticeUI.lastFetched=Date.now();
+    const previousNoticeIds=noticeUI.items.map(noticeId).join('|');noticeUI.items=parsed.items;noticeUI.meta=parsed.meta;noticeUI.lastFetched=Date.now();if(previousNoticeIds!==parsed.items.map(noticeId).join('|')){noticeAIBatchUsed=false;noticeAIAnalysedThisRun.clear();}
     try{localStorage.setItem(NOTICE_CACHE_KEY,JSON.stringify({payload,savedAt:noticeUI.lastFetched}));}catch{}
   }catch(err){
     noticeUI.error=String(err?.name==='TimeoutError'?'The notices request timed out':err?.message||err);
     if(noticeUI.items.length)noticeUI.error+=' · Showing cached data';
-  }finally{noticeUI.loading=false;render();}
+  }finally{noticeUI.loading=false;noticeAIHold=false;render();}
 }
 function noticeShort(n){return sanitiseText(noticeField(n,'notice_body','body'),210)||'Open to view the full notice.';}
 function noticeYearText(n){const a=noticeAudience(n);return a.label==='Audience not specified'?'':a.label;}
@@ -3715,7 +3782,7 @@ function renderNoticeDetail(n){
 }
 
 function startNoticeAutoRefresh(){if(noticeRefreshTimer)return;noticeRefreshTimer=setInterval(()=>{if(currentRoute()==='#/notices'&&document.visibilityState==='visible'&&Date.now()-noticeUI.lastFetched>=15*60000)fetchSchoolNotices(true);},60000);document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&currentRoute()==='#/notices'&&Date.now()-noticeUI.lastFetched>=15*60000)fetchSchoolNotices(true);});}
-function renderNoticesView(){const n=noticeUI.items,active=n.filter(x=>!noticeArchived(x)&&noticeIsRelevant(x)),priority=active.filter(noticeMatchesPeriod).map(x=>({n:x,p:noticePriority(x)})).filter(x=>x.p.score>=6).sort((a,b)=>b.p.score-a.p.score).slice(0,3),filtered=noticeFiltered(),unread=active.filter(x=>!noticeIsRead(x)).length;const selected=noticeUI.selected?n.find(x=>noticeId(x)===noticeUI.selected):null;if(selected)return renderNoticeDetail(selected);const count=Number.isFinite(noticeUI.meta.count)?noticeUI.meta.count:n.length;return `<div class="page-head"><div><div class="eyebrow">SACRED HEART COLLEGE</div><h1>Notices</h1><p class="page-sub">School announcements, events and information in one place.</p></div><button class="btn btn-ghost btn-sm" data-notice-refresh ${noticeUI.loading?'disabled':''}>${noticeUI.loading?'<span class="spinner"></span> Refreshing':'↻ Refresh'}</button></div><div class="notice-source-status"><span>${count.toLocaleString('en-NZ')} source notices · ${unread} unread</span><span>·</span><span>${(noticeUI.meta.last_updated||noticeUI.lastFetched)?'Source updated '+escapeHtml(noticeTimeAgo(noticeUI.meta.last_updated||noticeUI.lastFetched)):'Not yet synced'}${noticeUI.meta.date_start?' · Data from '+escapeHtml(noticeDateFmt(noticeUI.meta.date_start)):''}</span>${noticeUI.loading?'<span class="spinner"></span>':''}</div>${noticeUI.error?`<div class="alert alert-warn" style="margin-top:12px">Could not refresh notices: ${escapeHtml(noticeUI.error)}. ${n.length?'Cached notices are shown where available.':'Check your connection and try Refresh.'}</div>`:''}${noticeUI.loading&&!n.length?'<div class="card"><div class="card-body"><span class="spinner"></span> Loading school notices…</div></div>':''}<section><div class="notice-section-head"><h2>Priority Notices</h2><span class="notice-muted">Only genuinely urgent or time-sensitive notices</span></div>${priority.length?`<div class="notice-priority-grid">${priority.map(({n,p})=>`<article class="notice-priority ${p.level==='Urgent'?'urgent':p.level==='Important'?'important':'action'}" data-notice-open="${escapeHtml(noticeId(n))}" role="button" tabindex="0"><div class="notice-priority-top"><span class="notice-pill ${p.level==='Urgent'?'urgent':p.level==='Important'?'important':'action'}">${escapeHtml(p.level)}</span><span class="notice-muted">${escapeHtml(classifyNotice(n)[0])}</span></div><div class="notice-priority-title">${escapeHtml(noticeField(n,'notice_title','title')||'Untitled notice')}</div><div class="notice-priority-desc">${escapeHtml(noticeShort(n))}</div><div class="notice-priority-meta">${noticeField(n,'created_at_iso','created_at')?'Posted '+escapeHtml(noticeDateFmt(noticeField(n,'created_at_iso','created_at'))):''}${noticeField(n,'date_notice_iso','date_notice')?' · '+escapeHtml(noticeDateFmt(noticeField(n,'date_notice_iso','date_notice'))):''}${noticeYearText(n)?' · '+escapeHtml(noticeYearText(n)):''}${noticeField(n,'notice_location')?' · '+escapeHtml(noticeField(n,'notice_location')):''}</div></article>`).join('')}</div>`:'<div class="notice-empty">No high-priority notices identified right now.</div>'}</section><div class="notice-toolbar"><div class="notice-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input class="input" id="notice-search" placeholder="Search notices, subjects, teachers, locations…" value="${escapeHtml(noticeUI.query)}"></div><button class="btn btn-secondary btn-sm" type="button" data-notice-previous-toggle>${noticeUI.showPreviousDates?'Close date browsing':'Browse previous dates'}</button>${noticeUI.showPreviousDates?`<label class="notice-date-control"><span>Viewing date</span><input class="input notice-date-picker" id="notice-selected-date" type="date" value="${escapeHtml(noticeUI.selectedDate||noticeShiftLocalDay(noticeLocalDay(Date.now()),-1))}" max="${escapeHtml(noticeLocalDay(Date.now()))}" aria-label="Choose a previous date"></label><button class="btn btn-ghost btn-sm" type="button" data-notice-date-today>Today</button>`:''}<select class="input" id="notice-period" style="max-width:150px" ${noticeUI.showPreviousDates?'disabled':''}><option ${noticeUI.period==='Recent'?'selected':''}>Recent</option><option ${noticeUI.period==='Today'?'selected':''}>Today</option><option value="Selected date" ${noticeUI.period==='Selected date'?'selected':''} hidden>Selected date</option><option ${noticeUI.period==='This week'?'selected':''}>This week</option><option ${noticeUI.period==='This month'?'selected':''}>This month</option><option ${noticeUI.period==='Upcoming'?'selected':''}>Upcoming</option><option ${noticeUI.period==='Older'?'selected':''}>Older</option></select></div><div class="notice-filters">${['All','Unread','Important'].map(x=>`<button class="notice-filter ${noticeUI.filter===x?'active':''}" data-notice-filter="${x}">${x}${x==='Unread'?` (${unread})`:''}</button>`).join('')}<button class="notice-filter ${noticeUI.showArchived?'active':''}" data-notice-archive>${noticeUI.showArchived?'Viewing archived':'Archived notices'}</button></div><div class="notice-categories">${['All','Academic','Assessments & Exams','Sport','Events','Careers','Clubs & Activities','Arts & Culture','Faith & Community','School Information','Other'].map(x=>{const c=x==='All'?active.length:active.filter(a=>classifyNotice(a).includes(x)).length;return `<button class="notice-filter ${noticeUI.category===x?'active':''}" data-notice-category="${escapeHtml(x)}">${escapeHtml(x)} <span class="notice-muted">${c}</span></button>`}).join('')}</div><div class="notice-section-head"><h2>${noticeUI.showArchived?'Archived Notices':noticeUI.period==='Selected date'?'Notices for '+noticeDateFmt(noticeUI.selectedDate):'Recent Notices'}</h2><span class="notice-muted">${filtered.length} shown · ${count.toLocaleString('en-NZ')} in source</span></div>${filtered.length?`<div class="notice-list">${filtered.slice(0,100).map(renderNoticeCard).join('')}</div>${filtered.length>100?`<div class="notice-muted" style="margin-top:10px">Showing the first 100 matching notices. Refine your search to find older items.</div>`:''}`:'<div class="notice-empty">No notices match these filters. Try another category, date range or search term.</div>'}`;}
+function renderNoticesView(){if(noticeUI.items.length)queueNoticePriorityAnalysis();const n=noticeUI.items,active=n.filter(x=>!noticeArchived(x)&&noticeIsRelevant(x)),priority=active.filter(noticeMatchesPeriod).map(x=>({n:x,p:noticePriority(x)})).filter(x=>x.p.score>=6).sort((a,b)=>b.p.score-a.p.score).slice(0,3),filtered=noticeFiltered(),unread=active.filter(x=>!noticeIsRead(x)).length;const selected=noticeUI.selected?n.find(x=>noticeId(x)===noticeUI.selected):null;if(selected)return renderNoticeDetail(selected);const count=Number.isFinite(noticeUI.meta.count)?noticeUI.meta.count:n.length;return `<div class="page-head"><div><div class="eyebrow">SACRED HEART COLLEGE</div><h1>Notices</h1><p class="page-sub">School announcements, events and information in one place.</p></div><button class="btn btn-ghost btn-sm" data-notice-refresh ${noticeUI.loading?'disabled':''}>${noticeUI.loading?'<span class="spinner"></span> Refreshing':'↻ Refresh'}</button></div><div class="notice-source-status"><span>${count.toLocaleString('en-NZ')} source notices · ${unread} unread</span><span>·</span><span>${(noticeUI.meta.last_updated||noticeUI.lastFetched)?'Source updated '+escapeHtml(noticeTimeAgo(noticeUI.meta.last_updated||noticeUI.lastFetched)):'Not yet synced'}${noticeUI.meta.date_start?' · Data from '+escapeHtml(noticeDateFmt(noticeUI.meta.date_start)):''}</span>${noticeUI.loading?'<span class="spinner"></span>':''}</div>${noticeUI.error?`<div class="alert alert-warn" style="margin-top:12px">Could not refresh notices: ${escapeHtml(noticeUI.error)}. ${n.length?'Cached notices are shown where available.':'Check your connection and try Refresh.'}</div>`:''}${noticeUI.loading&&!n.length?'<div class="card"><div class="card-body"><span class="spinner"></span> Loading school notices…</div></div>':''}<section><div class="notice-section-head"><h2>Priority Notices</h2><span class="notice-muted">Only genuinely urgent or time-sensitive notices</span></div>${priority.length?`<div class="notice-priority-grid">${priority.map(({n,p})=>`<article class="notice-priority ${p.level==='Urgent'?'urgent':p.level==='Important'?'important':'action'}" data-notice-open="${escapeHtml(noticeId(n))}" role="button" tabindex="0"><div class="notice-priority-top"><span class="notice-pill ${p.level==='Urgent'?'urgent':p.level==='Important'?'important':'action'}">${escapeHtml(p.level)}</span><span class="notice-muted">${escapeHtml(classifyNotice(n)[0])}</span></div><div class="notice-priority-title">${escapeHtml(noticeField(n,'notice_title','title')||'Untitled notice')}</div><div class="notice-priority-desc">${escapeHtml(noticeShort(n))}</div><div class="notice-priority-meta">${noticeField(n,'created_at_iso','created_at')?'Posted '+escapeHtml(noticeDateFmt(noticeField(n,'created_at_iso','created_at'))):''}${noticeField(n,'date_notice_iso','date_notice')?' · '+escapeHtml(noticeDateFmt(noticeField(n,'date_notice_iso','date_notice'))):''}${noticeYearText(n)?' · '+escapeHtml(noticeYearText(n)):''}${noticeField(n,'notice_location')?' · '+escapeHtml(noticeField(n,'notice_location')):''}</div></article>`).join('')}</div>`:'<div class="notice-empty">No high-priority notices identified right now.</div>'}</section><div class="notice-toolbar"><div class="notice-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input class="input" id="notice-search" placeholder="Search notices, subjects, teachers, locations…" value="${escapeHtml(noticeUI.query)}"></div><button class="btn btn-secondary btn-sm" type="button" data-notice-previous-toggle>${noticeUI.showPreviousDates?'Close date browsing':'Browse previous dates'}</button>${noticeUI.showPreviousDates?`<label class="notice-date-control"><span>Viewing date</span><input class="input notice-date-picker" id="notice-selected-date" type="date" value="${escapeHtml(noticeUI.selectedDate||noticeShiftLocalDay(noticeLocalDay(Date.now()),-1))}" max="${escapeHtml(noticeLocalDay(Date.now()))}" aria-label="Choose a previous date"></label><button class="btn btn-ghost btn-sm" type="button" data-notice-date-today>Today</button>`:''}<select class="input" id="notice-period" style="max-width:150px" ${noticeUI.showPreviousDates?'disabled':''}><option ${noticeUI.period==='Recent'?'selected':''}>Recent</option><option ${noticeUI.period==='Today'?'selected':''}>Today</option><option value="Selected date" ${noticeUI.period==='Selected date'?'selected':''} hidden>Selected date</option><option ${noticeUI.period==='This week'?'selected':''}>This week</option><option ${noticeUI.period==='This month'?'selected':''}>This month</option><option ${noticeUI.period==='Upcoming'?'selected':''}>Upcoming</option><option ${noticeUI.period==='Older'?'selected':''}>Older</option></select></div><div class="notice-filters">${['All','Unread','Important'].map(x=>`<button class="notice-filter ${noticeUI.filter===x?'active':''}" data-notice-filter="${x}">${x}${x==='Unread'?` (${unread})`:''}</button>`).join('')}<button class="notice-filter ${noticeUI.showArchived?'active':''}" data-notice-archive>${noticeUI.showArchived?'Viewing archived':'Archived notices'}</button></div><div class="notice-categories">${['All','Academic','Assessments & Exams','Sport','Events','Careers','Clubs & Activities','Arts & Culture','Faith & Community','School Information','Other'].map(x=>{const c=x==='All'?active.length:active.filter(a=>classifyNotice(a).includes(x)).length;return `<button class="notice-filter ${noticeUI.category===x?'active':''}" data-notice-category="${escapeHtml(x)}">${escapeHtml(x)} <span class="notice-muted">${c}</span></button>`}).join('')}</div><div class="notice-section-head"><h2>${noticeUI.showArchived?'Archived Notices':noticeUI.period==='Selected date'?'Notices for '+noticeDateFmt(noticeUI.selectedDate):'Recent Notices'}</h2><span class="notice-muted">${filtered.length} shown · ${count.toLocaleString('en-NZ')} in source</span></div>${filtered.length?`<div class="notice-list">${filtered.slice(0,100).map(renderNoticeCard).join('')}</div>${filtered.length>100?`<div class="notice-muted" style="margin-top:10px">Showing the first 100 matching notices. Refine your search to find older items.</div>`:''}`:'<div class="notice-empty">No notices match these filters. Try another category, date range or search term.</div>'}`;}
 
 /* ── Router ───────────────────────────────────────────────── */
 function currentRoute(){
@@ -3772,6 +3839,7 @@ function render(){
   }
 
   updateNav(route);
+  if(route==='#/dashboard')loadDailyDashboardContent();
   updateBadges();
   updateNotifDot();
   updateChartAvg();
@@ -4304,7 +4372,7 @@ function initViewEvents(){
     if(e.target.closest('[data-add-quick-note]')){
       const title=sanitiseText($('#quick-note-title')?.value||'',120),body=sanitiseText($('#quick-note-body')?.value||'',12000);
       if(!body){toast('Write a note first.','warn');return;}
-      await Store.put('quickNotes',{id:uid(),title,body});render();toast('Note saved.','success');return;
+      await Store.put('quickNotes',{id:uid(),title,body,color:$('#quick-note-color')?.value||'default'});render();toast('Note saved.','success');return;
     }
     const editQuick=e.target.closest('[data-edit-quick-note]');
     if(editQuick){const note=Store.get('quickNotes',editQuick.getAttribute('data-edit-quick-note'));if(note)openQuickNoteModal(note);return;}
@@ -4312,6 +4380,7 @@ function initViewEvents(){
     if(delQuick){const id=delQuick.getAttribute('data-del-quick-note'),note=Store.get('quickNotes',id);if(!note)return;const ok=await confirmDialog('Delete note?',`“${note.title||'Untitled note'}” will be removed.`, 'Delete note', true);if(ok){await Store.remove('quickNotes',id);render();toast('Note deleted.','success');}return;}
     if(e.target.closest('[data-add-result]')){openResultModal(null);return;}
     if(e.target.closest('[data-sync-email-inbox]')){const btn=e.target.closest('[data-sync-email-inbox]');btn.disabled=true;btn.textContent='Scanning…';try{const r=await syncGmail();render();toast(`Analysed ${r.processed} emails. ${r.pending.toLocaleString('en-NZ')} remain in the last-7-days scan.`,'success','Gmail scan');}catch(err){render();toast(friendlyErr(err),'error','Gmail scan failed');}return;}
+    const emailDone=e.target.closest('[data-email-done]');if(emailDone){emailDone.disabled=true;try{await markEmailDone(emailDone.getAttribute('data-email-done'));}catch(err){toast(friendlyErr(err),'error','Could not mark email done');emailDone.disabled=false;}return;}
     const reanalyse=e.target.closest('[data-email-reanalyse]');if(reanalyse){await reanalyseStoredEmail(reanalyse.getAttribute('data-email-reanalyse'));return;}
     const editResult=e.target.closest('[data-edit-result]');
     if(editResult){const result=Store.get('results',editResult.getAttribute('data-edit-result'));if(result)openResultModal(result);return;}
@@ -4327,24 +4396,10 @@ function initViewEvents(){
     }
 
     /* calendar navigation */
-    if (e.target.closest('[data-cal-prev]')){
-      calMonth--;
-      if (calMonth < 0){ calMonth = 11; calYear--; }
-      render();
-      return;
-    }
-    if (e.target.closest('[data-cal-next]')){
-      calMonth++;
-      if (calMonth > 11){ calMonth = 0; calYear++; }
-      render();
-      return;
-    }
-    if (e.target.closest('[data-cal-today]')){
-      calMonth = new Date().getMonth();
-      calYear = new Date().getFullYear();
-      render();
-      return;
-    }
+    if (e.target.closest('[data-cal-prev]')){if(Store.cache.settings.calendarView==='week')calFocusDate.setDate(calFocusDate.getDate()-7);else calFocusDate.setMonth(calFocusDate.getMonth()-1);calYear=calFocusDate.getFullYear();calMonth=calFocusDate.getMonth();render();return;}
+    if (e.target.closest('[data-cal-next]')){if(Store.cache.settings.calendarView==='week')calFocusDate.setDate(calFocusDate.getDate()+7);else calFocusDate.setMonth(calFocusDate.getMonth()+1);calYear=calFocusDate.getFullYear();calMonth=calFocusDate.getMonth();render();return;}
+    if (e.target.closest('[data-cal-today]')){calFocusDate=new Date();calYear=calFocusDate.getFullYear();calMonth=calFocusDate.getMonth();render();return;}
+    const calViewButton=e.target.closest('[data-cal-view]');if(calViewButton){Store.cache.settings.calendarView=calViewButton.getAttribute('data-cal-view')==='month'?'month':'week';Store.persistNow();Store.saveUserDoc();render();return;}
 
     /* chart legend toggle */
     const legend = e.target.closest('[data-legend]');
@@ -4366,10 +4421,10 @@ function initViewEvents(){
     const plannerDone=e.target.closest('[data-planner-complete]');
     if(plannerDone){const key=plannerDone.getAttribute('data-planner-complete');await Store.put('studySessions',{id:'planner-'+btoa(key).replace(/[^a-z0-9]/gi,'').slice(0,24),key,completed:true,completedAt:now(),type:'planner'});render();return;}
 
-    if(e.target.closest('[data-planner-add-act]')){const p=Store.cache.settings.studyPlanner||(Store.cache.settings.studyPlanner={dailyMinutes:{...DEFAULT_SETTINGS.studyPlanner.dailyMinutes},activities:[]});p.activities.push({id:uid(),name:'',days:['mon','tue','wed','thu','fri'],start:'16:00',end:'17:00'});Store.persistNow();render();return;}
+    if(e.target.closest('[data-planner-add-act]')){const p=Store.cache.settings.studyPlanner||(Store.cache.settings.studyPlanner={...DEFAULT_SETTINGS.studyPlanner,activities:[]});p.activities.push({id:uid(),name:'',days:['mon','tue','wed','thu','fri'],start:'16:00',end:'17:00'});Store.persistNow();render();return;}
     const removeAct=e.target.closest('[data-planner-remove-act]');
-    if(removeAct){const i=Number(removeAct.getAttribute('data-planner-remove-act'));Store.cache.settings.studyPlanner.activities.splice(i,1);await Store.saveUserDoc();Store.persistNow();render();return;}
-    if(e.target.closest('[data-planner-save]')){const p=Store.cache.settings.studyPlanner||(Store.cache.settings.studyPlanner={dailyMinutes:{},activities:[]});for(const k of ['mon','tue','wed','thu','fri','sat','sun']){const el=$(`[data-planner-min="${k}"]`);if(el)p.dailyMinutes[k]=Number(el.value)||0;}p.activities=$$('[data-planner-act-name]').map((el,i)=>{const days=$$(`[data-planner-act-day="${i}"]:checked`).map(x=>x.getAttribute('data-day')),start=$(`[data-planner-act-start="${i}"]`)?.value||'16:00',end=$(`[data-planner-act-end="${i}"]`)?.value||'17:00';return {id:p.activities[i]?.id||uid(),name:sanitiseText(el.value,80)||'Activity',days,start,end};}).filter(a=>a.days.length&&plannerTimeToMin(a.end)>plannerTimeToMin(a.start));await Store.saveUserDoc();Store.persistNow();render();toast('Study plan updated.','success');return;}
+    if(removeAct){const i=Number(removeAct.getAttribute('data-planner-remove-act'));Store.cache.settings.studyPlanner.activities.splice(i,1);await syncPlannerActivitiesToCalendar();await Store.saveUserDoc();Store.persistNow();render();return;}
+    if(e.target.closest('[data-planner-save]')){const p=Store.cache.settings.studyPlanner||(Store.cache.settings.studyPlanner={...DEFAULT_SETTINGS.studyPlanner,activities:[]});for(const k of ['mon','tue','wed','thu','fri','sat','sun']){const el=$(`[data-planner-min="${k}"]`);if(el)p.dailyMinutes[k]=Number(el.value)||0;}p.activities=$$('[data-planner-act-name]').map((el,i)=>{const days=$$(`[data-planner-act-day="${i}"]:checked`).map(x=>x.getAttribute('data-day')),start=$(`[data-planner-act-start="${i}"]`)?.value||'16:00',end=$(`[data-planner-act-end="${i}"]`)?.value||'17:00';return {id:p.activities[i]?.id||uid(),name:sanitiseText(el.value,80)||'Activity',days,start,end};}).filter(a=>a.days.length&&plannerTimeToMin(a.end)>plannerTimeToMin(a.start));await syncPlannerActivitiesToCalendar();await Store.saveUserDoc();Store.persistNow();render();toast('Study plan updated and activities added to Calendar.','success');return;}
 
     /* settings — calendar subs */
     const addSub = e.target.closest('[data-add-sub]');
@@ -4487,19 +4542,17 @@ function initViewEvents(){
       return;
     }
     if(id==='email-inbox-filter'){emailInboxFilter=e.target.value;render();return;}
+    if(e.target.matches('[data-planner-horizon]')){Store.cache.settings.studyPlanner.horizonDays=Number(e.target.value)||7;Store.persistNow();await Store.saveUserDoc();render();return;}
 
     const s = Store.cache.settings;
 
     const subjectWeight=e.target.closest('[data-weight-subject]');
     if(subjectWeight){const subject=subjectWeight.getAttribute('data-weight-subject');s.weightedSubjects=s.weightedSubjects||{};s.weightedSubjects[subject]=subjectWeight.checked;Store.persistNow();await Store.saveUserDoc();render();return;}
 
-    if (id === 'set-theme'){
-      s.theme = e.target.value;
-      applyTheme(s.theme);
-      Store.persistNow();
-      await Store.saveUserDoc();
-      return;
-    }
+    if (id === 'set-theme'){s.theme=e.target.value;applyTheme(s.theme);Store.persistNow();await Store.saveUserDoc();return;}
+    if (id === 'set-nasa-background'){s.nasaBackground=e.target.checked;Store.persistNow();await Store.saveUserDoc();await applyNasaBackground(s.nasaBackground);return;}
+    if (id === 'set-year-level'){s.yearLevel=['7','8','9','10','11','12','13'].includes(e.target.value)?e.target.value:'';Store.persistNow();await Store.saveUserDoc();noticeAIAnalysedThisRun.clear();noticeAIBatchUsed=false;if(currentRoute()==='#/notices'){render();queueNoticePriorityAnalysis();}return;}
+    if (e.target.matches('[data-extra-activity-index]')){s.extraCurriculars=$$('[data-extra-activity-index]').map(x=>sanitiseText(x.value,80).trim()).filter(Boolean);Store.persistNow();await Store.saveUserDoc();noticeAIAnalysedThisRun.clear();noticeAIBatchUsed=false;if(currentRoute()==='#/notices')queueNoticePriorityAnalysis();return;}
     if (id === 'set-notify-assignment'){ s.notifyNewAssignment = e.target.checked; }
     if (id === 'set-notify-due'){ s.notifyDueSoon = e.target.checked; }
     if (id === 'set-notify-test'){ s.notifyNewTest = e.target.checked; }
@@ -4526,7 +4579,7 @@ function initViewEvents(){
       updateNotifDot();
     }
   });
-  view.addEventListener('input',e=>{if(e.target.id==='notice-search'){noticeUI.query=e.target.value;const cursor=e.target.selectionStart;const y=view.scrollTop;const x=e.target.value;render();const input=$('#notice-search');if(input){input.focus();input.setSelectionRange(cursor,cursor);}view.scrollTop=y;}});
+  view.addEventListener('input',e=>{if(e.target.matches('[data-extra-activity-index]')){const box=$('#set-extra-activities');if(box){const fields=$$('[data-extra-activity-index]',box),values=fields.map(x=>x.value.trim());Store.cache.settings.extraCurriculars=values.filter(Boolean);const last=fields[fields.length-1];if(last&&last.value.trim()){box.insertAdjacentHTML('beforeend',`<input class="input extra-activity-input" data-extra-activity-index="${fields.length}" maxlength="80" value="" placeholder="Another activity">`);}}return;}if(e.target.id==='notice-search'){noticeUI.query=e.target.value;const cursor=e.target.selectionStart;const y=view.scrollTop;render();const input=$('#notice-search');if(input){input.focus();input.setSelectionRange(cursor,cursor);}view.scrollTop=y;}});
   view.addEventListener('change',e=>{if(e.target.id==='notice-period'){noticeUI.period=e.target.value;render();}if(e.target.id==='notice-selected-date'){noticeUI.selectedDate=e.target.value||noticeLocalDay(Date.now());noticeUI.period='Selected date';render();}});
   view.addEventListener('keydown',async e=>{const card=e.target instanceof Element?e.target.closest('[data-notice-open]'):null;if(card&&(e.key==='Enter'||e.key===' ')){e.preventDefault();await noticeOpen(card.getAttribute('data-notice-open'));}});
 
@@ -4569,6 +4622,7 @@ function initQuickAdd(){
 /* ── Theme / profile ──────────────────────────────────────── */
 function applyTheme(t){
   document.documentElement.setAttribute('data-theme', t === 'dark' ? 'dark' : 'light');
+  if(Store.cache?.settings?.nasaBackground){let cache=null;try{cache=JSON.parse(localStorage.getItem('scribe.nasa-apod.v1')||'null');}catch{}if(cache?.image)setNasaBackgroundImage(cache.image);else applyNasaBackground(true);}else applyNasaBackground(false);
 }
 
 function renderProfile(user){
@@ -4625,6 +4679,7 @@ async function startSession(user){
     if (Store.mode === 'firebase'){
       try { await Store.loadFromFirestore(); } catch (e){ console.warn('Firestore load failed', e); }
     }
+    try { await syncPlannerActivitiesToCalendar(); } catch (e) { console.warn('Could not sync recurring Planner activities to Calendar', e); }
 
     applyTheme(Store.cache.settings.theme);
     renderProfile(user);
