@@ -2043,17 +2043,19 @@ function mapWorkType(w){
 }
 
 /* ── Gmail sync ───────────────────────────────────────────── */
-function getLookbackDays(){
-  let n = Number(Store.cache.settings.emailLookbackDays);
-  if (!Number.isFinite(n) || n <= 0) n = 30;
-  return Math.min(365, Math.max(1, Math.round(n)));
-}
+const GMAIL_LOOKBACK_DAYS = 7;
+const GMAIL_BATCH_SIZE = 5;
+const GMAIL_AUTO_SYNC_INTERVAL_MS = 5 * 60 * 1000;
+const GMAIL_SCOPE = 'https://www.googleapis.com/auth/gmail.readonly';
+let gmailSyncInFlight = null;
+let gmailAutoSyncTimer = null;
+let gmailAutoSyncRunning = false;
+let gmailAutoSyncVisibilityBound = false;
 
 function buildGmailQuery(){
-  // Empty query intentionally means all Gmail messages across Inbox, archive,
-  // Sent and user labels. Gmail API excludes Spam and Trash by default.
-  // Trusted domains and keywords are retained as hints for Scribble, never hard filters.
-  return '';
+  // Only scan recent mail. Gmail excludes Spam and Trash unless explicitly asked.
+  // Sender/domain settings remain hints for Scribble, never hard filters.
+  return `newer_than:${GMAIL_LOOKBACK_DAYS}d`;
 }
 
 function emailHtmlToText(html){
@@ -2131,7 +2133,7 @@ async function summariseEmailWithScribble(parsed){
     body:JSON.stringify({
       subject:parsed.subject||'',from:parsed.from||'',body:parsed.body||'',
       analysis_mode:'school_email_triage',
-      student_subjects:subjects,
+      selected_subjects:subjects,
       trusted_school_domains:Store.cache.settings.trustedDomains||[],
       trusted_school_senders:Store.cache.settings.trustedSenders||[],
       requested_fields:['school_related','category','subject','assessment_title','assessment_type','confidence','summary','importance','key_points','dates','actions'],
@@ -2145,6 +2147,12 @@ async function summariseEmailWithScribble(parsed){
   const result=payload?.result||payload;
   if(payload?.success===false||!result||typeof result!=='object') throw new Error(payload?.error||'Scribble returned no analysis.');
   const relevance=parseSchoolRelevance(result.school_related??result.is_school_related??result.school_relevant??result.relevant_to_school);
+  const rawConfidence=String(result.confidence??'').trim().toLowerCase();
+  const confidenceScores={high:0.95,medium:0.7,low:0.35};
+  const confidence=Number.isFinite(Number(result.confidence))&&rawConfidence!==''
+    ?Math.max(0,Math.min(1,Number(result.confidence)))
+    :(confidenceScores[rawConfidence]??null);
+  const category=sanitiseText(result.category||result.email_category||result.type||'',80).toLowerCase();
   return {
     summary:sanitiseText(result.summary||'',1800),
     importance:['low','normal','high','urgent'].includes(String(result.importance||'normal').toLowerCase())?String(result.importance||'normal').toLowerCase():'normal',
@@ -2152,11 +2160,12 @@ async function summariseEmailWithScribble(parsed){
     dates:Array.isArray(result.dates)?result.dates.slice(0,10).map(d=>({date:sanitiseText(d.date||'',100),event:sanitiseText(d.event||'Date',240),deadline:!!d.deadline})):[],
     actions:Array.isArray(result.actions)?result.actions.map(x=>sanitiseText(x,400)).filter(Boolean).slice(0,10):[],
     schoolRelated:relevance,
-    category:sanitiseText(result.category||result.email_category||result.type||'',80),
-    subject:sanitiseText(result.subject||result.matched_subject||result.course||'',100),
+    category,
+    subject:sanitiseText(result.subject||result.school_subject||result.matched_subject||result.course||'',100),
     assessmentTitle:sanitiseText(result.assessment_title||result.assignment_title||'',180),
-    assessmentType:sanitiseText(result.assessment_type||result.task_type||'',60),
-    confidence:Number.isFinite(Number(result.confidence))?Math.max(0,Math.min(1,Number(result.confidence))):null
+    assessmentType:sanitiseText(result.assessment_type||result.task_type||(result.assessment===true?'assessment':category),60),
+    assessment:result.assessment===true,
+    confidence
   };
 }
 
@@ -2289,9 +2298,8 @@ async function listAllGmailMessageIds(token){
   const ids=[];
   let pageToken='';
   do{
-    const params=new URLSearchParams({maxResults:'500',includeSpamTrash:'true'});
+    const params=new URLSearchParams({maxResults:'500',q:buildGmailQuery()});
     if(pageToken)params.set('pageToken',pageToken);
-    // No q parameter: include the full mailbox, including Spam and Trash.
     const page=await gfetchJson(`https://gmail.googleapis.com/gmail/v1/users/me/messages?${params.toString()}`,token);
     for(const message of page.messages||[])if(message?.id)ids.push(message.id);
     pageToken=page.nextPageToken||'';
@@ -2316,18 +2324,21 @@ function getAiAssessmentDueDate(ai,parsed){
 
 function tryImportAiAssessment(emailRecord,parsed,ai){
   if(ai?.schoolRelated!==true)return null;
-  const kind=String(ai.category||ai.assessmentType||'').toLowerCase();
-  const taskKind=/assignment|homework|assessment|test|exam|project|coursework|quiz/.test(kind);
+
+  const kind=[ai.category||'',ai.assessmentType||'',ai.assessment===true?'assessment':''].join(' ').toLowerCase();
+  const taskKind=ai.assessment===true||/\b(assignment|homework|assessment|test|exam|project|coursework|quiz)\b/.test(kind);
   if(!taskKind)return null;
-  const dueDate=getAiAssessmentDueDate(ai,parsed);
-  if(!dueDate)return null;
+
   const title=ai.assessmentTitle||extractEmailAssignmentName(parsed);
   if(!title)return null;
+
   const candidate=ai.subject||detectEmailSubject(parsed,title);
   const subject=matchSelectedSubject(candidate)||detectEmailSubject(parsed,title);
   if(!subject)return null;
+
+  const dueDate=getAiAssessmentDueDate(ai,parsed);
   return {
-    id:emailRecord.id,title,description:ai.summary||parsed.body.slice(0,1800),dueDate,subject,
+    id:emailRecord.id,title,description:ai.summary||parsed.body.slice(0,1800),dueDate:dueDate||null,subject,
     typeHint:detectType(`${kind} ${parsed.subject} ${title}`),
     url:emailRecord.url,source:'Email',emailSummary:ai,emailSummaryAt:now(),
     emailFrom:emailRecord.from,emailDate:emailRecord.date
@@ -2335,69 +2346,133 @@ function tryImportAiAssessment(emailRecord,parsed,ai){
 }
 
 async function syncGmail(){
-  if (!GoogleServices.has()) throw new Error('NOT_SIGNED_IN');
-  if (!GoogleServices.hasScope('https://www.googleapis.com/auth/gmail.readonly')) throw new Error('GMAIL_SCOPE_MISSING');
-  const token=GoogleServices.accessToken;
-  const ids=await listAllGmailMessageIds(token);
-  const gmailState=Store.cache.integrations.gmail||{};
-  const processed=new Set([...(gmailState.processedIds||[]),...Store.all('emailMessages').map(x=>x.gmailId).filter(Boolean)]);
-  const pending=ids.filter(id=>!processed.has(id));
-  const batch=pending.slice(0,20);
-  const imported=[];
-  let aiSummarised=0,aiFailed=0,schoolRelated=0,notSchool=0,needsReview=0;
+  if(gmailSyncInFlight)return gmailSyncInFlight;
 
-  for(const id of batch){
-    const localId=`gm-${id}`;
-    try{
-      const msg=await gfetchJson(`https://gmail.googleapis.com/gmail/v1/users/me/messages/${id}?format=full`,token);
-      const parsed=parseGmailMessage(msg);
-      const emailRecord={
-        id:localId,gmailId:id,threadId:msg.threadId||'',subject:parsed.subject||'(No subject)',
-        from:parsed.from||'Unknown sender',date:parsed.date||now(),snippet:sanitiseText(msg.snippet||parsed.body||'',420),
-        body:String(parsed.body||'').slice(0,12000),url:`https://mail.google.com/mail/u/0/#all/${id}`,
-        aiStatus:'pending',schoolRelated:null,category:'Needs review',importance:'normal'
-      };
+  const run=(async()=>{
+    if(!GoogleServices.has([GMAIL_SCOPE]))throw new Error('NOT_SIGNED_IN');
+    const token=GoogleServices.accessToken;
+    const ids=await listAllGmailMessageIds(token);
+    const gmailState=Store.cache.integrations.gmail||{};
+    const processed=new Set([...(gmailState.processedIds||[]),...Store.all('emailMessages').map(x=>x.gmailId).filter(Boolean)]);
+    const pending=ids.filter(id=>!processed.has(id));
+    const batch=pending.slice(0,GMAIL_BATCH_SIZE);
+    const imported=[];
+    let processedThisBatch=0,aiSummarised=0,aiFailed=0,schoolRelated=0,notSchool=0,needsReview=0;
+
+    for(const id of batch){
+      const localId=`gm-${id}`;
       try{
-        const ai=await summariseEmailWithScribble(parsed);
-        emailRecord.aiStatus='complete';emailRecord.ai=ai;emailRecord.schoolRelated=ai.schoolRelated;
-        emailRecord.category=emailCategoryLabel(ai);emailRecord.importance=ai.importance;
-        emailRecord.subjectMatch=matchSelectedSubject(ai.subject)||detectEmailSubject(parsed,ai.assessmentTitle||'');
-        aiSummarised++;
-        if(ai.schoolRelated===true)schoolRelated++;
-        else if(ai.schoolRelated===false)notSchool++;
-        else needsReview++;
-        const assignment=tryImportAiAssessment(emailRecord,parsed,ai);
-        if(assignment){imported.push(assignment);emailRecord.importedAssignment=true;}
+        const msg=await gfetchJson(`https://gmail.googleapis.com/gmail/v1/users/me/messages/${id}?format=full`,token);
+        const parsed=parseGmailMessage(msg);
+        const emailRecord={
+          id:localId,gmailId:id,threadId:msg.threadId||'',subject:parsed.subject||'(No subject)',
+          from:parsed.from||'Unknown sender',date:parsed.date||now(),snippet:sanitiseText(msg.snippet||parsed.body||'',420),
+          body:String(parsed.body||'').slice(0,12000),url:`https://mail.google.com/mail/u/0/#all/${id}`,
+          aiStatus:'pending',schoolRelated:null,category:'Needs review',importance:'normal'
+        };
+        try{
+          const ai=await summariseEmailWithScribble(parsed);
+          emailRecord.aiStatus='complete';emailRecord.ai=ai;emailRecord.schoolRelated=ai.schoolRelated;
+          emailRecord.category=emailCategoryLabel(ai);emailRecord.importance=ai.importance;
+          emailRecord.subjectMatch=matchSelectedSubject(ai.subject)||detectEmailSubject(parsed,ai.assessmentTitle||'');
+          aiSummarised++;
+          if(ai.schoolRelated===true)schoolRelated++;
+          else if(ai.schoolRelated===false)notSchool++;
+          else needsReview++;
+          const assignment=tryImportAiAssessment(emailRecord,parsed,ai);
+          if(assignment){imported.push(assignment);emailRecord.importedAssignment=true;}
+        }catch(err){
+          emailRecord.aiStatus='failed';emailRecord.aiError=sanitiseText(err?.message||err,240);
+          emailRecord.category='Needs review';aiFailed++;needsReview++;
+        }
+        await Store.put('emailMessages',emailRecord);
+        processed.add(id);
+        processedThisBatch++;
       }catch(err){
-        emailRecord.aiStatus='failed';emailRecord.aiError=sanitiseText(err?.message||err,240);
-        emailRecord.category='Needs review';aiFailed++;needsReview++;
+        console.warn('Gmail message fetch failed:',id,err);
+        // Leave this ID unprocessed so that a later sync can retry it.
       }
-      await Store.put('emailMessages',emailRecord);
-      processed.add(id);
-    }catch(err){
-      console.warn('Gmail message fetch failed:',id,err);
-      // Leave this ID unprocessed so that a later sync can retry it.
     }
+
+    const r=await importItems(imported,'Email');
+    const processedIds=[...processed].slice(-30000);
+    const pendingAfter=ids.filter(id=>!processed.has(id)).length;
+    Store.cache.integrations.gmail={
+      id:'gmail',connected:true,lastSync:now(),method:'api',mailboxMessages:ids.length,
+      processedIds,processedCount:processed.size,pendingCount:pendingAfter,
+      lookbackDays:GMAIL_LOOKBACK_DAYS,batchSize:GMAIL_BATCH_SIZE,
+      aiSummarised:(gmailState.aiSummarised||0)+aiSummarised,
+      aiFailed:(gmailState.aiFailed||0)+aiFailed,
+      schoolRelated:(gmailState.schoolRelated||0)+schoolRelated,
+      notSchool:(gmailState.notSchool||0)+notSchool,
+      needsReview:(gmailState.needsReview||0)+needsReview,
+      imported:(gmailState.imported||0)+r.added+r.merged
+    };
+
+    Store.cache.emailMessages.sort((a,b)=>(b.date||0)-(a.date||0));
+    Store.cache.emailMessages=Store.cache.emailMessages.slice(0,500);
+    await Store.saveUserDoc();
+    return {added:r.added,merged:r.merged,processed:processedThisBatch,mailboxMessages:ids.length,pending:pendingAfter,aiSummarised,aiFailed,schoolRelated,notSchool,needsReview};
+  })();
+
+  gmailSyncInFlight=run;
+  try{return await run;}
+  finally{if(gmailSyncInFlight===run)gmailSyncInFlight=null;}
+}
+
+async function runGmailAutoSync(){
+  if(gmailAutoSyncRunning||!Store.cache||document.visibilityState!=='visible')return;
+  if(Store.cache.settings.enableGmail===false)return;
+  if(!GoogleServices.has([GMAIL_SCOPE])){
+    if(gmailAutoSyncTimer){clearInterval(gmailAutoSyncTimer);gmailAutoSyncTimer=null;}
+    return;
   }
 
-  const r=await importItems(imported,'Email');
-  const processedIds=[...processed].slice(-30000);
-  const pendingAfter=Math.max(0,ids.length-processed.size);
-  Store.cache.integrations.gmail={
-    id:'gmail',connected:true,lastSync:now(),method:'api',mailboxMessages:ids.length,
-    processedIds,processedCount:processed.size,pendingCount:pendingAfter,
-    aiSummarised:(gmailState.aiSummarised||0)+aiSummarised,
-    aiFailed:(gmailState.aiFailed||0)+aiFailed,
-    schoolRelated:(gmailState.schoolRelated||0)+schoolRelated,
-    notSchool:(gmailState.notSchool||0)+notSchool,
-    needsReview:(gmailState.needsReview||0)+needsReview,
-    imported:(gmailState.imported||0)+r.added+r.merged
-  };
-  // Keep the in-memory and local cache bounded; Firestore retains the individual email records.
-  Store.cache.emailMessages.sort((a,b)=>(b.date||0)-(a.date||0));
-  Store.cache.emailMessages=Store.cache.emailMessages.slice(0,500);
-  await Store.saveUserDoc();
-  return {added:r.added,merged:r.merged,processed:batch.length,mailboxMessages:ids.length,pending:pendingAfter,aiSummarised,aiFailed,schoolRelated,notSchool,needsReview};
+  const lastSync=Number(Store.cache.integrations.gmail?.lastSync)||0;
+  if(lastSync&&Date.now()-lastSync<GMAIL_AUTO_SYNC_INTERVAL_MS-10000)return;
+
+  gmailAutoSyncRunning=true;
+  try{
+    const result=await syncGmail();
+    if(result.processed>0){
+      updateSyncStatusFromCache();
+      updateBadges();
+      updateNotifDot();
+      if(currentRoute()==='#/emails'){
+        const view=$('#view');
+        const scrollTop=view?.scrollTop||0;
+        render();
+        if(view)view.scrollTop=scrollTop;
+      }
+    }
+  }catch(err){
+    console.warn('Automatic Gmail sync failed:',friendlyErr(err));
+    if(err?.message==='TOKEN_EXPIRED'&&gmailAutoSyncTimer){
+      clearInterval(gmailAutoSyncTimer);
+      gmailAutoSyncTimer=null;
+    }
+  }finally{
+    gmailAutoSyncRunning=false;
+  }
+}
+
+function stopGmailAutoSync(){
+  if(gmailAutoSyncTimer){clearInterval(gmailAutoSyncTimer);gmailAutoSyncTimer=null;}
+}
+
+function startGmailAutoSync(){
+  stopGmailAutoSync();
+  if(!Store.cache||Store.cache.settings.enableGmail===false||!GoogleServices.has([GMAIL_SCOPE]))return;
+
+  if(!gmailAutoSyncVisibilityBound){
+    document.addEventListener('visibilitychange',()=>{
+      if(document.visibilityState==='visible')runGmailAutoSync();
+    });
+    gmailAutoSyncVisibilityBound=true;
+  }
+
+  gmailAutoSyncTimer=setInterval(runGmailAutoSync,GMAIL_AUTO_SYNC_INTERVAL_MS);
+  setTimeout(runGmailAutoSync,1500);
 }
 
 function matchSelectedSubject(value){
@@ -3189,12 +3264,12 @@ function renderEmailsView(){
       <div class="row-between wrap" style="margin-top:12px"><span class="hint">${ai.confidence!==null&&ai.confidence!==undefined?`AI confidence: ${Math.round(Number(ai.confidence)*100)}%`:e.aiStatus==='complete'?'AI summary received':'Not analysed'}</span><div class="row">${shouldRetry?`<button class="btn btn-ghost btn-sm" data-email-reanalyse="${escapeHtml(e.id)}">${e.aiStatus==='failed'?'Retry analysis':'Analyse again'}</button>`:''}<details class="email-original"><summary>Original email</summary><pre>${escapeHtml(e.body||'No body text was extracted.')}</pre></details></div></div>
     </article>`;
   }).join('');
-  const syncLabel=gmail.pendingCount>0?`Scan next batch · ${Number(gmail.pendingCount).toLocaleString('en-NZ')} remaining`:'Scan Gmail mailbox';
-  return `<div class="page-head"><div class="row-between wrap"><div><h1 class="page-title">School Email</h1><p class="page-sub">Scribe scans your Gmail mailbox and keeps messages available instead of silently discarding uncertain ones.</p></div><button class="btn btn-primary" data-sync-email-inbox>${escapeHtml(syncLabel)}</button></div></div>
-    <div class="email-scan-status card"><div class="email-scan-stat"><strong>${Number(gmail.mailboxMessages||0).toLocaleString('en-NZ')}</strong><span>Mailbox messages</span></div><div class="email-scan-stat"><strong>${Number(gmail.processedCount||0).toLocaleString('en-NZ')}</strong><span>Scanned by Scribe</span></div><div class="email-scan-stat"><strong>${schoolCount}</strong><span>School-related here</span></div><div class="email-scan-stat"><strong>${reviewCount}</strong><span>Needs review</span></div><div class="email-scan-stat"><strong>${personalCount}</strong><span>Not school-related</span></div></div>
-    <div class="alert alert-info" style="margin:14px 0">The current Scribe integration asks Scribble for a school-related decision. If the Scribble service only returns its older summary fields and does not provide <code>school_related</code>, Scribe keeps that email in <strong>Needs review</strong> rather than guessing or deleting it.</div>
+  const syncLabel=gmail.pendingCount>0?`Scan next 5 · ${Number(gmail.pendingCount).toLocaleString('en-NZ')} waiting`:'Scan last 7 days';
+  return `<div class="page-head"><div class="row-between wrap"><div><h1 class="page-title">School Email</h1><p class="page-sub">Scribe classifies recent Gmail messages and keeps uncertain ones in Needs review.</p></div><button class="btn btn-primary" data-sync-email-inbox>${escapeHtml(syncLabel)}</button></div></div>
+    <div class="email-scan-status card"><div class="email-scan-stat"><strong>${Number(gmail.mailboxMessages||0).toLocaleString('en-NZ')}</strong><span>Messages in last 7 days</span></div><div class="email-scan-stat"><strong>${Number(gmail.processedCount||0).toLocaleString('en-NZ')}</strong><span>Scanned by Scribe</span></div><div class="email-scan-stat"><strong>${schoolCount}</strong><span>School-related here</span></div><div class="email-scan-stat"><strong>${reviewCount}</strong><span>Needs review</span></div><div class="email-scan-stat"><strong>${personalCount}</strong><span>Not school-related</span></div></div>
+    <div class="alert alert-info" style="margin:14px 0">Scribe checks the last 7 days of Gmail and automatically checks for new messages about every 5 minutes while this page is open. Each pass analyses up to 5 emails to keep the workload manageable. Actual assignment and assessment emails can create tasks; general announcements and events stay in School Email.</div>
     <div class="email-filter-row"><label class="label" for="email-inbox-filter">Show</label><select class="select" id="email-inbox-filter"><option value="all" ${emailInboxFilter==='all'?'selected':''}>All scanned emails</option><option value="school" ${emailInboxFilter==='school'?'selected':''}>School-related</option><option value="review" ${emailInboxFilter==='review'?'selected':''}>Needs review</option><option value="personal" ${emailInboxFilter==='personal'?'selected':''}>Not school-related</option></select><span class="hint">Showing ${filtered.length} of ${all.length} loaded emails · up to 500 recent records are displayed here.</span></div>
-    ${cards?`<div class="email-record-list">${cards}</div>`:`<div class="empty"><div class="empty-ico">✉</div><div class="empty-title">${all.length?'No emails match this filter':'No emails scanned yet'}</div><div class="empty-sub">${all.length?'Choose another filter to see more messages.':'Select Scan Gmail mailbox to begin classifying emails from your account.'}</div></div>`}`;
+    ${cards?`<div class="email-record-list">${cards}</div>`:`<div class="empty"><div class="empty-ico">✉</div><div class="empty-title">${all.length?'No emails match this filter':'No emails scanned yet'}</div><div class="empty-sub">${all.length?'Choose another filter to see more messages.':'Select Scan last 7 days or keep Scribe open to check for new emails automatically.'}</div></div>`}`;
 }
 
 async function reanalyseStoredEmail(id){
@@ -3373,11 +3448,11 @@ function renderSettingsView(){
       <div class="card-body" style="padding-top:4px;padding-bottom:4px">
         <div class="set-row">
           <div class="set-info">
-            <div class="set-name">Gmail mailbox scan</div>
-            <div class="set-desc">Scribe scans the whole Gmail mailbox, including Inbox, archived mail, Sent, user labels, Spam and Trash. Scribble classifies each message in batches of 20 per sync.</div>
+            <div class="set-name">Gmail email scanning</div>
+            <div class="set-desc">Scribe checks the last 7 days of Gmail, analyses up to 5 messages per pass, and checks for new email about every 5 minutes while Scribe is open. Spam and Trash are not included.</div>
           </div>
           <div class="set-control">
-            <span class="hint">Whole mailbox</span>
+            <span class="hint">Last 7 days · automatic</span>
           </div>
         </div>
         <div class="set-row stacked">
@@ -4236,7 +4311,7 @@ function initViewEvents(){
     const delQuick=e.target.closest('[data-del-quick-note]');
     if(delQuick){const id=delQuick.getAttribute('data-del-quick-note'),note=Store.get('quickNotes',id);if(!note)return;const ok=await confirmDialog('Delete note?',`“${note.title||'Untitled note'}” will be removed.`, 'Delete note', true);if(ok){await Store.remove('quickNotes',id);render();toast('Note deleted.','success');}return;}
     if(e.target.closest('[data-add-result]')){openResultModal(null);return;}
-    if(e.target.closest('[data-sync-email-inbox]')){const btn=e.target.closest('[data-sync-email-inbox]');btn.disabled=true;btn.textContent='Scanning…';try{const r=await syncGmail();render();toast(`Analysed ${r.processed} emails. ${r.pending.toLocaleString('en-NZ')} remain in the mailbox scan.`,'success','Gmail scan');}catch(err){render();toast(friendlyErr(err),'error','Gmail scan failed');}return;}
+    if(e.target.closest('[data-sync-email-inbox]')){const btn=e.target.closest('[data-sync-email-inbox]');btn.disabled=true;btn.textContent='Scanning…';try{const r=await syncGmail();render();toast(`Analysed ${r.processed} emails. ${r.pending.toLocaleString('en-NZ')} remain in the last-7-days scan.`,'success','Gmail scan');}catch(err){render();toast(friendlyErr(err),'error','Gmail scan failed');}return;}
     const reanalyse=e.target.closest('[data-email-reanalyse]');if(reanalyse){await reanalyseStoredEmail(reanalyse.getAttribute('data-email-reanalyse'));return;}
     const editResult=e.target.closest('[data-edit-result]');
     if(editResult){const result=Store.get('results',editResult.getAttribute('data-edit-result'));if(result)openResultModal(result);return;}
@@ -4352,7 +4427,7 @@ function initViewEvents(){
           toast(`Classroom: ${r.added} new, ${r.merged} updated.`, 'success');
         } else {
           const r = await syncGmail();
-          toast(`Analysed ${r.processed} emails; ${r.pending} more remain in the mailbox scan.`, 'success');
+          toast(`Analysed ${r.processed} emails; ${r.pending} more remain in the last-7-days scan.`, 'success');
         }
       } catch (err){
         toast(friendlyErr(err), 'error', 'Sync failed');
@@ -4568,6 +4643,7 @@ async function startSession(user){
     if (!location.hash) location.hash = '#/dashboard';
     render();
     updateSyncStatusFromCache();
+    startGmailAutoSync();
 
     $('#auth-screen').hidden = true;
 
@@ -4623,6 +4699,7 @@ async function signInWithGoogle(){
 }
 
 async function signOut(){
+  stopGmailAutoSync();
   GoogleServices.clear();
   clearDemoSession();
   try { if (FB.ready) await FB.mod.signOut(FB.auth); } catch {}
