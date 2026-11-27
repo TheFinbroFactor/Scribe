@@ -1,0 +1,25 @@
+services:
+  scribe:
+    build: .
+    container_name: scribe
+    restart: unless-stopped
+    ports:
+      - "8090:80"
+    environment:
+      SCRIBE_SECRET_KEY: "fee22e29e7d76476bc24810d32e14288f8b6882c4aef9dc9f2d090beb741d145"
+
+      # One Google Web OAuth client is used for the Scribe website.
+      # Students never see or configure this value.
+      SCRIBE_GOOGLE_CLIENT_ID: ""
+
+      # Optional bootstrap settings for the first school.
+      # After that, global/school administrators can manage schools in Scribe.
+      SCRIBE_DEFAULT_SCHOOL_NAME: ""
+      SCRIBE_DEFAULT_SCHOOL_SLUG: ""
+      SCRIBE_DEFAULT_SCHOOL_DOMAINS: ""
+      SCRIBE_DEFAULT_SCHOOL_ADMIN_EMAILS: ""
+
+      # Comma-separated Google emails that can manage every school.
+      SCRIBE_GLOBAL_ADMIN_EMAILS: ""
+    volumes:
+      - ./data:/app/data

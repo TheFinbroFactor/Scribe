@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Scribe — Your school, organised</title>
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#4f46e5">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%234f46e5'/><text x='50' y='72' font-size='62' font-family='sans-serif' font-weight='800' fill='white' text-anchor='middle'>S</text></svg>">
+
+<link rel="stylesheet" href="/css/style.css">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+
+</head>
+
+<body>
+
+<div id="boot" class="boot">
+  <div class="boot-mark">S</div>
+  <div class="boot-text">Loading Scribe…</div>
+</div>
+
+<div id="auth-screen" class="auth" hidden>
+  <aside class="auth-hero">
+    <div class="auth-hero-inner">
+      <div class="brand brand-light"><span class="brand-mark">S</span><span>Scribe</span></div>
+      <h1 class="auth-headline">Every assignment, test and notice.<br>One calm dashboard.</h1>
+      <p class="auth-sub">Sign in with the Google account you already use at school. No Scribe password to remember.</p>
+      <ul class="auth-features">
+        <li><span class="tick">✓</span><span><strong>Simple Google sign-in</strong> — your school account is recognised automatically</span></li>
+        <li><span class="tick">✓</span><span><strong>Smart Paste</strong> — paste any email, get structured tasks</span></li>
+        <li><span class="tick">✓</span><span><strong>Weekly Effort Reports</strong> — track your Friday ratings over time</span></li>
+        <li><span class="tick">✓</span><span><strong>School calendar</strong> — provided by your school</span></li>
+      </ul>
+      <div class="auth-badges">
+        <span class="chip chip-glass">No student setup</span>
+        <span class="chip chip-glass">No Scribe password</span>
+        <span class="chip chip-glass">Your school controls its settings</span>
+      </div>
+    </div>
+  </aside>
+
+  <main class="auth-panel">
+    <div class="auth-card">
+      <div class="brand auth-card-brand"><span class="brand-mark">S</span><span>Scribe</span></div>
+      <div id="mode-badge" class="auth-mode-badge">⚡ Demo mode</div>
+      <h2 class="auth-title" id="auth-heading">Welcome back</h2>
+      <p class="auth-lead" id="auth-subheading">Sign in to open your dashboard.</p>
+      <div id="auth-school-label" class="auth-school-label" hidden></div>
+      <div id="enter-btn" class="google-signin-host" aria-label="Continue with Google"></div>
+      <div id="google-error" class="alert alert-error" style="margin-top:14px" hidden></div>
+      <details class="auth-email-fallback">
+        <summary>Use an existing email/password account instead</summary>
+        <form id="email-form" novalidate autocomplete="on">
+        <div class="field" id="name-field" hidden></div>
+        <div class="field">
+          <label class="label" for="auth-email">Email</label>
+          <input class="input" type="email" id="auth-email" placeholder="you@example.com" autocomplete="email" required>
+        </div>
+        <div class="field">
+          <label class="label" for="auth-password">Password</label>
+          <input class="input" type="password" id="auth-password" placeholder="At least 6 characters" autocomplete="current-password" required minlength="6">
+          <div class="hint" id="password-hint" hidden>Choose a password with at least 6 characters.</div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="email-submit-btn">
+          <span id="email-submit-label">Sign in</span>
+          <span class="sync-spinner" id="email-spinner" hidden style="border-color:rgba(255,255,255,.35);border-top-color:#fff"></span>
+        </button>
+      </form>
+      </details>
+      <div id="auth-error" class="alert alert-error" style="margin-top:14px" hidden></div>
+      <div class="auth-divider"><span>or</span></div>
+      <button class="btn btn-ghost btn-block" id="demo-btn">Explore demo mode</button>
+      <p class="auth-fineprint">Scribe uses Google only to verify who you are. Your Scribe data is stored in the Scribe database. Google Classroom and Gmail access are optional and are requested only when you connect those features.</p>
+    </div>
+  </main>
+</div>
+
+<div id="app" class="app" hidden>
+  <header class="topbar">
+    <button class="icon-btn only-mobile" id="menu-btn" aria-label="Open menu" aria-expanded="false">☰</button>
+    <a class="brand" href="#/dashboard"><span class="brand-mark">S</span><span class="brand-text">Scribe</span></a>
+    <div class="topbar-search">
+      <span class="search-ico">⌕</span>
+      <input id="global-search" class="input" type="search" placeholder="Search assignments, tests, notices and notes…" aria-label="Search" autocomplete="off">
+      <kbd>/</kbd>
+      <div id="search-results" class="search-results" hidden></div>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn btn-primary btn-sm" id="smart-paste-btn" title="Paste anything to extract tasks (P)">
+        ⚡ <span>Smart Paste</span>
+      </button>
+      <button class="btn btn-ghost btn-sm" id="sync-btn" title="Synchronise all connected sources">
+        <span class="sync-spinner" hidden></span>
+        <span class="sync-label">Sync</span>
+      </button>
+      <div class="dropdown">
+        <button class="icon-btn" id="notif-btn" aria-label="Notifications" aria-haspopup="true" aria-expanded="false">
+          🔔<span id="notif-dot" class="dot" hidden></span>
+        </button>
+        <div id="notif-panel" class="dropdown-panel notif-panel" hidden></div>
+      </div>
+      <div class="dropdown">
+        <button class="icon-btn avatar-btn" id="account-btn" aria-label="Account menu" aria-haspopup="true" aria-expanded="false">
+          <img id="avatar" class="avatar" alt="" referrerpolicy="no-referrer">
+        </button>
+        <div id="account-panel" class="dropdown-panel account-panel" hidden>
+          <div class="account-head">
+            <img id="avatar-lg" class="avatar avatar-lg" alt="" referrerpolicy="no-referrer">
+            <div class="account-meta">
+              <div id="account-name" class="strong"></div>
+              <div id="account-email" class="muted small"></div>
+              <div id="account-school" class="tiny muted"></div>
+            </div>
+          </div>
+          <div class="menu-sep"></div>
+          <button class="menu-item" data-nav="#/integrations">🔌 <span>Integrations</span></button>
+          <button class="menu-item" data-nav="#/settings">⚙️ <span>Settings</span></button>
+          <button class="menu-item" id="help-btn">⌨️ <span>Keyboard shortcuts</span><kbd>?</kbd></button>
+          <div class="menu-sep"></div>
+          <button class="menu-item danger" id="signout-btn">↩︎ <span>Sign out</span></button>
+        </div>
+      </div>
+    </div>
+  </header>
+  <div class="layout">
+    <div id="scrim" class="scrim" hidden></div>
+    <nav id="sidebar" class="sidebar" aria-label="Main">
+      <div class="sidebar-group">
+        <div class="sidebar-label">Overview</div>
+        <a class="nav-item" href="#/dashboard"><span class="nav-ico">🏠</span><span>Dashboard</span></a>
+        <a class="nav-item" href="#/assignments" data-sidebar-feature="assignments"><span class="nav-ico">📝</span><span>Assignments</span><span class="nav-badge" id="badge-assignments" hidden></span></a>
+        <a class="nav-item" href="#/calendar" data-sidebar-feature="calendar"><span class="nav-ico">📅</span><span>Calendar</span></a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-label">Organise</div>
+        <a class="nav-item" href="#/weekly" data-sidebar-feature="weekly"><span class="nav-ico">🗒️</span><span>Weekly Notes</span></a>
+        <a class="nav-item" href="#/effort" data-sidebar-feature="effort"><span class="nav-ico">📊</span><span>Effort Reports</span></a>
+        <a class="nav-item" href="#/planner" data-sidebar-feature="planner"><span class="nav-ico">🎯</span><span>Study Planner</span></a>
+      </div>
+      <div class="sidebar-group">
+        <div class="sidebar-label">Account</div>
+        <a class="nav-item" href="#/integrations" data-sidebar-feature="integrations"><span class="nav-ico">🔌</span><span>Integrations</span></a>
+        <a class="nav-item" href="#/settings"><span class="nav-ico">⚙️</span><span>Settings</span></a>
+      </div>
+      <div class="sidebar-foot">
+        <div class="sync-chip" id="sync-status"><span class="sync-dot"></span><span class="sync-text">Not synced yet</span></div>
+      </div>
+    </nav>
+    <main id="view" class="view" tabindex="-1"></main>
+  </div>
+</div>
+
+<button id="fab" class="fab" aria-label="Quick add" hidden>+</button>
+<div id="fab-menu" class="fab-menu" hidden></div>
+
+<div id="toasts" class="toasts" aria-live="polite"></div>
+<div id="modal-root"></div>
+
+
+<script type="module" src="/js/app.js"></script>
+</body>
+</html>
